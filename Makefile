@@ -8,8 +8,7 @@ SRCS := $(SRCS:%=$(SRC_DIR)/%)
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 CC := CC
-# -Wall -Wextra -Werror
-CFLAGS := -g $(DFLAGS)
+CFLAGS := -g -Wall -Wextra -Werror -lreadline $(DFLAGS)
 CPPFLAGS := -I include
 
 RM := rm -f

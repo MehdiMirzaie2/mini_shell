@@ -1,12 +1,4 @@
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/file.h>
-#include <sys/stat.h>
-#include <sys/errno.h>
-#include <stdlib.h>
-
-#include <readline/readline.h>
-#include <readline/history.h>
+#include "shell.h"
 
 char *rl_gets(char **line_read)
 {
@@ -39,7 +31,8 @@ int main(void)
         // printf("mini_shell ");
 
         rl_gets(&line_read); // Pass the pointer by reference
-		printf("%s\n", line_read);
+		process_input(line_read);
+        // printf("%s\n", line_read);
         // Do something with line_read, if needed
 
         // Free the memory after you're done using it

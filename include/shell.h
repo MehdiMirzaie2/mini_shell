@@ -4,43 +4,48 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+#include <sys/types.h>
+#include <sys/file.h>
+#include <sys/stat.h>
+#include <sys/errno.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
-get_env("$HODME");
-1489174
-
-
-typedef struct s_shell t_shell;
 typedef struct s_vars t_vars;
+typedef struct s_cmdtree t_cmdtree;
+typedef struct s_cmd	t_cmd;
+typedef enum e_pipetype	t_pipetype;
 
-struct s_vars
+enum e_pipetype
 {
-	int	hash;
-	char *key;
-	char *value;
-
-	t_vars *next;
+	E_PIPE,
+	E_AND,
+	E_DAND,
+	E_OR,
+	E_DOR
 };
 
-struct s_cmd_list
+struct s_cmdtree
 {
-	char *cmd;
-	t_cmd_list *next;
-}
+	t_cmd *left;
+	t_cmd *right;
+	t_pipetype type;
 
-t_cmd_list *get_cmd(t_cmd_list *head, char * key);
-char *get_env(t_vars *head, char *key);
-void add_env(t_vars *vars, char *key, char *value);
+	t_cmdtree *next;
+};
 
-typedef struct s_shell {
-	t_vars	env;
-	char *cd_path;
-	t_cmd_list list;
-	int			current_cmd;
-	char **path;
-	///usr/bin
-	///bin
-	//..
-	//NULL
-} t_shell;
+struct s_cmd
+{
+	char **args;
+	char ** redirections;
+};
+
+
+// t_cmdtree create_cmdtree(char *line);
+
+// void		execute_cmdtree(t_cmdtree *tree);
+
+
+int	process_input(char *input);
 
 #endif

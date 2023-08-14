@@ -11,33 +11,32 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-typedef struct s_vars t_vars;
-typedef struct s_cmdtree t_cmdtree;
-typedef struct s_cmd	t_cmd;
-typedef enum e_pipetype	t_pipetype;
+typedef struct s_vars			t_vars;
+typedef struct s_cmdtree		t_cmdtree;
+typedef struct s_cmd			t_cmd;
+// typedef enum e_redirect_type	t_redirect_type;
 
-enum e_pipetype
-{
-	E_PIPE,
-	E_AND,
-	E_DAND,
-	E_OR,
-	E_DOR
-};
+// enum e_redirect_type
+// {
+// 	E_PIPE,
+// 	E_AND,
+// 	E_DAND,
+// 	E_OR,
+// 	E_DOR
+// };
 
 struct s_cmdtree
 {
-	t_cmd *left;
-	t_cmd *right;
-	t_pipetype type;
-
-	t_cmdtree *next;
+	t_cmd				*cmd;
+	char				*redirect;
+	t_cmdtree			*next;
 };
 
 struct s_cmd
 {
-	char **args;
-	char ** redirections;
+	char	*arg;
+	t_cmd	*next;
+	// char **redirections;
 };
 
 
@@ -46,6 +45,9 @@ struct s_cmd
 // void		execute_cmdtree(t_cmdtree *tree);
 
 
-int	process_input(char *input);
+int	process_input(char *input, t_cmdtree *cmdtree);
+
+// utils
+void	free_ast(t_cmdtree *cmdtree);
 
 #endif

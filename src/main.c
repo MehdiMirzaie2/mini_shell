@@ -25,17 +25,21 @@ char *rl_gets(char **line_read)
 int main(void)
 {
     /* A static variable for holding the line. */
-    static char *line_read = NULL;
+    t_cmdtree               *cmdtree;
+    static char *line_read  = NULL;
+
+    cmdtree = NULL;
 	while (1)
     {
         // printf("mini_shell ");
 
         rl_gets(&line_read); // Pass the pointer by reference
-		process_input(line_read);
+		process_input(line_read, cmdtree);
         // printf("%s\n", line_read);
         // Do something with line_read, if needed
 
         // Free the memory after you're done using it
+        free_ast(cmdtree);
     }
 	free(line_read);
     return (0);

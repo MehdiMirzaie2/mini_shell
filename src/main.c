@@ -8,6 +8,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+#include "libft.h"
 #include "lexer.h"
 
 char *rl_gets(char **line_read)
@@ -23,7 +24,9 @@ char *rl_gets(char **line_read)
     /* Get a line from the user. */
     *line_read = readline("mini_shell ");
 
-    /* If the line has any text in it, save it on the history. */
+	/* TODO: Handle quote modes */
+
+	/* If the line has any text in it, save it on the history. */
     if (*line_read && **line_read)
         add_history(*line_read);
 
@@ -40,10 +43,9 @@ int main(void)
 	{
 		// printf("mini_shell ");
 		rl_gets(&line_read); // Pass the pointer by reference
-		if (line_read[0] == '#')
-			line_read = "   \techo \t\"test \'quote\'\" \'sq\' <less | tr -r | awk '{printf $0}'";
-		else
-			print_tokenlst(tokenise(line_read));
+		if (line_read[0] == '#') // For testing purposes
+			line_read = ft_strdup("   \techo \t\"test \'(quote)\'\" \'sq\' <less | tr -r | awk '{printf $0}' | (first (second) (third (forth)))");
+		tlst_print(tlst_create(line_read));
 		printf("%s\n", line_read);
 		// Do something with line_read, if needed
 		// Free the memory after you're done using it

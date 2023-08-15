@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 #ifndef LEXER_H
 # define LEXER_H
 
@@ -13,21 +15,39 @@ enum e_ttoken
 	E_RA = 8,
 	E_WD = 16,
 	E_P = 32,
-	E_ALL = 64
+	E_PO = 64,
+	E_PC = 128,
+	E_ALL = 256
 };
 
+/* Represents a fundamental unit of a/many command/s.
+ *
+ * type:	The type that this token represents, see e_ttoken.
+ *
+ * str:	The start of the string that is linked with this token.
+ * 		if 'dup' is false this string may overlap other tokens.
+ * 
+ * dup:	true when str is a filtered copy of the input.
+ * 		false when str is just the pointer inside the input.
+ *
+ * next:	The next token in the list.
+ */
 struct s_token
 {
-	t_ttoken type;
-	char *str;
-	t_token *next;
+	t_ttoken	type;
+	char		*str;
+	bool		dup;
+
+	t_token		*next;
 };
 
-char *get_token_desc(t_ttoken t);
-t_token *create_token(char *str, t_ttoken type, t_token *parent);
-t_token *tokenise(char *str);
-void print_tokenlst(t_token *start);
-int ft_isspace(int c);
+char	*get_token_desc(t_ttoken t);
+void	*tlst_destroy(t_token *token);
+t_token	*tlst_dup_pass(t_token *head);
+t_token	*tlst_token_new(char *str, t_ttoken type, t_token *parent);
+t_token	*tlst_create(char *str);
+void	tlst_print(t_token *start);
 
+int		ft_isspace(int c);
 
 #endif

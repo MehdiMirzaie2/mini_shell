@@ -56,3 +56,49 @@ char *ft_strdupct(char *src, int (*check)(int c))
 	ft_strlcpy(ret, src, i + 1);
 	return (ret);
 }
+
+
+/* Creates a duplicated of 'src' where 'check' determins:
+ * when the string should start.
+ * when the string should end.
+ * what characters to include.
+ *
+ * check return values:
+ * 0 exclude char
+ * 1 include char
+ * 2 stop string
+ *
+ * check:
+ *  should be deterministic.
+ *  should stop string when encountering '\0'.
+ */
+char *ft_strdupi(char *src, int (*check)(char *src, int index))
+{
+	int	i;
+	int	j;
+	char *ret;
+	int state;
+
+	i = 0;
+	if (src == NULL)
+		return (NULL);
+	while (check(src, i) != 2)
+		i++;
+	ret = malloc(sizeof(char) * (i + 1));
+	if (ret == NULL)
+		return (NULL);
+	i = 0;
+	j = 0;
+	state = 0;
+	while (src[i])
+	{
+		state = check(src, i);
+		if (state == 2)
+			break ;
+		else if (state == 1)
+			ret[j++] = src[i];
+		i++;
+	}
+	ret[j] = '\0';
+	return (ret);
+}

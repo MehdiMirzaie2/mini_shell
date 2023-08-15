@@ -8,7 +8,7 @@ SRCS := $(SRCS:%=$(SRC_DIR)/%)
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 CC := cc
-CFLAGS := -g -Wall -Wextra -Werror -lreadline $(DFLAGS)
+CFLAGS := -g -Wall -Wextra -Werror -lreadline -L.libft -lft $(DFLAGS)
 CPPFLAGS := -I include -I .libft
 
 RM := rm -f
@@ -18,7 +18,7 @@ DIR_DUP = mkdir -p $(@D)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) -o $(NAME)
+	$(CC) $(OBJS) $(CFLAGS) -o $(NAME)
 	$(info CREATED $(NAME))
 
 $(OBJS): $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c

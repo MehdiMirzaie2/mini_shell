@@ -6,7 +6,7 @@
 /*   By: clovell <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 12:33:21 by clovell           #+#    #+#             */
-/*   Updated: 2023/03/09 12:35:07 by clovell          ###   ########.fr       */
+/*   Updated: 2023/08/15 17:05:42 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -31,6 +31,6 @@ int	ft_memcmp(const void *s1, const void *s2, size_t n)
 		if (diff != 0)
 			return (diff);
 		e++;
-	}	
+	}
 	return (0);
 }

@@ -5,10 +5,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-get_env("$HODME");
-1489174
-
-
 typedef struct s_shell t_shell;
 typedef struct s_vars t_vars;
 

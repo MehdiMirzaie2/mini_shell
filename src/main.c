@@ -8,6 +8,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+#include "lexer.h"
+
 char *rl_gets(char **line_read)
 {
     /* If the buffer has already been allocated, return the memory
@@ -29,21 +31,23 @@ char *rl_gets(char **line_read)
     /* Read a string, and return a pointer to it.  Returns NULL on EOF. */
 }
 
-
+void print_tokenlst(t_token *start);
 int main(void)
 {
-    /* A static variable for holding the line. */
-    static char *line_read = NULL;
+	/* A static variable for holding the line. */
+	static char *line_read = NULL;
 	while (1)
-    {
-        // printf("mini_shell ");
-
-        rl_gets(&line_read); // Pass the pointer by reference
+	{
+		// printf("mini_shell ");
+		rl_gets(&line_read); // Pass the pointer by reference
+		if (line_read[0] == '#')
+			line_read = "   \techo \t\"test \'quote\'\" \'sq\' <less | tr -r | awk '{printf $0}'";
+		else
+			print_tokenlst(tokenise(line_read));
 		printf("%s\n", line_read);
-        // Do something with line_read, if needed
-
-        // Free the memory after you're done using it
-    }
+		// Do something with line_read, if needed
+		// Free the memory after you're done using it
+	}
 	free(line_read);
-    return (0);
+	return (0);
 }

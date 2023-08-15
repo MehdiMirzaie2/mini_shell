@@ -2,7 +2,7 @@ NAME := minishell
 SRC_DIR := src
 OBJ_DIR	:= obj
 
-SRCS := main.c util/ft_strdup_extra.c lexer2.c
+SRCS := main.c util/ft_strdup_extra.c lexer.c
 
 SRCS := $(SRCS:%=$(SRC_DIR)/%)
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

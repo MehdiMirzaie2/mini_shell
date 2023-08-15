@@ -23,10 +23,6 @@ char *get_token_desc(t_ttoken t)
 		return "Word";
 	else if (t == E_P)
 		return "Pipe";
-	else if (t == E_PC)
-		return "Close";
-	else if (t == E_PO)
-		return "Open";
 	else if (t == E_ALL)
 		return "Start of Cmd";
 	return "unknown";
@@ -70,16 +66,12 @@ t_token *tlst_create(char *str)
 			last = tlst_token_new(str, E_LA, last);
 		else if (*str == '>')
 			last = tlst_token_new(str, E_RA, last);
-		else if (*str == '(')
-			last = tlst_token_new(str, E_PO, last);
-		else if (*str == ')')
-			last = tlst_token_new(str, E_PC, last);
 		else if (*str == '|')
 			last = tlst_token_new(str, E_P, last);
 		else if (isascii(*str))
 		{
 			last = tlst_token_new(str, E_WD, last);
-			while (*str && (!isspace(*str) && *str != ')'))
+			while (*str && !isspace(*str))
 				str++;
 		}
 		if (last == NULL)
@@ -125,8 +117,6 @@ int	tlst_token_dup(char *str, int i)
 		else if (str[0] == str[i])
 			return (0);
 	}
-	else if (str[i] == ')')
-		return (2);
 	else if (ft_isspace(str[i]))
 		return (2);
 	return (1);
@@ -138,7 +128,6 @@ t_token	*tlst_dup_pass(t_token *head)
 	char lstr[2];
 	
 	lstr[1] = '\0';
-
 	next = head;
 	while (next != NULL)
 	{

@@ -15,9 +15,7 @@ enum e_ttoken
 	E_RA = 8,
 	E_WD = 16,
 	E_P = 32,
-	E_PO = 64,
-	E_PC = 128,
-	E_ALL = 256
+	E_ALL = 64
 };
 
 /* Represents a fundamental unit of a/many command/s.

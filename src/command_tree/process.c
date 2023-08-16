@@ -1,5 +1,5 @@
 #include "shell.h"
-#include "libft.h"
+#include "../../lib/include/libft.h"
 
 // check for errors
 // split input
@@ -58,38 +58,43 @@ int	process_input(char *input, t_cmdtree *cmdtree)
 
 	flag = 1;
 	splitted_input = ft_split(input, ' ');
-	cmdtree = malloc(sizeof(t_cmdtree));
-	if (!cmdtree)
-		return (0);
+	// cmdtree = malloc(sizeof(t_cmdtree));
+	// if (!cmdtree)
+	// 	return (0);
 	reference_cmdtree = cmdtree;
 	reference_cmdtree->next = NULL;
-	reference = cmdtree->cmd;
-	reference = malloc(sizeof(t_cmd));
-	if (!reference)
+	cmdtree->cmd = malloc(sizeof(t_cmd));
+	if (!cmdtree->cmd)
 		return (0);
+	reference = cmdtree->cmd;
+	// reference = malloc(sizeof(t_cmd));
+	// if (!reference)
+	// 	return (0);
 	while (*splitted_input != NULL)
 	{
-		while (*splitted_input != NULL && *splitted_input[0] != '|' && *splitted_input[0] != '>'
+		if (*splitted_input[0] != '|' && *splitted_input[0] != '>'
 			&& *splitted_input[0] != '<' && *splitted_input[0] != '&')
 		{
+			// if (!flag)
+			// 	reference = reference->next;
 			add_node_to_cmd(reference, *splitted_input, flag);
-			if (!flag)
-				reference = reference->next;
 			flag = 0;
 			++splitted_input;
 		}
-		if (*splitted_input[0] == '|' && *splitted_input[0] == '<'
-			&& *splitted_input[0] == '>' && *splitted_input[0] == '&')
+		if (*splitted_input != NULL && (*splitted_input[0] == '|' || *splitted_input[0] == '<'
+			|| *splitted_input[0] == '>' || *splitted_input[0] == '&'))
 		{
 			reference_cmdtree->redirect = *splitted_input;
 			++splitted_input;
 			reference_cmdtree->next = malloc(sizeof(t_cmdtree));
 			reference_cmdtree = reference_cmdtree->next;
 			reference_cmdtree->next = NULL;
+			reference_cmdtree->cmd = malloc(sizeof(t_cmd));
+			reference = reference_cmdtree->cmd;
+			flag = 1;
 		}
 		else
 			reference_cmdtree->redirect = NULL;
-		flag = 1;
 	}
 	return (1);
 }

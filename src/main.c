@@ -25,10 +25,13 @@ char *rl_gets(char **line_read)
 int main(void)
 {
     /* A static variable for holding the line. */
-    t_cmdtree               *cmdtree;
+    t_cmdtree               *cmdtree = malloc(sizeof(t_cmdtree));
     static char *line_read  = NULL;
 
-    cmdtree = NULL;
+    // cmdtree = NULL;
+    cmdtree->cmd = NULL;
+    cmdtree->redirect = NULL;
+    cmdtree->next = NULL;
 	while (1)
     {
         // printf("mini_shell ");

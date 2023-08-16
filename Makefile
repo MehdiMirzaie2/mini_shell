@@ -80,7 +80,7 @@ NAME        := minishell
 
 LIBS        := ft
 LIBS_TARGET :=            \
-	libft/libft.a
+	lib/libft.a
 
 INCS        := include    \
 	libft/include
@@ -97,7 +97,7 @@ OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEPS        := $(OBJS:.o=.d)
 
 CC          := clang
-CFLAGS      := -Wall -Wextra -Werror
+CFLAGS      := -Wall -Wextra -Werror -g
 CPPFLAGS    := $(addprefix -I,$(INCS)) -MMD -MP
 LDFLAGS     := $(addprefix -L,$(dir $(LIBS_TARGET)))
 LDLIBS      := $(addprefix -l,$(LIBS))

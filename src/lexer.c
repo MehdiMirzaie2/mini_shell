@@ -7,25 +7,53 @@
 #include "libft.h"
 #include "lexer.h"
 
-char *get_token_desc(t_ttoken t)
+char *get_token_desc(t_ttoken t, int tostring)
 {
-	if (t == E_GS)
-		return "Grouped Sequence";
-	if (t == E_DQ)
-		return "Double Quote";
-	else if (t == E_SQ)
-		return "Single Quote";
-	else if (t == E_LA)
-		return "Stdin Redirect";
-	else if (t == E_RA)
-		return "Stdout Redirect";
-	else if (t == E_WD)
-		return "Word";
-	else if (t == E_P)
-		return "Pipe";
-	else if (t == E_ALL)
-		return "Start of Cmd";
-	return "unknown";
+	int i;
+	char *const des[] = 
+	{
+		"NA", "E_NA",
+		"Double Quote", "E_DQ",
+		"Single Quote", "E_SQ",
+		"Stdin Redirect", "E_LA",
+		"Stdout Redirect", "E_RA",
+		"Stdin Wait Redirect", "E_LLA",
+		"Stdout Append Redirect", "E_RRA",
+		"Word", "E_WD",
+		"Pipe", "E_WD",
+		"Start of Cmd", "E_ALL"
+	};
+
+	i = 0;
+	while ((t >> i) != 0)
+		i++;
+	return (des[i * 2 + (tostring != 0)]);
+}
+
+int	isttoken(char c)
+{
+	return (ft_strchr("\'\"|<>", c) != NULL);
+}
+
+t_ttoken get_ttoken(char *str)
+{
+	char *fnd;
+	const char *list = "\'\"|<>";
+	const t_ttoken types[] = 
+	{
+		E_SQ, E_DQ, E_LA, E_RA,
+		E_LLA, E_RRA, E_P
+	};
+	if (str == NULL || *str)
+		return (E_NA);
+	else if (str[0] == '<' && str[1] == '<')
+		return (E_LLA);
+	else if (str[0] == '>' && str[1] == '>')
+		return (E_RRA);
+	fnd = ft_strchr(list, str[0]);
+	if (fnd != NULL)
+		return (types[fnd - list]);
+	return (E_WD);
 }
 
 t_token *tlst_token_new(char *str, t_ttoken type, t_token *parent)
@@ -58,14 +86,26 @@ t_token *tlst_create(char *str)
 		while (isspace(*str))
 				str++;
 		c = *str;
+
+		/* TODO: Compress Logic using `get_ttoken` is `istoken` */
 		if (*str == '\'')
 			last = tlst_token_new(str++, E_SQ, last);	
 		else if (*str == '\"')
 			last = tlst_token_new(str++, E_DQ, last);
 		else if (*str == '<')
-			last = tlst_token_new(str, E_LA, last);
+		{
+			if (str[1] == '<')
+				last = tlst_token_new(str++, E_LLA, last);
+			else
+				last = tlst_token_new(str, E_LA, last);
+		}
 		else if (*str == '>')
-			last = tlst_token_new(str, E_RA, last);
+		{
+			if (str[1] == '>')
+				last = tlst_token_new(str++, E_RRA, last);
+			else
+				last = tlst_token_new(str, E_RA, last);
+		}
 		else if (*str == '|')
 			last = tlst_token_new(str, E_P, last);
 		else if (isascii(*str))
@@ -81,7 +121,7 @@ t_token *tlst_create(char *str)
 		if (*str == c)
 			str++;
 	}
-	/*return (start);*/
+	//return (start);
 	return (tlst_dup_pass(start));
 }
 
@@ -150,7 +190,7 @@ void tlst_print(t_token *start)
 {
 	while (start != NULL)
 	{
-		printf("Token [%s]:%s\n", get_token_desc(start->type), start->str);
+		printf("Token [%s]:%s\n", get_token_desc(start->type, 0), start->str);
 		start = start->next;
 	}
 }

@@ -42,6 +42,7 @@ struct s_token
 	t_token		*next;
 };
 
+size_t	get_token_index(t_ttoken t);
 char	*get_token_desc(t_ttoken t, int tostring);
 void	*tlst_destroy(t_token *token);
 t_token	*tlst_dup_pass(t_token *head);

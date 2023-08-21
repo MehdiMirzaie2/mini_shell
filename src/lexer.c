@@ -9,7 +9,6 @@
 
 char *get_token_desc(t_ttoken t, int tostring)
 {
-	int i;
 	char *const des[] = 
 	{
 		"NA", "E_NA",
@@ -24,10 +23,17 @@ char *get_token_desc(t_ttoken t, int tostring)
 		"Start of Cmd", "E_ALL"
 	};
 
+	return (des[get_token_index(t) * 2 + (tostring != 0)]);
+}
+
+size_t	get_token_index(t_ttoken t)
+{
+	int i;
+
 	i = 0;
 	while ((t >> i) != 0)
 		i++;
-	return (des[i * 2 + (tostring != 0)]);
+	return (i);
 }
 
 int	isttoken(char c)

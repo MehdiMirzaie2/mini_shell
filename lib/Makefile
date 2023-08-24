@@ -1,19 +1,5 @@
 NAME        := libft.a
 
-#------------------------------------------------#
-#   INGREDIENTS                                  #
-#------------------------------------------------#
-# SRC_DIR   source directory
-# SRCS      source files
-#
-# BUILD_DIR object directory
-# OBJS      object files
-# DEPS      dependency files
-#
-# CC        compiler
-# CFLAGS    compiler flags
-# CPPFLAGS  preprocessor flags
-
 SRC_DIR     := src
 SRCS        :=  ft_isalnum.c ft_isprint.c ft_memcmp.c  ft_putchar_fd.c ft_split.c \
 		ft_strlcat.c ft_strncmp.c ft_substr.c ft_atoi.c ft_isalpha.c \
@@ -37,26 +23,9 @@ CPPFLAGS    := -MMD -MP -I include
 AR          := ar
 ARFLAGS     := -r -c -s
 
-#------------------------------------------------#
-#   UTENSILS                                     #
-#------------------------------------------------#
-# RM        force remove
-# MAKEFLAGS make flags
-# DIR_DUP   duplicate directory tree
-
 RM          := rm -f
 MAKEFLAGS   += --no-print-directory
 DIR_DUP     = mkdir -p $(@D)
-
-#------------------------------------------------#
-#   RECIPES                                      #
-#------------------------------------------------#
-# all       default goal
-# $(NAME)   link .o -> library
-# %.o       compilation .c -> .o
-# clean     remove .o
-# fclean    remove .o + binary
-# re        remake default goal
 
 all: $(NAME)
 
@@ -80,10 +49,6 @@ fclean: clean
 re:
 	$(MAKE) fclean
 	$(MAKE) all
-
-#------------------------------------------------#
-#   SPEC                                         #
-#------------------------------------------------#
 
 .PHONY: clean fclean re
 .SILENT:

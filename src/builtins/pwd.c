@@ -1,32 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_mem.c                                         :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/14 11:57:01 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/08/14 12:06:03 by mmirzaie         ###   ########.fr       */
+/*   Created: 2023/08/21 11:32:01 by mmirzaie          #+#    #+#             */
+/*   Updated: 2023/08/23 16:45:46 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+#include <stdlib.h>
 
-void	free_ast(t_cmdtree *cmdtree)
+// 4096 is the maximum chars a path can be;
+
+void	ft_pwd(void)
 {
-	t_cmdtree	*reference_cmdtree;
-	t_cmd		*reference_cmd;
+	char	cwd[4096];
 
-	while (cmdtree->next != NULL)
-	{
-		reference_cmdtree = cmdtree;
-		cmdtree = cmdtree->next;
-		while (reference_cmdtree->cmd->next)
-		{
-			reference_cmd = reference_cmdtree->cmd;
-			reference_cmdtree->cmd = reference_cmd->next;
-			free(reference_cmd);
-		}
-		free(reference_cmdtree);
-	}
+	if (getcwd(cwd, 4096) == NULL)
+		perror("getcwd() error");
+    else
+		ft_putstr_fd(cwd, 1);
 }

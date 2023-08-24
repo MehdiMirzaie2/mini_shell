@@ -1,32 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_mem.c                                         :+:      :+:    :+:   */
+/*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/14 11:57:01 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/08/14 12:06:03 by mmirzaie         ###   ########.fr       */
+/*   Created: 2023/08/18 16:48:35 by mmirzaie          #+#    #+#             */
+/*   Updated: 2023/08/21 13:10:47 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	free_ast(t_cmdtree *cmdtree)
-{
-	t_cmdtree	*reference_cmdtree;
-	t_cmd		*reference_cmd;
+// sigint should end the last process, then give prompt back
+// sigquit should end minishell.
+// i suggest use the global variable to determine what to do.
 
-	while (cmdtree->next != NULL)
-	{
-		reference_cmdtree = cmdtree;
-		cmdtree = cmdtree->next;
-		while (reference_cmdtree->cmd->next)
-		{
-			reference_cmd = reference_cmdtree->cmd;
-			reference_cmdtree->cmd = reference_cmd->next;
-			free(reference_cmd);
-		}
-		free(reference_cmdtree);
-	}
+
+void handle_sigint(int sig)
+{
+    if (sig == SIGINT)
+        g_value = SIGINT;
+    else if (sig == SIGQUIT)
+        g_value = SIGQUIT;
 }

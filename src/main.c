@@ -10,6 +10,7 @@
 
 #include "libft.h"
 #include "lexer.h"
+#include "ast.h"
 
 char *rl_gets(char **line_read)
 {
@@ -35,6 +36,8 @@ char *rl_gets(char **line_read)
 }
 
 void print_tokenlst(t_token *start);
+void tast_print(t_ast *ast);
+
 int main(void)
 {
 	/* A static variable for holding the line. */
@@ -43,9 +46,13 @@ int main(void)
 	{
 		// printf("mini_shell ");
 		rl_gets(&line_read); // Pass the pointer by reference
-		if (line_read[0] == '#') // For testing purposes
+		if (line_read[0] == '#' && line_read[1] == '1') // For testing purposes
+			line_read = ft_strdup("cat << EOF > file | wc -c | tr -d " " > file");
+		if (line_read[0] == '#' && line_read[1] == '2' ) // For testing purposes
 			line_read = ft_strdup("   \techo \t\"test \'(quote)\'\" \'sq\' <less | tr -r | awk '{printf $0}' | (first (second) (third (forth)))");
-		tlst_print(tlst_create(line_read));
+		t_token *lst = tlst_create(line_read);
+		tlst_print(lst);
+		tast_print(ast_build(lst));
 		printf("%s\n", line_read);
 		// Do something with line_read, if needed
 		// Free the memory after you're done using it

@@ -9,6 +9,7 @@
 /*   Updated: 2023/08/17 13:29:49 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "lexer.h"
 
 /* Advanced a token list.
  * Advances token list `adv` by `amount` amount and ...

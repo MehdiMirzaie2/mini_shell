@@ -47,19 +47,19 @@ t_ttoken get_ttoken(char *str)
 	const char *list = "\'\"|<>";
 	const t_ttoken types[] = 
 	{
-		E_SQ, E_DQ, E_LA, E_RA,
-		E_LLA, E_RRA, E_P
+		E_TTSQ, E_TTDQ, E_TTLA, E_TTRA,
+		E_TTLLA, E_TTRRA, E_TTNCP
 	};
 	if (str == NULL || *str)
-		return (E_NA);
+		return (E_TTNA);
 	else if (str[0] == '<' && str[1] == '<')
-		return (E_LLA);
+		return (E_TTLLA);
 	else if (str[0] == '>' && str[1] == '>')
-		return (E_RRA);
+		return (E_TTRRA);
 	fnd = ft_strchr(list, str[0]);
 	if (fnd != NULL)
 		return (types[fnd - list]);
-	return (E_WD);
+	return (E_TTWD);
 }
 
 t_token *tlst_token_new(char *str, t_ttoken type, t_token *parent)
@@ -85,7 +85,7 @@ t_token *tlst_create(char *str)
 	t_token *last;
 	char c;
 
-	start = tlst_token_new(str, E_ALL, NULL);
+	start = tlst_token_new(str, E_TTNA, NULL);
 	last = start;
 	while (*str)
 	{
@@ -95,28 +95,28 @@ t_token *tlst_create(char *str)
 
 		/* TODO: Compress Logic using `get_ttoken` is `istoken` */
 		if (*str == '\'')
-			last = tlst_token_new(str++, E_SQ, last);	
+			last = tlst_token_new(str++, E_TTSQ, last);	
 		else if (*str == '\"')
-			last = tlst_token_new(str++, E_DQ, last);
+			last = tlst_token_new(str++, E_TTDQ, last);
 		else if (*str == '<')
 		{
 			if (str[1] == '<')
-				last = tlst_token_new(str++, E_LLA, last);
+				last = tlst_token_new(str++, E_TTLLA, last);
 			else
-				last = tlst_token_new(str, E_LA, last);
+				last = tlst_token_new(str, E_TTLA, last);
 		}
 		else if (*str == '>')
 		{
 			if (str[1] == '>')
-				last = tlst_token_new(str++, E_RRA, last);
+				last = tlst_token_new(str++, E_TTRRA, last);
 			else
-				last = tlst_token_new(str, E_RA, last);
+				last = tlst_token_new(str, E_TTRA, last);
 		}
 		else if (*str == '|')
-			last = tlst_token_new(str, E_P, last);
+			last = tlst_token_new(str, E_TTNCP, last);
 		else if (isascii(*str))
 		{
-			last = tlst_token_new(str, E_WD, last);
+			last = tlst_token_new(str, E_TTWD, last);
 			while (*str && !isspace(*str))
 				str++;
 		}
@@ -128,6 +128,7 @@ t_token *tlst_create(char *str)
 			str++;
 	}
 	//return (start);
+	start = start->next; // CAUSES MEMORY LEAK REMOVE TT_ALL / TT_NA
 	return (tlst_dup_pass(start));
 }
 
@@ -178,13 +179,13 @@ t_token	*tlst_dup_pass(t_token *head)
 	while (next != NULL)
 	{
 		lstr[0] = next->str[0];
-		if ((next->type & (E_GS | E_WD)) != 0)
+		if ((next->type & (E_TTGS | E_TTWD)) != 0)
 			next->str = ft_strdupi(next->str, tlst_token_dup);
 		else
 			next->str = ft_strdup(lstr);
 		if (next->str == NULL)
 			return (tlst_destroy(head));
-		else if (next->type != E_ALL)
+		else if (next->type != E_TTNA)
 			next->dup = true;
 		next = next->next;
 	}

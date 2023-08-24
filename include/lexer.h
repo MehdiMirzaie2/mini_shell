@@ -1,4 +1,16 @@
-#include <stdbool.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/23 23:34:10 by clovell           #+#    #+#             */
+/*   Updated: 2023/08/23 23:35:14 by clovell          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "standard.h"
 
 #ifndef LEXER_H
 # define LEXER_H
@@ -6,19 +18,50 @@
 typedef struct s_token t_token;
 typedef enum e_ttoken t_ttoken;
 
+/*
+ *	E_TTNA: Not applicable (no token)
+ *	E_TTDQ: Double Quote Word
+ *	E-TTSQ: Single Quote Word
+ *	E_TTLA: Left Arrow (Stdin redirect)
+ *	E_TTRA: Right Arrow (Stdout redirect)
+ *	E_TTLLA: Double Left Arrow (Heredoc redirect)
+ *	E_TTRRA: Double Right Arrorw (Stdout Append redirect)
+ *	E_WD: Word
+ *	E_TTNCP: Next command pipe (Stdout to Stdin)
+ *	E_TTNCA: Next comamnd and (Exectute next command if first success)
+ *	E_TTNCO: next command or (Execute next command if first failed)
+ *	E_TTGS: Grouped Sequence, Either Single or Double Quote.
+ *	E_TTLR: Left or Right, Either LA, RA, LLA or RRA.
+ *	E_TTWG: Word Group, Either WD or GS.
+ *	E_TTNC: Next command, Either P or OR or AND
+ *
+ *	IMPLEMENTATION NOTES:
+ *	This struct is not a bitfield/flags.
+ *
+ *	But it is using some concepts from bitfields.
+ *	The E_TTLR (redirects) are the first because we use,
+ *	pointer function array maps, having them first means that at most
+ *	the array maps will be at least 4 in size, if we move them downer further
+ *	all the elements above them will also have to exist in the array, even when
+ *	they would never be mapped.
+ */
 enum e_ttoken
 {
-	E_NA = 0,
-	E_DQ = 1,
-	E_SQ = 2,
-	E_GS = E_DQ | E_SQ,
-	E_LA = 4,
-	E_RA = 8,
-	E_LLA = 16,
-	E_RRA = 32,
-	E_WD = 64,
-	E_P = 128,
-	E_ALL = 256
+	E_TTNA = 0, 
+	E_TTLA = 0x1,
+	E_TTRA = 0x2,
+	E_TTLLA = 0x3,
+	E_TTRRA = 0x4,
+	E_TTDQ = 1 << 3,
+	E_TTSQ = 1 << 4,
+	E_TTWD = 1 << 5,
+	E_TTNCP = 1 << 6,
+	E_TTNCA = 1 << 7,
+	E_TTNCO = 1 << 8,
+	E_TTLR = E_TTLA | E_TTRA | E_TTLLA | E_TTRRA,
+	E_TTGS = E_TTDQ | E_TTSQ,
+	E_TTWG = E_TTGS | E_TTWD,
+	E_TTNC = E_TTNCO | E_TTNCP | E_TTNCA
 };
 
 /* Represents a fundamental unit of a/many command/s.

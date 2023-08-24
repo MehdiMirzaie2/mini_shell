@@ -5,6 +5,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+<<<<<<< HEAD
 # include <sys/types.h>
 # include <sys/file.h>
 # include <sys/stat.h>
@@ -18,10 +19,9 @@
 #include "libft.h"
 #include <string.h>
 typedef struct s_vars			t_vars;
-typedef struct s_cmdtree		t_cmdtree;
-typedef struct s_cmd			t_cmd;
 typedef struct s_env			t_env;
 // typedef enum e_redirect_type	t_redirect_type;
+typedef struct s_shell t_shell;
 
 // enum e_redirect_type
 // {
@@ -31,21 +31,6 @@ typedef struct s_env			t_env;
 // 	E_OR,
 // 	E_DOR
 // };
-
-struct s_cmdtree
-{
-	t_cmd				*cmd;
-	char				*redirect;
-	t_cmdtree			*next;
-};
-
-struct s_cmd
-{
-	char	*arg;
-	t_cmd	*next;
-	// char **redirections;
-};
-
 struct s_env
 {
 	char	*name;

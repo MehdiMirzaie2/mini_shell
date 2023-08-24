@@ -1,17 +1,24 @@
 NAME        := minishell
 
 LIBS        := ft
-LIBS_TARGET :=            \
-	lib/libft.a
-
-INCS        := include    \
-	lib/include
+LIBS_TARGET := lib/libft.a
+INCS        := include	\
+			   lib/include
 
 SRC_DIR     := src
 SRCS        := main.c \
 				utils/free_mem.c \
 				utils/signal_handler.c \
 				command_tree/process.c \
+				util/strlst.c \
+				util/iolst.c \
+				util/ft_strdup_extra.c \
+				lexer.c \
+				cmd.c \
+				error.c \
+				ast.c \
+				ast_builder.c \
+				token.c
 
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 
@@ -19,7 +26,7 @@ BUILD_DIR   := .build
 OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEPS        := $(OBJS:.o=.d)
 
-CC          := clang
+CC          := cc
 CFLAGS      := -Wall -Wextra -Werror
 CPPFLAGS    := $(addprefix -I,$(INCS)) -MMD -MP
 LDFLAGS     := $(addprefix -L,$(dir $(LIBS_TARGET)))
@@ -39,7 +46,7 @@ $(NAME): $(OBJS) $(LIBS_TARGET)
 $(LIBS_TARGET):
 	$(MAKE) -C $(@D)
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(DIR_DUP)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 	$(info CREATED $@)
@@ -61,5 +68,5 @@ re:
 info-%:
 	$(MAKE) --dry-run --always-make $* | grep -v "info"
 
-.PHONY: clean fclean re
+.PHONY: clean fclean re all
 .SILENT:

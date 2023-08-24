@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 12:49:13 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/08/23 11:32:21 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/08/24 14:30:05 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,17 @@
 // 	UNLOCK;
 // 	return 0;
 // }
+
+char	*env_get(t_env *our_env, char *name)
+{
+	while (our_env != NULL)
+	{
+		if (ft_strcmp(our_env->name, name) == 0)
+			return (our_env->args);
+		our_env = our_env->next;
+	}
+	return (NULL);
+}
 
 void    create_env(t_env *our_env, char **env)
 {

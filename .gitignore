@@ -3,5 +3,5 @@
 minishell
 *.swp
 *.swo
-**/.build/
+.build/
 *.a

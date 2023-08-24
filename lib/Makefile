@@ -45,11 +45,10 @@ clean:
 	$(RM) $(OBJS) $(DEPS)
 
 fclean: clean
+	echo "${BLUE}cleaned: ${CYAN} $(NAME) ${NC}"
 	$(RM) $(NAME)
 
-re:
-	$(MAKE) fclean
-	$(MAKE) all
+re: fclean all
 
-.PHONY: clean fclean re
+.PHONY: all clean fclean re
 .SILENT:

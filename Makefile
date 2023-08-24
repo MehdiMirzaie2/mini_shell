@@ -5,20 +5,21 @@ LIBS_TARGET := lib/libft.a
 INCS        := include	\
 			   lib/include
 
-SRC_DIR     := src
-SRCS        := main.c \
+SRC_DIR     :=	src
+
+SRCS        :=	main.c \
+				error.c \
 				utils/free_mem.c \
 				utils/signal_handler.c \
-				command_tree/process.c \
+				utils/create_env.c \
 				util/strlst.c \
 				util/iolst.c \
 				util/ft_strdup_extra.c \
-				lexer.c \
-				cmd.c \
-				error.c \
-				ast.c \
-				ast_builder.c \
-				token.c
+				parser/lexer.c \
+				parser/ast.c \
+				parser/cmd_builder.c \
+				parser/ast_builder.c \
+				parser/token.c
 
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 
@@ -53,20 +54,30 @@ $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 
 -include $(DEPS)
 
+
+
+
 clean:
-	for f in $(dir $(LIBS_TARGET)); do $(MAKE) -C $$f clean; done
+	for f in $(dir $(LIBS_TARGET)); do echo "${GREEN}Cleaning: ${CYAN} $$f ${NC}"; $(MAKE) -C $$f clean; done
+	echo "${BLUE}cleaned:\n${YELLOW} $(addsuffix \n,$(OBJS)) ${NC}"
 	$(RM) $(OBJS) $(DEPS)
 
 fclean: clean
 	for f in $(dir $(LIBS_TARGET)); do $(MAKE) -C $$f fclean; done
+	echo "${BLUE}cleaned: ${CYAN} $(NAME) ${NC}";
 	$(RM) $(NAME)
 
-re:
-	$(MAKE) fclean
-	$(MAKE) all
+re: fclean all
 
 info-%:
 	$(MAKE) --dry-run --always-make $* | grep -v "info"
 
 .PHONY: clean fclean re all
 .SILENT:
+
+# COLORS
+export GREEN = \033[1;32m
+export YELLOW = \033[0;33m
+export BLUE = \033[1;34m
+export CYAN = \033[1;36m
+export NC = \033[0m

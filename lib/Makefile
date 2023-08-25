@@ -32,20 +32,21 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(AR) $(ARFLAGS) $(NAME) $(OBJS)
-	$(info CREATED $(NAME))
+	$(call print_linking, $(NAME))
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(DIR_DUP)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-	$(info CREATED $@)
+	$(call print_obj,$@)
 
 -include $(DEPS)
 
 clean:
+	$(call print_clean,$(addsuffix \n,$(OBJS)))
 	$(RM) $(OBJS) $(DEPS)
 
 fclean: clean
-	echo "${BLUE}cleaned: ${CYAN} $(NAME) ${NC}"
+	$(call print_fclean, $(NAME))
 	$(RM) $(NAME)
 
 re: fclean all

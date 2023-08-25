@@ -1,3 +1,4 @@
+
 NAME        := minishell
 
 LIBS        := ft
@@ -40,9 +41,9 @@ DIR_DUP     = mkdir -p $(@D)
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBS_TARGET)
+$(NAME): $(LIBS_TARGET) $(OBJS) 
 	$(CC) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $(NAME) $(RLFLAGS)
-	$(info CREATED $(NAME))
+	$(call print_linking, $(NAME))
 
 $(LIBS_TARGET):
 	$(MAKE) -C $(@D)
@@ -50,30 +51,52 @@ $(LIBS_TARGET):
 $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(DIR_DUP)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-	$(info CREATED $@)
+	$(call print_obj,$@)
 
--include $(DEPS)
-
-
-
-
+# cleans only the project.
 clean:
-	for f in $(dir $(LIBS_TARGET)); do echo "${GREEN}Cleaning: ${CYAN} $$f ${NC}"; $(MAKE) -C $$f clean; done
-	echo "${BLUE}cleaned:\n${YELLOW} $(addsuffix \n,$(OBJS)) ${NC}"
 	$(RM) $(OBJS) $(DEPS)
+	$(call print_clean,$(addsuffix \n,$(OBJS)))
 
+#  lib clean, clean all library objects.
+lclean:
+	for f in $(dir $(LIBS_TARGET)); do echo "${GREEN}Cleaning: ${CYAN} $$f ${NC} $$"; $(MAKE) -C $$f clean; done
+
+# full clean, clean all objects and libraries and binaries
 fclean: clean
 	for f in $(dir $(LIBS_TARGET)); do $(MAKE) -C $$f fclean; done
-	echo "${BLUE}cleaned: ${CYAN} $(NAME) ${NC}";
 	$(RM) $(NAME)
+	$(call print_fclean,$(NAME))
 
 re: fclean all
 
 info-%:
 	$(MAKE) --dry-run --always-make $* | grep -v "info"
+-include $(DEPS)
 
-.PHONY: clean fclean re all
+define print_linking
+	echo "${GREEN}Linking:${BLUE} $(or $1, $$1) ${NC}"
+endef
+define print_fclean
+	echo "${BLUE}cleaned:${CYAN} $(or $1, $$1) ${NC}"
+endef
+define print_clean
+	echo "${BLUE}cleaned:\n${YELLOW} $(or $1, $$1) ${NC}"
+endef
+define print_target
+	echo "${GREEN}Compiling:${BLUE} $(or $1, $$1) ${NC}"
+endef
+define print_obj
+	echo "${BLUE}created: ${YELLOW} $(or $1, $$1)${NC}"
+endef
+.PHONY: re fclean clean lclean all
 .SILENT:
+
+export print_linking
+export print_fclean
+export print_clean
+export print_target
+export print_obj
 
 # COLORS
 export GREEN = \033[1;32m

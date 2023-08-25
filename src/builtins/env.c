@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:02 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/08/23 16:29:56 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/08/24 14:13:34 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	add_node(t_env *our_env, char *name, char *args)
 	our_env = ref;
 	ref = NULL;
 }
+
+
 
 // the following should append the path to existing paths
 // export PATH=$PATH:/place/with/the/file

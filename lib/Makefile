@@ -10,6 +10,7 @@ SRCS        :=  ft_isalnum.c ft_isprint.c ft_memcmp.c  ft_putchar_fd.c ft_split.
 		ft_putstr_fd.c  ft_strjoin.c ft_strmapi.c ft_strtrim.c ft_striteri.c \
 		ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c \
 		ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c \
+		ft_strfmt.c
 
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 
@@ -31,24 +32,24 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(AR) $(ARFLAGS) $(NAME) $(OBJS)
-	$(info CREATED $(NAME))
+	$(call print_linking, $(NAME))
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(DIR_DUP)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-	$(info CREATED $@)
+	$(call print_obj,$@)
 
 -include $(DEPS)
 
 clean:
+	$(call print_clean,$(addsuffix \n,$(OBJS)))
 	$(RM) $(OBJS) $(DEPS)
 
 fclean: clean
+	$(call print_fclean, $(NAME))
 	$(RM) $(NAME)
 
-re:
-	$(MAKE) fclean
-	$(MAKE) all
+re: fclean all
 
-.PHONY: clean fclean re
+.PHONY: all clean fclean re
 .SILENT:

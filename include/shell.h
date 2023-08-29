@@ -20,16 +20,12 @@
 typedef struct s_vars			t_vars;
 typedef struct s_env			t_env;
 typedef struct s_shell			t_shell;
-
-// typedef enum e_redirect_type	t_redirect_type;
-// enum e_redirect_type
-// {
-// 	E_PIPE,
-// 	E_AND,
-// 	E_DAND,
-// 	E_OR,
-// 	E_DOR
-// };
+typedef struct s_fd				t_fd;
+struct s_fd
+{
+	int	saved_out_in_fd;
+	int	temp_out_in_fd;	
+};
 struct s_env
 {
 	char	*name;
@@ -45,13 +41,21 @@ char	*my_strtok(char *srcString, char *delim);
 void handle_sigint(int sig);
 
 // redirections
-int redirect_input(const char *filename);
-int	redirect_output(const char *filename);
-
+int redirect_input(char *filename);
+// int	redirect_output(char *filename);
+t_fd	redirect_output(char *filename);
 // builtins
+// void	ft_echo(char *str, char *filename, int option);
+void	ft_cd(char *path, t_env **our_env);
+void	ft_env(t_env *our_env);
+void	export(t_env *our_env, char *args);
 void	ft_echo(char *str, char *filename, int option);
-void	ft_cd(const char *path);
-void	ft_pwd(void);
+void	unset(t_env *our_env, char *name);
+
+
+void add_node_to_env(t_env **our_env, char *name, char *args);
+
+// void	ft_pwd(void);
 
 /* env.c */
 /* Creates a new environement variable list */

@@ -1,19 +1,19 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include "libft.h"
-#include "util.h"
+#include "arglst.h"
 #include "error.h"
 
 
-t_strlst *strlst_add(char *str, int dup, t_strlst **head)
+t_arglst *arglst_add(char *str, int dup, t_arglst **head)
 {
-	t_strlst	*next;
-	t_strlst	*elem;
+	t_arglst	*next;
+	t_arglst	*elem;
 
 	next = *head;
-	strlst_memman(&elem, false);
+	arglst_memman(&elem, false);
 	if (elem == NULL)
-		ft_errx(E_MALLOCFAIL, E_MSG_STRLST_MALLOC, __FILE__, __LINE__);
+		ft_errx(E_MALLOCFAIL, E_MSG_ARGLST_MALLOC, __FILE__, __LINE__);
 	elem->dup = dup != 0;
 	elem->str = str;
 	if (dup)
@@ -29,17 +29,17 @@ t_strlst *strlst_add(char *str, int dup, t_strlst **head)
 	return (elem);
 }
 
-void strlst_memman(t_strlst **lst, bool destroy)
+void arglst_memman(t_arglst **lst, bool destroy)
 {
-	const t_strlst builder = {0};
-	t_strlst	*curr;
-	t_strlst	*next;
+	const t_arglst builder = {0};
+	t_arglst	*curr;
+	t_arglst	*next;
 
 	if (!destroy)
 	{
-		*lst = malloc(sizeof(t_strlst));
+		*lst = malloc(sizeof(t_arglst));
 		if (*lst == NULL)
-			ft_errx(E_MALLOCFAIL, E_MSG_STRLST_MALLOC, __FILE__, __LINE__);
+			ft_errx(E_MALLOCFAIL, E_MSG_ARGLST_MALLOC, __FILE__, __LINE__);
 		**lst = builder;
 		return ;
 	}

@@ -59,7 +59,7 @@ void	tast_printl(t_ast *ast, int level)
 		printtabs(level);
 		printf("CMD: ");
 		printf("%s\n", ast->u_node.cmd->cmd);
-		t_strlst *lst = ast->u_node.cmd->args;
+		t_arglst *lst = ast->u_node.cmd->args;
 		if (lst != NULL)
 		{
 			printtabs(level);

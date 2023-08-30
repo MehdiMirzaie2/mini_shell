@@ -31,7 +31,7 @@ void cmd_memman(t_cmd **cmd, bool destroy)
 	{
 		if (*cmd == NULL)
 			return;
-		strlst_memman(&ptr->args, true);
+		arglst_memman(&ptr->args, true);
 		iolst_memman(&ptr->heredoc, true);
 		iolst_memman(&ptr->strapp, true);
 		iolst_memman(&ptr->strin, true);
@@ -72,7 +72,7 @@ static void cmd_start(t_cmd *cmd, t_token **adv)
 		if (cmd->cmd == NULL)
 			cmd->cmd = ft_strdup(tok.str);
 		else
-			strlst_add(tok.str, 1, &cmd->args);
+			arglst_add(tok.str, 1, &cmd->args);
 		*adv = tok.next;
 	}
 }

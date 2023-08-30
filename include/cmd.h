@@ -1,4 +1,4 @@
-#include "util.h"
+#include "arglst.h"
 #include "lexer.h"
 #include "iolst.h"
 
@@ -7,7 +7,7 @@ typedef struct s_cmd t_cmd;
 struct s_cmd 
 {
 	char *cmd;
-	t_strlst *args;
+	t_arglst *args;
 
 	t_iolst *heredoc;
 	t_iolst *strin;

@@ -13,7 +13,7 @@ SRCS        :=	main.c \
 				utils/free_mem.c \
 				utils/signal_handler.c \
 				utils/create_env.c \
-				util/strlst.c \
+				util/arglst.c \
 				util/iolst.c \
 				util/ft_strdup_extra.c \
 				parser/lexer.c \

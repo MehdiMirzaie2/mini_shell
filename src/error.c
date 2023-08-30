@@ -21,7 +21,7 @@ char	*errormsg(t_errormsg error)
 	[E_MSG_ASTB_MALLOC] = "Failed to allocate ast builder, out of memory.",
 	[E_MSG_AST_MALLOC] = "Failed to allocate ast node, out of memory.",
 	[E_MSG_CMD_MALLOC] = "Failed to allocate command, out of memory.",
-	[E_MSG_STRLST_MALLOC] = "Failed to allocate string list, out of memory.",
+	[E_MSG_ARGLST_MALLOC] = "Failed to allocate arg list, out of memory.",
 	[E_MSG_IOLST_MALLOC] = "Failed to allocate io list, out of memory.",
 	[E_MSG_STRDUP_MALLOC] = "Failed to duplicate string, out of memory",
 	};

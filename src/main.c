@@ -35,8 +35,10 @@ char *rl_gets(char **line_read, char *header)
     *line_read = readline(header); // SHOULD WE FERE HEADER, Do some tests.
     // this takes care of control d, needs to free mem.
     if (!(*line_read))
+    {
+        printf("control d\n");
         exit(EXIT_SUCCESS);
-
+    }
 	/* TODO: Handle quote modes */
 
 	/* If the line has any text in it, save it on the history. */
@@ -45,8 +47,10 @@ char *rl_gets(char **line_read, char *header)
     return *line_read;
     /* Read a string, and return a pointer to it.  Returns NULL on EOF. */
 }
-void print_tokenlst(t_token *start);
-void tast_print(t_ast *ast);
+// void print_tokenlst(t_token *start);
+// void tast_print(t_ast *ast);
+
+
 
 int main(int argc, char **argv, char **env)
 {
@@ -54,6 +58,7 @@ int main(int argc, char **argv, char **env)
     t_ast		*ast;
     t_env		*our_env;
     static char *line_read  = NULL;
+    char	buff[PATH_MAX + 1];
 
 	(void)argc;
 	(void)argv;
@@ -65,8 +70,10 @@ int main(int argc, char **argv, char **env)
     signal(SIGQUIT, handle_sigint);
 	while (1)
     {
-        // printf("mini_shell ");
-        rl_gets(&line_read, ft_strfmt("%s>", env_get(our_env, "PWD"))); // Pass the pointer by reference
+        printf("%d\n", g_value);
+        if (g_value == SIGINT)
+            exit(EXIT_FAILURE);
+        rl_gets(&line_read, ft_strfmt("%s> ", getcwd(buff, PATH_MAX + 1))); // Pass the pointer by reference
         if (ft_strncmp("exit", line_read, 4) == 0)
             exit(EXIT_SUCCESS);
 		if (line_read[0] == '#' && line_read[1] == '1') // For testing purposes
@@ -75,21 +82,40 @@ int main(int argc, char **argv, char **env)
 			line_read = ft_strdup("   \techo \t\"test \'(quote)\'\" \'sq\' <less | tr -r | awk '{printf $0}' | (first (second) (third (forth)))");
         // Do something with line_read, if needed
 		t_token *lst = tlst_create(line_read);
-		tlst_print(lst);
+		// tlst_print(lst);
 		ast = ast_build(lst);
-		tast_print(ast);
+		// tast_print(ast);
 
 
-		//if (ast->type == E_ASTCMD)
-		//{
-		//    t_cmd *cmd =	ast->u_node.cmd;
+		if (ast->type == E_ASTCMD)
+		{
+		   t_cmd *cmd =	ast->u_node.cmd;
+           char *path;
+           if (ast->u_node.cmd->args == NULL)
+                path = NULL;
+            else
+               path = ast->u_node.cmd->args->str;
 		//    int inargc;
-		//    //	char **inargv = strlstarray(cmd->args, &argc);
-		//    if (strcmp(cmd->cmd, "cd") == 0)
-		//        //ft_cd(inargc, inargv, our_env);
-		//    //free_darray(inargv, argv);
-		//}
-        
+		   //	char **inargv = strlstarray(cmd->args, &argc);
+		    if (ft_strncmp(cmd->cmd, "cd", 2) == 0)
+		        ft_cd(path, &our_env);
+            else if (ft_strncmp(cmd->cmd, "env", 3) == 0)
+		        ft_env(our_env);
+            else if (ft_strncmp(cmd->cmd, "export", 6) == 0)
+		        export(our_env, path);
+            else if (ft_strncmp(cmd->cmd, "echo", 4) == 0){
+                if (ast->u_node.cmd->strout == NULL)
+                    ft_echo(path, NULL, 0);
+                else
+                    ft_echo(path, ast->u_node.cmd->strout->str, 0);
+            }
+            else if (ft_strncmp(cmd->cmd, "unset", 5) == 0)
+                unset(our_env, path);
+            else if (ft_strncmp(cmd->cmd, "pwd", 3) == 0)
+                ft_pwd();
+		   //free_darray(inargv, argv);
+		}
+
 		// take care of the signals in this part.
 
         // Free the memory after you're done using it

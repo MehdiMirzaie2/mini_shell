@@ -2,9 +2,11 @@
 NAME        := minishell
 
 LIBS        := ft
-LIBS_TARGET := lib/libft.a
+LIBS_TARGET := lib/libft.a \
+				/usr/local/Cellar/readline/8.1.2/lib/libreadline.a
 INCS        := include	\
-			   lib/include
+			   lib/include \
+			   /usr/local/Cellar/readline/8.1.2/include
 
 SRC_DIR     :=	src
 
@@ -23,7 +25,12 @@ SRCS        :=	main.c \
 				parser/debug_ast.c \
 				parser/cmd_builder.c \
 				parser/ast_builder.c \
-				parser/token.c
+				parser/token.c \
+				builtins/cd.c \
+				builtins/env.c \
+				builtins/echo.c \
+				builtins/pwd.c \
+				redirections/redirect_output.c
 
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 
@@ -32,7 +39,7 @@ OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEPS        := $(OBJS:.o=.d)
 
 CC          := cc
-CFLAGS      := -Wall -Wextra -Werror
+CFLAGS      := -Wall -Wextra -Werror -g
 CPPFLAGS    := $(addprefix -I,$(INCS)) -MMD -MP
 LDFLAGS     := $(addprefix -L,$(dir $(LIBS_TARGET)))
 LDLIBS      := $(addprefix -l,$(LIBS))
@@ -44,9 +51,10 @@ DIR_DUP     = mkdir -p $(@D)
 
 all: $(NAME)
 
-$(NAME): $(LIBS_TARGET) $(OBJS) 
+$(NAME): $(LIBS_TARGET) $(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $(NAME) $(RLFLAGS)
 	$(call print_linking, $(NAME))
+
 
 $(LIBS_TARGET):
 	$(MAKE) -C $(@D)

@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 11:32:01 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/08/23 16:45:46 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/08/29 16:55:05 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,5 @@ void	ft_pwd(void)
 		perror("getcwd() error");
     else
 		ft_putstr_fd(cwd, 1);
+	write(1, "\n", 1);
 }

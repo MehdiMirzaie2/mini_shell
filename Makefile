@@ -2,11 +2,16 @@
 NAME        := minishell
 
 LIBS        := ft
-LIBS_TARGET := lib/libft.a \
-				/usr/local/Cellar/readline/8.1.2/lib/libreadline.a
+LIBS_TARGET := lib/libft.a
+
 INCS        := include	\
-			   lib/include \
-			   /usr/local/Cellar/readline/8.1.2/include
+			   lib/include
+OS := $(shell uname)
+
+ifeq ($(OS), Darwin) # MacOS specific commands
+LIBS_TARGET += /usr/local/Cellar/readline/8.1.2/lib/libreadline.a
+INCS += /usr/local/Cellar/readline/8.1.2/include
+endif
 
 SRC_DIR     :=	src
 

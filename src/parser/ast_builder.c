@@ -1,22 +1,34 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ast_builder.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/20 16:13:12 by clovell           #+#    #+#             */
+/*   Updated: 2023/08/30 13:06:28 by clovell          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stddef.h>
 #include "ast.h"
 #include "lexer.h"
 
 /* Assumes builder->work to be allocated but empty. */
-void astb_start(t_astbuilder *builder)
+void	astb_start(t_astbuilder *builder)
 {
 	while (builder->current != NULL)
 		astb_addcmd(builder);
 }
 
-void astb_addcmd(t_astbuilder *builder)
+void	astb_addcmd(t_astbuilder *builder)
 {
 	t_ttoken		type;
 	t_astlinktype	link;
 
 	cmd_build((*builder->work)->u_node.cmd, &builder->current);
 	if (builder->current == NULL)
-		return;
+		return ;
 	type = builder->current->type;
 	if (type == E_TTNCP)
 		link = E_ASTLINKPIPE;
@@ -46,27 +58,25 @@ void astb_addcmd(t_astbuilder *builder)
  *		PIPE-
  *			CMD
  *			CMD+
-*/
-void astb_branch(t_astbuilder *builder, t_astlinktype type)
+ */
+void	astb_branch(t_astbuilder *builder, t_astlinktype type)
 {
-	t_ast *latest;
+	t_ast	*latest;
 
 	latest = *builder->work;
 	ast_memman(builder->work, E_ASTLINK, false);
 	(*builder->work)->u_node.link.first = latest;
 	(*builder->work)->u_node.link.type = type;
 	builder->work = &(*builder->work)->u_node.link.second;
-
 }
 
-
-void astbuilder_memman(t_astbuilder **astb, bool destroy)
+void	astbuilder_memman(t_astbuilder **astb, bool destroy)
 {
-	const t_astbuilder builder = {0};
+	const t_astbuilder	builder = {0};
 
 	if (!destroy)
 	{
-		*astb	= malloc(sizeof(t_astbuilder));
+		*astb = malloc(sizeof(t_astbuilder));
 		if (*astb == NULL)
 			ft_errx(E_MALLOCFAIL, E_MSG_ASTB_MALLOC, __FILE__, __LINE__);
 		**astb = builder;

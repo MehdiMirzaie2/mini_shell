@@ -13,11 +13,14 @@ SRCS        :=	main.c \
 				utils/free_mem.c \
 				utils/signal_handler.c \
 				utils/create_env.c \
-				util/arglst.c \
-				util/iolst.c \
-				util/ft_strdup_extra.c \
+				utils/arglst.c \
+				utils/iolst.c \
+				utils/ft_strdup_extra.c \
+				utils/ft_space.c \
 				parser/lexer.c \
+				parser/lexer_utils.c \
 				parser/ast.c \
+				parser/debug_ast.c \
 				parser/cmd_builder.c \
 				parser/ast_builder.c \
 				parser/token.c

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ast.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/21 13:52:47 by clovell           #+#    #+#             */
+/*   Updated: 2023/08/30 13:03:43 by clovell          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include "standard.h"
 #include "ast.h"
@@ -18,76 +30,10 @@ t_ast	*ast_build(t_token *tokens)
 	return (ast);
 }
 
-static void printtabs(unsigned int level)
-{
-	while(level--)
-	{
-		printf("    ");
-	}
-}
-
-static void	tiolst_print(t_iolst *lst, char *name, int level)
-{
-	if (lst != NULL)
-	{
-		printtabs(level);
-		printf("%s", name);
-		while (lst)
-		{
-			printf("\"%s\" ", lst->str);
-			lst = lst->next;
-		}
-		printf("\n");
-	}
-}
-
-void	tast_printl(t_ast *ast, int level)
-{
-	if (ast->type == E_ASTLINK)
-	{
-		printtabs(level);
-		printf("PIPE\n");
-		printtabs(level + 1);
-		printf("FIRST:\n");
-		tast_printl(ast->u_node.link.first, level + 2);
-		printtabs(level + 1);
-		printf("SECOND:\n");
-		tast_printl(ast->u_node.link.second, level + 2);
-	}
-	else
-	{
-		printtabs(level);
-		printf("CMD: ");
-		printf("%s\n", ast->u_node.cmd->cmd);
-		t_arglst *lst = ast->u_node.cmd->args;
-		if (lst != NULL)
-		{
-			printtabs(level);
-			printf("ARGS ");
-			while (lst)
-			{
-				printf("\"%s\" ", lst->str);
-				lst = lst->next;
-			}
-			printf("\n");
-		}
-		tiolst_print(ast->u_node.cmd->heredoc, "HEREDOC ", level);
-		tiolst_print(ast->u_node.cmd->strin, "STRIN ", level);
-		tiolst_print(ast->u_node.cmd->strout, "STROUT ", level);
-		tiolst_print(ast->u_node.cmd->strapp, "STRAPP ", level);
-	}
-}
-
-void tast_print(t_ast *ast)
-{
-	tast_printl(ast, 0);
-}
-
-
 void	ast_memman(t_ast **ast, t_asttype type, bool destroy)
 {
-	const t_ast builder = {.type = type};
-	
+	const t_ast	builder = {.type = type};
+
 	if (!destroy)
 	{
 		*ast = malloc(sizeof(t_ast));

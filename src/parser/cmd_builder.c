@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:22:01 by clovell           #+#    #+#             */
-/*   Updated: 2023/08/24 16:04:23 by clovell          ###   ########.fr       */
+/*   Updated: 2023/08/30 13:09:10 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "iolst.h"
@@ -15,10 +15,10 @@
 #include "cmd.h"
 #include "lexer.h"
 
-void cmd_memman(t_cmd **cmd, bool destroy)
+void	cmd_memman(t_cmd **cmd, bool destroy)
 {
-	t_cmd	*const ptr = (*cmd);
-	const t_cmd	builder = {0};
+	t_cmd *const	ptr = (*cmd);
+	const t_cmd		builder = {0};
 
 	if (!destroy)
 	{
@@ -30,7 +30,7 @@ void cmd_memman(t_cmd **cmd, bool destroy)
 	else
 	{
 		if (*cmd == NULL)
-			return;
+			return ;
 		arglst_memman(&ptr->args, true);
 		iolst_memman(&ptr->heredoc, true);
 		iolst_memman(&ptr->strapp, true);
@@ -39,7 +39,7 @@ void cmd_memman(t_cmd **cmd, bool destroy)
 	}
 }
 
-static void cmd_redir(t_cmd *cmd, t_token **adv)
+static void	cmd_redir(t_cmd *cmd, t_token **adv)
 {
 	const t_token	tok = (**adv);
 	t_iolst **const	targets[] = {
@@ -50,7 +50,7 @@ static void cmd_redir(t_cmd *cmd, t_token **adv)
 	};
 
 	if ((tok.type & E_TTLR) == 0)
-		return;
+		return ;
 	if (tok.next != NULL && (tok.next->type & E_TTWG) != 0)
 	{
 		iolst_add(tok.str, tok.next->str, 1, targets[tok.type]);
@@ -61,9 +61,9 @@ static void cmd_redir(t_cmd *cmd, t_token **adv)
 	//logmsg("unexpected token"); // handle more info
 }
 
-static void cmd_start(t_cmd *cmd, t_token **adv)
+static void	cmd_start(t_cmd *cmd, t_token **adv)
 {
-	const t_token tok = (**adv);
+	const t_token	tok = (**adv);
 
 	if ((tok.type & E_TTWG) == 0)
 		cmd_redir(cmd, adv);
@@ -77,15 +77,16 @@ static void cmd_start(t_cmd *cmd, t_token **adv)
 	}
 }
 
-void cmd_build(t_cmd *cmd, t_token **tokenadv)
+void	cmd_build(t_cmd *cmd, t_token **tokenadv)
 {
-	t_ttoken token;
+	t_ttoken	token;
+
 	token = (*tokenadv)->type;
 	while ((token & E_TTNC) == 0)
 	{
 		cmd_start(cmd, tokenadv);
 		if (*tokenadv == NULL)
-			break;
+			break ;
 		token = (*tokenadv)->type;
 	}
 }

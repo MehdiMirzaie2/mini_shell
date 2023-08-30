@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 00:33:50 by clovell           #+#    #+#             */
-/*   Updated: 2023/08/23 21:31:31 by clovell          ###   ########.fr       */
+/*   Updated: 2023/08/30 12:59:44 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ char	*errorname(t_error error)
 
 void	ft_errx(t_error error, t_errormsg msg, char *file, int line)
 {
-	char	*const name = errorname(error);
+	char *const	name = errorname(error);
 
 	ft_putstr_fd("Error [", STDERR_FILENO);
 	ft_putstr_fd(name, STDERR_FILENO);
-	ft_putstr_fd("] ",STDERR_FILENO);
+	ft_putstr_fd("] ", STDERR_FILENO);
 	ft_putstr_fd(errormsg(msg), STDERR_FILENO);
 	ft_putstr_fd("\nOccurred at ", STDERR_FILENO);
 	ft_putstr_fd(file, STDERR_FILENO);

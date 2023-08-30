@@ -6,12 +6,15 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 02:47:59 by clovell           #+#    #+#             */
-/*   Updated: 2023/08/22 19:02:34 by clovell          ###   ########.fr       */
+/*   Updated: 2023/08/30 14:14:27 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cmd.h"
-#include "lexer.h"
+
+#ifndef AST_H
+# define AST_H
+# include "cmd.h"
+# include "lexer.h"
 
 typedef struct s_ast		t_ast;
 typedef enum e_asttype		t_asttype;
@@ -64,6 +67,9 @@ void	astb_addcmd(t_astbuilder *builder);
 void	astb_branch(t_astbuilder *builder, t_astlinktype type);
 void	astbuilder_memman(t_astbuilder **astb, bool destroy);
 
+/* debug_ast.c */
+void	tast_print(t_ast *ast);
+
 // Should we use this struct instead to return an ast or an error?
 // struct s_astinfo
 // {
@@ -77,3 +83,4 @@ void	astbuilder_memman(t_astbuilder **astb, bool destroy);
 // 		char *error;
 // 	};
 // };
+#endif

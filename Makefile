@@ -7,10 +7,15 @@ LIBS_TARGET := lib/libft.a
 INCS        := include	\
 			   lib/include
 OS := $(shell uname)
-
+ARCH := $(shell uname -m)
 ifeq ($(OS), Darwin) # MacOS specific commands
+ifeq $((shell uname -t),arm64)
+LIBS_TARGET += /opt/homeb/opt/readline/lib/libreadline.a
+INC	+= /opt/homebrew/opt/readline/include
+else
 LIBS_TARGET += /usr/local/Cellar/readline/8.1.2/lib/libreadline.a
 INCS += /usr/local/Cellar/readline/8.1.2/include
+endif
 endif
 
 SRC_DIR     :=	src

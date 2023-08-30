@@ -8,8 +8,9 @@ INCS        := include	\
 			   lib/include
 OS := $(shell uname)
 ARCH := $(shell uname -m)
+
 ifeq ($(OS), Darwin) # MacOS specific commands
-ifeq $((shell uname -t),arm64)
+ifeq ($(ARCH),arm64)
 LIBS_TARGET += /opt/homeb/opt/readline/lib/libreadline.a
 INC	+= /opt/homebrew/opt/readline/include
 else

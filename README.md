@@ -1,5 +1,5 @@
 control c
-control d
-control \
+control d works
+control \ works
 
 

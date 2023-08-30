@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
+/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:02 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/08/29 14:51:55 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/08/29 16:00:59 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,6 @@ void	unset(t_env *our_env, char *name)
 	free(to_free);
 }
 
-// void	add_node(t_env *our_env, char *name, char *args)
-// {
-// 	t_env	*ref;
-
-// 	ref = malloc(sizeof(t_env));
-// 	ref->name = ft_strdup(name);
-// 	ref->args = ft_strdup(args);
-// 	ref->next = our_env;
-// 	our_env = ref;
-// 	ref = NULL;
-// }
-
 void add_node_to_env(t_env **our_env, char *name, char *args)
 {
     t_env *ref = malloc(sizeof(t_env));
@@ -51,7 +39,7 @@ void add_node_to_env(t_env **our_env, char *name, char *args)
         // Handle memory allocation failure
         return;
     }
-    
+
     ref->name = ft_strdup(name);
     ref->args = ft_strdup(args);
     ref->next = *our_env;
@@ -67,7 +55,7 @@ void	export(t_env *our_env, char *args)
 	t_env	*ref;
 	char **name_and_args;
 	int name_len;
-	
+
 	ref = our_env;
 	name_and_args = ft_split(args, '=');
 	name_len = ft_strlen(name_and_args[0]);

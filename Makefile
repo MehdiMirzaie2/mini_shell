@@ -2,9 +2,11 @@
 NAME        := minishell
 
 LIBS        := ft
-LIBS_TARGET := lib/libft.a
+LIBS_TARGET := lib/libft.a \
+				/usr/local/Cellar/readline/8.1.2/lib/libreadline.a
 INCS        := include	\
-			   lib/include
+			   lib/include \
+			   /usr/local/Cellar/readline/8.1.2/include
 
 SRC_DIR     :=	src
 
@@ -24,6 +26,7 @@ SRCS        :=	main.c \
 				builtins/cd.c \
 				builtins/env.c \
 				builtins/echo.c \
+				builtins/pwd.c \
 				redirections/redirect_output.c
 
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
@@ -45,9 +48,10 @@ DIR_DUP     = mkdir -p $(@D)
 
 all: $(NAME)
 
-$(NAME): $(LIBS_TARGET) $(OBJS) 
+$(NAME): $(LIBS_TARGET) $(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $(NAME) $(RLFLAGS)
 	$(call print_linking, $(NAME))
+
 
 $(LIBS_TARGET):
 	$(MAKE) -C $(@D)

@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 00:33:50 by clovell           #+#    #+#             */
-/*   Updated: 2023/08/30 12:59:44 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/01 15:33:21 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ char	*errormsg(t_errormsg error)
 	[E_MSG_ARGLST_MALLOC] = "Failed to allocate arg list, out of memory.",
 	[E_MSG_IOLST_MALLOC] = "Failed to allocate io list, out of memory.",
 	[E_MSG_STRDUP_MALLOC] = "Failed to duplicate string, out of memory",
+	[E_MSG_NULL_PARAM] = "Supplied parameter cannot be null.",
 	};
 
 	return (names[error]);
@@ -32,7 +33,8 @@ char	*errormsg(t_errormsg error)
 char	*errorname(t_error error)
 {
 	char *const	names[] = { 
-	[E_MALLOCFAIL] = "MALLOC_FAIL"
+	[E_MALLOCFAIL] = "MALLOC_FAIL",
+	[E_BADPARAM] = "BAD_PARAM"
 	};
 
 	return (names[error]);

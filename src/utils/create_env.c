@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 12:49:13 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/08/29 14:42:11 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/09/03 22:36:31 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,34 @@ char	*env_get(t_env *our_env, char *name)
 			return (our_env->args);
 		our_env = our_env->next;
 	}
-	return ("does not Exist");
+	return (NULL);
+}
+
+void	env_set(t_env *our_env, char *key, char *value)
+{
+	t_env	*next;
+
+	if (key == NULL)
+		ft_errx(E_BADPARAM, E_MSG_NULL_PARAM, __FILE__, __LINE__);
+	next = our_env;
+	while (next != NULL)
+	{
+		if (ft_strcmp(next->name, key) == 0)
+		{
+			free(next->args);
+			next->args = ft_strdup(value);
+			return ;
+		}
+		next = next->next;
+	}
+	next = our_env;
+	while (next->next != NULL)
+		next = next->next;
+	next->next = malloc(sizeof(t_env));
+	next = next->next;
+	next->name = key;
+	next->args = ft_strdup(value);
+	next->next = NULL;
 }
 
 void    create_env(t_env *our_env, char **env)

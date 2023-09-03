@@ -6,7 +6,7 @@
 /*   By: mmirzaie  <mmirzaie@student.42.fr>		    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 12:50:42 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/08/30 14:13:34 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/03 23:22:05 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,9 @@ int main(int argc, char **argv, char **env)
 		t_token *lst = tlst_create(line_read);
 		// tlst_print(lst);
 		ast = ast_build(lst);
-		// tast_print(ast);
-
+		tast_print(ast);
+		ast_expandall(ast, our_env);
+		tast_print(ast);
 
 		if (ast->type == E_ASTCMD)
 		{

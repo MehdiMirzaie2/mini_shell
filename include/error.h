@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 15:14:16 by clovell           #+#    #+#             */
-/*   Updated: 2023/08/23 21:30:55 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/03 22:35:36 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,14 @@ enum e_errormsg
 	E_MSG_CMD_MALLOC,
 	E_MSG_ARGLST_MALLOC,
 	E_MSG_STRDUP_MALLOC,
-	E_MSG_IOLST_MALLOC
+	E_MSG_IOLST_MALLOC,
+	E_MSG_NULL_PARAM,
 };
 
 enum e_error
 {
-	E_MALLOCFAIL
+	E_MALLOCFAIL,
+	E_BADPARAM,
 };
 
 char *errormsg(t_errormsg error);

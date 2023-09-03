@@ -17,6 +17,8 @@
 
 // #include "../../lib/include/libft.h"
 # include "libft.h"
+# include "ast.h"
+
 typedef struct s_vars			t_vars;
 typedef struct s_env			t_env;
 typedef struct s_shell			t_shell;
@@ -70,4 +72,28 @@ void    create_env(t_env *our_env, char **env);
  * Returns NULL if environement variable doesn't exist.
  */
 char	*env_get(t_env *our_env, char *name);
+
+/* Sets or creates a new environment variabled named 'key'
+ * to the value of 'value' (duplicated)
+ */
+void	env_set(t_env *our_env, char *key, char *value);
+
+/* expand.c */
+
+/* Expands env vars within the nodes and commands of an ast.
+ */
+void ast_expandall(t_ast *ast, t_env *env);
+
+/* Expands env vars within the name and args of a command.
+ * USEDIN: ast_expandall.
+ */
+void cmd_expand(t_cmd *cmd, t_env *env);
+
+/* Returns a new string where env vars have been expanded.
+ * Expanded string is a new string if the var was found.
+ * otherwise it returns 'str'.
+ * USEDIN: cmd_expand
+ */
+char *expand_str(char *str, t_env *env);
+
 #endif

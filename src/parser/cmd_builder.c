@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:22:01 by clovell           #+#    #+#             */
-/*   Updated: 2023/08/30 13:09:10 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/03 23:57:52 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "iolst.h"
@@ -72,7 +72,7 @@ static void	cmd_start(t_cmd *cmd, t_token **adv)
 		if (cmd->cmd == NULL)
 			cmd->cmd = ft_strdup(tok.str);
 		else
-			arglst_add(tok.str, 1, &cmd->args);
+			arglst_add(tok.str, 1, &cmd->args)->expand = (tok.type & E_TTSQ) == 0;
 		*adv = tok.next;
 	}
 }

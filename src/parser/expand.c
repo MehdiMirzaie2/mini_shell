@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 14:14:57 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/03 23:42:58 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/03 23:57:24 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "shell.h"
@@ -44,9 +44,9 @@ void cmd_expand(t_cmd *cmd, t_env *env)
 	arg = cmd->args;
 	while (arg)
 	{
-		if (arg->dup)
+		if (arg->expand && arg->dup)
 			arg->str = expand_str_replace(arg->str, env);
-		else
+		else if (arg->expand)
 			arg->str = expand_str(arg->str, env);
 		arg = arg->next;
 	}

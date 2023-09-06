@@ -6,7 +6,7 @@
 /*   By: mmirzaie  <mmirzaie@student.42.fr>		    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 12:50:42 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/03 23:22:05 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/07 02:05:57 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@ char *rl_gets(char **line_read, char *header)
         free(*line_read);
         *line_read = NULL;
     }
-
     /* Get a line from the user. */
-    *line_read = readline(header); // SHOULD WE FERE HEADER, Do some tests.
+    *line_read = readline(header); 
+	// SHOULD WE FERE HEADER, Do some tests.
+	free(header);
     // this takes care of control d, needs to free mem.
     if (!(*line_read))
     {
@@ -40,7 +41,6 @@ char *rl_gets(char **line_read, char *header)
         exit(EXIT_SUCCESS);
     }
 	/* TODO: Handle quote modes */
-
 	/* If the line has any text in it, save it on the history. */
     if (*line_read && **line_read)
         add_history(*line_read);
@@ -49,7 +49,6 @@ char *rl_gets(char **line_read, char *header)
 }
 // void print_tokenlst(t_token *start);
 // void tast_print(t_ast *ast);
-
 
 
 int main(int argc, char **argv, char **env)
@@ -75,7 +74,10 @@ int main(int argc, char **argv, char **env)
             exit(EXIT_FAILURE);
         rl_gets(&line_read, ft_strfmt("%s> ", getcwd(buff, PATH_MAX + 1))); // Pass the pointer by reference
         if (ft_strncmp("exit", line_read, 4) == 0)
+		{
+			free_env(our_env);
             exit(EXIT_SUCCESS);
+		}
 		if (line_read[0] == '#' && line_read[1] == '1') // For testing purposes
 			line_read = ft_strdup("cat << EOF > file | wc -c | tr -d " " > file");
 		if (line_read[0] == '#' && line_read[1] == '2' ) // For testing purposes
@@ -87,7 +89,6 @@ int main(int argc, char **argv, char **env)
 		tast_print(ast);
 		ast_expandall(ast, our_env);
 		tast_print(ast);
-
 		if (ast->type == E_ASTCMD)
 		{
 		   t_cmd *cmd =	ast->u_node.cmd;
@@ -116,11 +117,17 @@ int main(int argc, char **argv, char **env)
                 ft_pwd();
 		   //free_darray(inargv, argv);
 		}
-
 		// take care of the signals in this part.
-
         // Free the memory after you're done using it
+		tlst_destroy(lst);
         ast_memman(&ast, 0, true);
 	}
+	free_env(our_env);
 	return (0);
+}
+
+const char* __asan_default_options() { 
+	// REMOVE BEFORE EVAL
+	//return "detect_leaks=0";
+	return "";
 }

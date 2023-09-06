@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 12:49:13 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/03 22:36:31 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/06 22:12:44 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,26 +50,38 @@ void	env_set(t_env *our_env, char *key, char *value)
 	next->next = NULL;
 }
 
-void    create_env(t_env *our_env, char **env)
+void	create_env(t_env *our_env, char **env)
 {
 	int		i;
 	char	**name_and_args;
-	t_env	*ref;
+	char	**excess;
 
-	ref = our_env;
 	i = 0;
 	while (env[i] != NULL)
 	{
 		name_and_args = ft_split(env[i], '=');
 		our_env->name = name_and_args[0];
 		our_env->args = name_and_args[1];
+		excess = &name_and_args[2];
 		our_env->next = NULL;
 		if (env[i + 1] != NULL)
 		{
 			our_env->next = malloc(sizeof(t_env));
 			our_env = our_env->next;
 		}
-		++i;
+		while (*excess)
+			free(*(excess++));
+		free(name_and_args);
+		i++;
 	}
-	our_env = ref;
+}
+
+void	free_env(t_env *env)
+{
+	if (env == NULL)
+		return ;
+	free_env(env->next);
+	free(env->name);
+	free(env->args);
+	free(env);
 }

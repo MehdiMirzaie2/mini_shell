@@ -67,6 +67,7 @@ void add_node_to_env(t_env **our_env, char *name, char *args);
 /* env.c */
 /* Creates a new environement variable list */
 void    create_env(t_env *our_env, char **env);
+void	free_env(t_env *env);
 
 /* Return the value of an environement variable.
  * Returns NULL if environement variable doesn't exist.
@@ -95,5 +96,9 @@ void cmd_expand(t_cmd *cmd, t_env *env);
  * USEDIN: cmd_expand
  */
 char *expand_str(char *str, t_env *env);
+
+/* expand_utils.c */
+int until_expandstr_start(int c);
+int until_expandstr_end(int c);
 
 #endif

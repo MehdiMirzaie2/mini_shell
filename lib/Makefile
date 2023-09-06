@@ -28,8 +28,6 @@ RM          := rm -f
 MAKEFLAGS   += --no-print-directory
 DIR_DUP     = mkdir -p $(@D)
 
-$(info $(CFLAGS))
-
 all: $(NAME)
 
 $(NAME): $(OBJS)

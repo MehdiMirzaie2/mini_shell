@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_space.c                                         :+:      :+:    :+:   */
+/*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/30 14:19:50 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/04 21:46:36 by clovell          ###   ########.fr       */
+/*   Created: 2023/09/04 18:25:09 by clovell           #+#    #+#             */
+/*   Updated: 2023/09/07 02:07:25 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft_extra.h"
 
-int ft_isspace(int c)
+int until_expandstr_end(int c)
 {
-	int is;
-	
-	is = c == ' ' || c == '\t' || c == '\v';
-	is = is || c == '\r' || c == '\f';
-	return (is);
+	return (c != '_' && !ft_isalnum(c));
 }
 
-int	ft_isalnum(int c)
+int until_expandstr_start(int c)
 {
-	if (c <= '9' && c >= '0')
-		return (1);
-	if (c >= 'A' && c <= 'Z')
-		return (1);
-	if (c >= 'a' && c <= 'z')
-		return (1);
-	return (0);
+	return (c == '$' || c == '\0');
+}
+
+int	expandstr_split(int c)
+{
+
+	// Are we using this function?
+	return (c == '\0' || c == '$' || ft_isspace(c));
 }

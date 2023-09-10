@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 00:33:50 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/11 01:23:56 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/11 01:36:24 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ static void	ft_putbacktrace(void);
 void	ft_errx(t_error err, char *file, int line)
 {
 	ft_putstr_fd("[", STDERR_FILENO);
-	ft_putnbr_fd(line, STDERR_FILENO);
-	ft_putstr_fd("]", STDERR_FILENO);
+	ft_putnbr_fd(err, STDERR_FILENO);
+	ft_putstr_fd("] ", STDERR_FILENO);
 	ft_putstr_fd(errormsg(err), STDERR_FILENO);
-	ft_putstr_fd("(", STDERR_FILENO);
+	ft_putstr_fd(" (", STDERR_FILENO);
 	ft_putstr_fd(file, STDERR_FILENO);
 	ft_putstr_fd(":", STDERR_FILENO);
 	ft_putnbr_fd(line, STDERR_FILENO);

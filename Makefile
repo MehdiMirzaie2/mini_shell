@@ -30,6 +30,7 @@ SRCS        :=	main.c \
 				utils/iolst.c \
 				utils/ft_strdup_extra.c \
 				utils/ft_space.c \
+				utils/expand_utils.c \
 				parser/lexer.c \
 				parser/lexer_utils.c \
 				parser/ast.c \
@@ -37,6 +38,7 @@ SRCS        :=	main.c \
 				parser/cmd_builder.c \
 				parser/ast_builder.c \
 				parser/token.c \
+				parser/expand.c \
 				builtins/cd.c \
 				builtins/env.c \
 				builtins/echo.c \
@@ -50,7 +52,7 @@ OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEPS        := $(OBJS:.o=.d)
 
 CC          := cc
-CFLAGS      := -Wall -Wextra -Werror -g
+CFLAGS      := -Wall -Wextra -Werror -g3 $(DFLAGS)
 CPPFLAGS    := $(addprefix -I,$(INCS)) -MMD -MP
 LDFLAGS     := $(addprefix -L,$(dir $(LIBS_TARGET)))
 LDLIBS      := $(addprefix -l,$(LIBS))
@@ -63,17 +65,16 @@ DIR_DUP     = mkdir -p $(@D)
 all: $(NAME)
 
 $(NAME): $(LIBS_TARGET) $(OBJS)
-	$(CC) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $(NAME) $(RLFLAGS)
+	$(CC) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $(NAME) $(RLFLAGS) $(DFLAGS)
 	$(call print_linking, $(NAME))
-
 
 $(LIBS_TARGET):
 	$(MAKE) -C $(@D)
 
 $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(DIR_DUP)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-	$(call print_obj,$@)
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+	@$(call print_obj,$@)
 
 # cleans only the project.
 clean:
@@ -114,6 +115,7 @@ endef
 .PHONY: re fclean clean lclean all
 .SILENT:
 
+export DFLAGS
 export print_linking
 export print_fclean
 export print_clean

@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 23:10:17 by clovell           #+#    #+#             */
-/*   Updated: 2023/08/30 14:18:53 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/07 02:01:49 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,11 @@ t_token	*tlst_token_new(char *str, t_ttoken type, t_token *parent)
 t_token	*tlst_create(char *str)
 {
 	t_token	*start;
-	t_token	*last;
+	t_token	*tmp;
 	char	c;
 
 	start = tlst_token_new(str, E_TTNA, NULL);
-	last = start;
+	tmp = start;
 	while (*str)
 	{
 		while (isspace(*str))
@@ -73,54 +73,51 @@ t_token	*tlst_create(char *str)
 		c = *str;
 		/* TODO: Compress Logic using `get_ttoken` is `istoken` */
 		if (*str == '\'')
-			last = tlst_token_new(str++, E_TTSQ, last);	
+			tmp = tlst_token_new(str++, E_TTSQ, tmp);	
 		else if (*str == '\"')
-			last = tlst_token_new(str++, E_TTDQ, last);
+			tmp = tlst_token_new(str++, E_TTDQ, tmp);
 		else if (*str == '<')
 		{
 			if (str[1] == '<')
-				last = tlst_token_new(str++, E_TTLLA, last);
+				tmp = tlst_token_new(str++, E_TTLLA, tmp);
 			else
-				last = tlst_token_new(str, E_TTLA, last);
+				tmp = tlst_token_new(str, E_TTLA, tmp);
 		}
 		else if (*str == '>')
 		{
 			if (str[1] == '>')
-				last = tlst_token_new(str++, E_TTRRA, last);
+				tmp = tlst_token_new(str++, E_TTRRA, tmp);
 			else
-				last = tlst_token_new(str, E_TTRA, last);
+				tmp = tlst_token_new(str, E_TTRA, tmp);
 		}
 		else if (*str == '|')
-			last = tlst_token_new(str, E_TTNCP, last);
+			tmp = tlst_token_new(str, E_TTNCP, tmp);
 		else if (isascii(*str))
 		{
-			last = tlst_token_new(str, E_TTWD, last);
+			tmp = tlst_token_new(str, E_TTWD, tmp);
 			while (*str && !isspace(*str))
 				str++;
 		}
-		if (last == NULL)
+		if (tmp == NULL)
 			return (tlst_destroy(start));
 		while (*str && (c == '\'' || c == '\"') && *str != c)
 			str++;
 		if (*str == c)
 			str++;
 	}
-	//return (start);
-	start = start->next; // CAUSES MEMORY LEAK REMOVE TT_ALL / TT_NA
-	return (tlst_dup_pass(start));
+	tmp = start->next;
+	free(start);
+	return (tlst_dup_pass(tmp));
 }
 
-void	*tlst_destroy(t_token *head)
+void	*tlst_destroy(t_token *token)
 {
-	t_token *next;
-
-	next = head->next;
-	while (next != NULL)
-	{
-		if (next->dup == true)
-			free(next->str);
-		next = next->next;
-	}
+	if (token == NULL)
+		return (NULL);
+	tlst_destroy(token->next);
+	if (token->dup == true)
+		free(token->str);
+	free(token);
 	return (NULL);
 }
 
@@ -164,7 +161,3 @@ t_token	*tlst_dup_pass(t_token *head)
 }
 
 
-const char* __asan_default_options() { 
-	// REMOVE BEFORE EVAL
-	return "detect_leaks=0";
-}

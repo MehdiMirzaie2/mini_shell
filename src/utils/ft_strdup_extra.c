@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 20:15:32 by clovell           #+#    #+#             */
-/*   Updated: 2023/08/30 12:49:47 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/07 19:44:11 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char *ft_strdupct(char *src, int (*check)(int c))
 	if (src == NULL)
 		return (NULL);
 	i = 0;
-	while (check(src[i]) == 0)
+	while (src[i] && check(src[i]) == 0)
 		i++;
 	ret = malloc(sizeof(char) * (i + 1));
 	if (ret == NULL)
@@ -68,7 +68,6 @@ char *ft_strdupct(char *src, int (*check)(int c))
 	ft_strlcpy(ret, src, i + 1);
 	return (ret);
 }
-
 
 /* Creates a duplicated of 'src' where 'check' determins:
  * when the string should start.
@@ -94,7 +93,7 @@ char *ft_strdupi(char *src, int (*check)(char *src, int index))
 	i = 0;
 	if (src == NULL)
 		return (NULL);
-	while (check(src, i) != 2)
+	while (src[i] && check(src, i) != 2)
 		i++;
 	ret = malloc(sizeof(char) * (i + 1));
 	if (ret == NULL)

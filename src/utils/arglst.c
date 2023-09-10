@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:35:59 by clovell           #+#    #+#             */
-/*   Updated: 2023/08/30 12:48:36 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/10 00:23:18 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,12 @@ t_arglst *arglst_add(char *str, int dup, t_arglst **head)
 
 	next = *head;
 	arglst_memman(&elem, false);
-	if (elem == NULL)
-		ft_errx(E_MALLOCFAIL, E_MSG_ARGLST_MALLOC, __FILE__, __LINE__);
+	ft_assert(elem == NULL, E_ERR_MALLOCFAIL, __FILE__, __LINE__);
 	elem->dup = dup != 0;
 	elem->str = str;
 	if (dup)
 		elem->str = ft_strdup(str);
-	if (elem->str == NULL)
-		ft_errx(E_MALLOCFAIL, E_MSG_STRDUP_MALLOC, __FILE__, __LINE__);
+	ft_assert(elem->str == NULL, E_ERR_MALLOCFAIL, __FILE__, __LINE__);
 	while (next != NULL && next->next != NULL)
 		next = next->next;
 	if (next != NULL)
@@ -50,8 +48,7 @@ void arglst_memman(t_arglst **lst, bool destroy)
 	if (!destroy)
 	{
 		*lst = malloc(sizeof(t_arglst));
-		if (*lst == NULL)
-			ft_errx(E_MALLOCFAIL, E_MSG_ARGLST_MALLOC, __FILE__, __LINE__);
+		ft_assert(*lst == NULL, E_ERR_MALLOCFAIL, __FILE__, __LINE__);
 		**lst = builder;
 		return ;
 	}

@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:47:11 by clovell           #+#    #+#             */
-/*   Updated: 2023/08/30 12:50:32 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/10 20:03:39 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ t_iolst *iolst_add(char *redir, char *str, int dup, t_iolst **head)
 
 	next = *head;
 	iolst_memman(&elem, false);
-	if (elem == NULL)
-		ft_errx(E_MALLOCFAIL, E_MSG_IOLST_MALLOC, __FILE__, __LINE__);
+	ft_assert(elem == NULL, E_ERR_MALLOCFAIL, __FILE__, __LINE__);
 	elem->dup = dup != 0;
 	elem->redir = redir;
 	elem->str = str;
@@ -33,10 +32,8 @@ t_iolst *iolst_add(char *redir, char *str, int dup, t_iolst **head)
 		elem->str = ft_strdup(str);
 	if (dup)
 		elem->redir = ft_strdup(redir);
-	if (elem->str == NULL)
-		ft_errx(E_MALLOCFAIL, E_MSG_STRDUP_MALLOC, __FILE__, __LINE__);
-	if (elem->redir == NULL)
-		ft_errx(E_MALLOCFAIL, E_MSG_STRDUP_MALLOC, __FILE__, __LINE__);
+	ft_assert(elem->str == NULL, E_ERR_STRDUP, __FILE__, __LINE__);
+	ft_assert(elem->redir == NULL, E_ERR_STRDUP, __FILE__, __LINE__);
 	while (next != NULL && next->next != NULL)
 		next = next->next;
 	if (next != NULL)
@@ -73,8 +70,7 @@ void iolst_memman(t_iolst **lst, bool destroy)
 	if (!destroy)
 	{
 		*lst = malloc(sizeof(t_iolst));
-		if (*lst == NULL)
-			ft_errx(E_MALLOCFAIL, E_MSG_IOLST_MALLOC, __FILE__, __LINE__);
+		ft_assert(*lst == NULL, E_ERR_MALLOCFAIL, __FILE__, __LINE__);
 		**lst = builder;
 		return ;
 	}

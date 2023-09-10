@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 08:04:43 by clovell           #+#    #+#             */
-/*   Updated: 2023/08/30 14:11:41 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/11 01:20:45 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdio.h>
@@ -78,4 +78,5 @@ static void	tast_printl(t_ast *ast, int level)
 void	tast_print(t_ast *ast)
 {
 	tast_printl(ast, 0);
+	printf("\n");
 }

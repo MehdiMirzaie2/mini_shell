@@ -6,6 +6,7 @@ struct s_arglst
 {
 	char		*str;
 	bool		dup;
+	bool		expand;
 	t_arglst	*next;
 };
 

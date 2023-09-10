@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 13:52:47 by clovell           #+#    #+#             */
-/*   Updated: 2023/08/30 13:03:43 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/09 20:50:10 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ void	ast_memman(t_ast **ast, t_asttype type, bool destroy)
 	if (!destroy)
 	{
 		*ast = malloc(sizeof(t_ast));
-		if (*ast == NULL)
-			ft_errx(E_MALLOCFAIL, E_MSG_AST_MALLOC, __FILE__, __LINE__);
+		ft_assert(ast == NULL, E_ERR_MALLOCFAIL, __FILE__, __LINE__);
 		**ast = builder;
 		if (type == E_ASTCMD)
 			cmd_memman(&(*ast)->u_node.cmd, false);

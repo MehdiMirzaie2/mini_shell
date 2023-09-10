@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 00:33:50 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/01 15:33:21 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/11 01:23:56 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,43 +15,60 @@
 #include "error.h"
 #include "libft.h"
 
-char	*errormsg(t_errormsg error)
+char	*errormsg(t_error error)
 {
-	char *const	names[] = { 
-	[E_MSG_ASTB_MALLOC] = "Failed to allocate ast builder, out of memory.",
-	[E_MSG_AST_MALLOC] = "Failed to allocate ast node, out of memory.",
-	[E_MSG_CMD_MALLOC] = "Failed to allocate command, out of memory.",
-	[E_MSG_ARGLST_MALLOC] = "Failed to allocate arg list, out of memory.",
-	[E_MSG_IOLST_MALLOC] = "Failed to allocate io list, out of memory.",
-	[E_MSG_STRDUP_MALLOC] = "Failed to duplicate string, out of memory",
-	[E_MSG_NULL_PARAM] = "Supplied parameter cannot be null.",
+	char *const	message[] = { 
+	[E_ERR_BADPARAM] = "Supplied parameter not valid",
+	[E_ERR_STRDUP] = "String duplication failed, out of memory.",
+	[E_ERR_MALLOCFAIL] = "Ran out of available heap memory.",
+	[E_ERR_NULLPARAM] = "Supplied parameter cannot be null.",
 	};
 
-	return (names[error]);
+	return (message[error]);
 }
 
-char	*errorname(t_error error)
+void	ft_assert(int cond, t_error error, char *file, int line)
 {
-	char *const	names[] = { 
-	[E_MALLOCFAIL] = "MALLOC_FAIL",
-	[E_BADPARAM] = "BAD_PARAM"
-	};
-
-	return (names[error]);
+	if (cond)
+		ft_errx(error, file, line);
 }
 
-void	ft_errx(t_error error, t_errormsg msg, char *file, int line)
-{
-	char *const	name = errorname(error);
+static void	ft_putbacktrace(void);
 
-	ft_putstr_fd("Error [", STDERR_FILENO);
-	ft_putstr_fd(name, STDERR_FILENO);
-	ft_putstr_fd("] ", STDERR_FILENO);
-	ft_putstr_fd(errormsg(msg), STDERR_FILENO);
-	ft_putstr_fd("\nOccurred at ", STDERR_FILENO);
+void	ft_errx(t_error err, char *file, int line)
+{
+	ft_putstr_fd("[", STDERR_FILENO);
+	ft_putnbr_fd(line, STDERR_FILENO);
+	ft_putstr_fd("]", STDERR_FILENO);
+	ft_putstr_fd(errormsg(err), STDERR_FILENO);
+	ft_putstr_fd("(", STDERR_FILENO);
 	ft_putstr_fd(file, STDERR_FILENO);
 	ft_putstr_fd(":", STDERR_FILENO);
 	ft_putnbr_fd(line, STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-	exit(-error + -(msg >> 4));
+	ft_putstr_fd(")\n", STDERR_FILENO);
+	ft_putbacktrace();
+	exit(err);
 }
+
+// XXX FT_PUTBACKTRACE XXX
+// USE FIRST VARIANT FOR NON-EVAL PURPOSES
+// TODO COMMENT AND SWITCH TO SECOND VARIANT BEFORE EVAL
+
+//FIRST VARIANT 
+#include <execinfo.h>
+static void ft_putbacktrace(void)
+{
+ 	int nptrs;
+    void *buffer[128];
+	// XXX DEBUG FUNCTION, PLEASE USE SECOND VARIANT IN EVAL XXX
+	// XXX COMMENT THIS FUNCTION OUT WITH EXECINFO.H XXX
+    nptrs = backtrace(buffer, 128);
+	ft_putstr_fd("Backtrace: \n", STDERR_FILENO);
+    backtrace_symbols_fd(buffer, nptrs, STDOUT_FILENO);
+}
+
+// SECOND VARIANT
+//static void ft_putbacktrace(void)
+//{
+//    ft_putstr_fd("backtrace unavailable!\n", STDERR_FILENO);
+//}

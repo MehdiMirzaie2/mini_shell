@@ -98,7 +98,11 @@ void cmd_expand(t_cmd *cmd, t_env *env);
 char *expand_str(char *str, t_env *env);
 
 /* expand_utils.c */
+int until_expandstr_start(char *str, int i);
+int until_expandstr_end(char *str, int i);
+
+/* TODO: Remove?
 int until_expandstr_start(int c);
 int until_expandstr_end(int c);
-
+*/
 #endif

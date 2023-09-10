@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 12:49:13 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/06 22:12:44 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/09 20:50:43 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ void	env_set(t_env *our_env, char *key, char *value)
 {
 	t_env	*next;
 
-	if (key == NULL)
-		ft_errx(E_BADPARAM, E_MSG_NULL_PARAM, __FILE__, __LINE__);
+	ft_assert(key == NULL, E_ERR_NULLPARAM, __FILE__, __LINE__);
 	next = our_env;
 	while (next != NULL)
 	{

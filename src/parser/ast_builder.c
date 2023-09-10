@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 16:13:12 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/07 02:04:16 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/09 20:46:12 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,7 @@ void	astbuilder_memman(t_astbuilder **astb, bool destroy)
 	if (!destroy)
 	{
 		*astb = malloc(sizeof(t_astbuilder));
-		if (*astb == NULL)
-			ft_errx(E_MALLOCFAIL, E_MSG_ASTB_MALLOC, __FILE__, __LINE__);
+		ft_assert(*astb == NULL, E_ERR_MALLOCFAIL, __FILE__, __LINE__);
 		**astb = builder;
 	}
 	else

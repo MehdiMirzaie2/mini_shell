@@ -6,7 +6,7 @@
 /*   By: clovell <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 20:54:17 by clovell           #+#    #+#             */
-/*   Updated: 2023/08/24 14:00:33 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/12 01:32:31 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 #include <stddef.h>
 #include "libft.h"
 
-static void	get_append(char **format, va_list list, char **tmp)
+static void	get_append(char **format, va_list *list, char **tmp)
 {
-	char fmt;
+	char	fmt;
 
 	if (**format == '%')
 	{
@@ -25,13 +25,13 @@ static void	get_append(char **format, va_list list, char **tmp)
 		if (fmt == '%')
 			*tmp = "%";
 		else if (fmt == 'd')
-			*tmp = ft_itoa(va_arg(list, int));
+			*tmp = ft_itoa(va_arg(*list, int));
 		else if (fmt == 'l')
-			*tmp = ft_itoa(va_arg(list, long long int));
+			*tmp = ft_itoa(va_arg(*list, long long int));
 		else if (fmt == 's' || fmt == 'S')
-			*tmp = va_arg(list, char *);
+			*tmp = va_arg(*list, char *);
 		else if (fmt == 'c')
-			*tmp[0] = va_arg(list, int);
+			*tmp[0] = va_arg(*list, int);
 		(*format)++;
 	}
 	else
@@ -52,7 +52,7 @@ char	*ft_strfmt(char *fmt, ...)
 	while (*fmt)
 	{
 		append = charstr;
-		get_append(&fmt, list, &append);
+		get_append(&fmt, &list, &append);
 		old = buffer;
 		buffer = ft_strjoin(old, append);
 		free(old);

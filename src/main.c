@@ -6,7 +6,7 @@
 /*   By: mmirzaie  <mmirzaie@student.42.fr>			+#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2023/08/08 12:50:42 by mmirzaie		  #+#	#+#			 */
-/*   Updated: 2023/09/11 01:46:45 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/13 16:23:31 by clovell          ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -84,9 +84,9 @@ int main(int argc, char **argv, char **env)
 			line_read = ft_strdup("   \techo \t\"test \'(quote)\'\" \'sq\' <less | tr -r | awk '{printf $0}' | (first (second) (third (forth)))");
 		// Do something with line_read, if needed
 		t_token *lst = tlst_create(line_read);
+		tlst_print(lst);
 		ast = ast_build(lst);
 		tast_print(ast);
-		// tlst_print(lst);
 		if (ast->type == E_ASTCMD && ast->u_node.cmd && ast->u_node.cmd->cmd)
 		{
 			ast_expandall(ast, our_env);

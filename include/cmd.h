@@ -9,6 +9,8 @@ struct s_cmd
 	char *cmd;
 	t_arglst *args;
 
+	bool	has_pipe;
+	bool	has_redirect;
 	t_iolst *heredoc;
 	t_iolst *strin;
 	t_iolst *strout;

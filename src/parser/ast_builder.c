@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 16:13:12 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/09 20:46:12 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/13 16:21:37 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	astb_branch(t_astbuilder *builder, t_astlinktype type)
 	t_ast	*latest;
 
 	latest = *builder->work;
+	if (latest->type == E_ASTCMD)
+		latest->u_node.cmd->has_redirect = true;
 	ast_memman(builder->work, E_ASTLINK, false);
 	(*builder->work)->u_node.link.first = latest;
 	(*builder->work)->u_node.link.type = type;

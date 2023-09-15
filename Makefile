@@ -37,7 +37,6 @@ SRCS        :=	main.c \
 				parser/debug_ast.c \
 				parser/cmd_builder.c \
 				parser/ast_builder.c \
-				parser/token.c \
 				parser/expand.c \
 				builtins/cd.c \
 				builtins/env.c \

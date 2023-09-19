@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strfmt.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clovell <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 20:54:17 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/12 01:32:31 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/11 16:31:39 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 static void	get_append(char **format, va_list *list, char **tmp)
 {
-	char	fmt;
+	char fmt;
 
 	if (**format == '%')
 	{

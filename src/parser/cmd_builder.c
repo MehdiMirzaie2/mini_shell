@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:22:01 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/13 16:26:45 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/13 16:47:46 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "iolst.h"
+
 #include "libft.h"
 #include "standard.h"
 #include "cmd.h"
@@ -47,7 +47,7 @@ static void	cmd_redir(t_cmd *cmd, t_token **adv)
 	[E_TTRRA] = &cmd->strapp,
 	[E_TTLLA] = &cmd->heredoc
 	};
-	
+
 	cmd->has_redirect = true;
 	if ((tok.type & E_TTLR) == 0)
 		return ;

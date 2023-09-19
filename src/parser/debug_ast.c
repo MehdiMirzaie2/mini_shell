@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/25 08:04:43 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/13 16:27:07 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/11 01:20:45 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdio.h>
@@ -57,10 +57,6 @@ static void	tast_printl(t_ast *ast, int level)
 	else
 	{
 		printf("CMD %s\n", ast->u_node.cmd->cmd);
-		if (ast->u_node.cmd->has_redirect)
-			printf("+has_redirect\n");
-		if (ast->u_node.cmd->has_pipe)
-			printf("+has_pipe\n");
 		lst = ast->u_node.cmd->args;
 		if (lst != NULL)
 		{

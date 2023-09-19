@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:02 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/08/29 16:00:59 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/09/19 14:17:51 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,21 +50,37 @@ void add_node_to_env(t_env **our_env, char *name, char *args)
 // the following should append the path to existing paths
 // export PATH=$PATH:/place/with/the/file
 
-void	export(t_env *our_env, char *args)
+bool	valid_identifier(char **name_and_args, char *args)
+{
+	if (*name_and_args == NULL || ft_isdigit(*name_and_args[0])
+		|| strrchr(name_and_args[0], '-') != NULL
+		|| strrchr(name_and_args[0], '+') != NULL)
+	{
+		ft_putstr_fd("export: \'", 2);
+		ft_putstr_fd(args, 2);
+		ft_putstr_fd("\': not a valid identifier\n", 2);
+		return (false);
+	}
+	return (true);
+}
+
+void	export(t_env **our_env, char *args)
 {
 	t_env	*ref;
 	char **name_and_args;
 	int name_len;
 
-	ref = our_env;
+	ref = *our_env;
 	name_and_args = ft_split(args, '=');
-	name_len = ft_strlen(name_and_args[0]);
-	if (ft_isdigit(*name_and_args[0]))
-	{
-		ft_putstr_fd("export: not an identifier: ", 2);
-		ft_putstr_fd(name_and_args[0], 2);
+	if (!valid_identifier(name_and_args, args))
 		return ;
-	}
+	name_len = ft_strlen(name_and_args[0]);
+	// if (ft_isdigit(*name_and_args[0]))
+	// {
+	// 	ft_putstr_fd("export: not an identifier: ", 2);
+	// 	ft_putstr_fd(name_and_args[0], 2);
+	// 	return ;
+	// }
 	while (ref && ft_strncmp(ref->name, name_and_args[0], name_len) != 0)
 		ref = ref->next;
 	if (ref != NULL)
@@ -73,7 +89,7 @@ void	export(t_env *our_env, char *args)
 		ref->args = ft_strdup(name_and_args[1]);
 	}
 	else
-		add_node_to_env(&our_env, name_and_args[0], name_and_args[1]);
+		add_node_to_env(our_env, name_and_args[0], name_and_args[1]);
 	free(name_and_args[0]);
 	free(name_and_args[1]);
 }

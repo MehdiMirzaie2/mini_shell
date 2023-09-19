@@ -11,7 +11,7 @@ ARCH := $(shell uname -m)
 
 ifeq ($(OS), Darwin) # MacOS specific commands
 ifeq ($(ARCH),arm64)
-LIBS_TARGET += /opt/homeb/opt/readline/lib/libreadline.a
+LIBS_TARGET += /opt/homebrew/opt/readline/lib/libreadline.a
 INC	+= /opt/homebrew/opt/readline/include
 else
 LIBS_TARGET += /usr/local/Cellar/readline/8.1.2/lib/libreadline.a
@@ -43,7 +43,12 @@ SRCS        :=	main.c \
 				builtins/env.c \
 				builtins/echo.c \
 				builtins/pwd.c \
-				redirections/redirect_output.c
+				redirections/redirect_output.c \
+				execute/execute.c \
+				execute/execute_builtin_cmds.c \
+				execute/execute_system_cmds.c \
+				execute/get_next_node.c \
+				execute/utils.c \
 
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 
@@ -87,7 +92,7 @@ lclean:
 
 # full clean, clean all objects and libraries and binaries
 fclean: clean
-	for f in $(dir $(LIBS_TARGET)); do $(MAKE) -C $$f fclean; done
+	# for f in $(dir $(LIBS_TARGET)); do $(MAKE) -C $$f fclean; done
 	$(RM) $(NAME)
 	$(call print_fclean,$(NAME))
 

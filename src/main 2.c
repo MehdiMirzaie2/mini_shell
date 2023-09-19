@@ -27,7 +27,6 @@ char *rl_gets(char **line_read, char *header)
 	/* If the buffer has already been allocated, return the memory
 		to the free pool. */
 	// printf("%d\n", getpid());
-	// printf("%d\n", __LINE__);
 	if (*line_read)
 	{
 		free(*line_read);
@@ -40,8 +39,7 @@ char *rl_gets(char **line_read, char *header)
 	// this takes care of control d, needs to free mem.
 	if (!(*line_read))
 	{
-		delete_tempfile();
-		// printf("control d\n");
+		printf("control d\n");
 		exit(EXIT_SUCCESS);
 	}
 	/* TODO: Handle quote modes */
@@ -63,9 +61,7 @@ int main(int argc, char **argv, char **env)
 	char	buff[PATH_MAX + 1];
 	const int in = dup(STDIN_FILENO);
 	const int out = dup(STDOUT_FILENO);
-	// int	child_id;
 
-	// child_id = 0;
 	(void)argc;
 	(void)argv;
 	our_env = malloc(sizeof(t_env));
@@ -73,13 +69,11 @@ int main(int argc, char **argv, char **env)
 
 	create_env(our_env, env);
 	signal(SIGINT, handle_sigint);
-	// signal(SIGQUIT, handle_sigint);
-	signal(SIGUSR1, handle_sigint);
+	signal(SIGQUIT, handle_sigint);
 	while (1)
 	{
-		// if (g_value == SIGINT)
-		// 	exit(EXIT_FAILURE);
-		// printf("%d\n", __LINE__);
+		if (g_value == SIGINT)
+			exit(EXIT_FAILURE);
 		rl_gets(&line_read, ft_strfmt("%s> ", getcwd(buff, PATH_MAX + 1))); // Pass the pointer by reference
 		if (ft_strncmp("exit", line_read, 4) == 0)
 		{
@@ -90,10 +84,7 @@ int main(int argc, char **argv, char **env)
 		t_token *lst = tlst_create(line_read);
 		ast = ast_build(lst);
 		ast_expandall(ast, our_env);
-		line_read = NULL;
-		dup2(in, STDIN_FILENO);
-		dup2(out, STDOUT_FILENO);
-		// tast_print(ast);
+		tast_print(ast);
 		process_ast(ast, &our_env);
 		// execute_builtin_cmds(ast->u_node.cmd, &our_env);
 		// execute_system_cmds(ast->u_node.cmd, our_env);
@@ -101,7 +92,8 @@ int main(int argc, char **argv, char **env)
 		// Free the memory after you're done using it
 		tlst_destroy(lst);
 		ast_memman(&ast, 0, true);
-		
+		dup2(in, STDIN_FILENO);
+		dup2(out, STDOUT_FILENO);
 	}
 	free_env(our_env);
 	return (0);

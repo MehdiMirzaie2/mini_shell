@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arglst.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:35:59 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/10 00:23:18 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/13 15:24:12 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "libft.h"
 #include "arglst.h"
 #include "error.h"
-
 
 t_arglst *arglst_add(char *str, int dup, t_arglst **head)
 {

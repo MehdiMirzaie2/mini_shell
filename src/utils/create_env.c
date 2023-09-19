@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 12:49:13 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/09 20:50:43 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/19 16:58:30 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,25 @@ void	env_set(t_env *our_env, char *key, char *value)
 	next->next = NULL;
 }
 
+char	**split_once(char *str, int limiter)
+{
+	char	**strings;
+	// char	*limiter_pos;
+	int		limiter_pos;
+	int		len;
+	
+	len = ft_strlen(str);
+	limiter_pos = 0;
+	while (str[limiter_pos] != limiter)
+		limiter_pos++;
+	strings = malloc(sizeof(char *) * 3);
+	// limiter_pos = ft_strchr(str, limiter);
+	strings[0] = ft_substr(str, 0, limiter_pos);
+	strings[1] = ft_substr(str, limiter_pos + 1, len);
+	strings[2] = NULL;	
+	return (strings);
+}
+
 void	create_env(t_env *our_env, char **env)
 {
 	int		i;
@@ -58,7 +77,8 @@ void	create_env(t_env *our_env, char **env)
 	i = 0;
 	while (env[i] != NULL)
 	{
-		name_and_args = ft_split(env[i], '=');
+		name_and_args = split_once(env[i], '=');
+		// name_and_args = ft_split(env[i], '=');
 		our_env->name = name_and_args[0];
 		our_env->args = name_and_args[1];
 		excess = &name_and_args[2];

@@ -6,17 +6,13 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:07:14 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/19 18:17:40 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/09/19 21:51:21 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 #include "shell.h"
 #include <stdio.h> // must delete later
-/*
-currently not taking care of commands that have their paths included in the
-input.
-*/
 
 void	terminate(int sig)
 {
@@ -71,6 +67,70 @@ void	handle_heredoc(t_ast *ast)
 		perror("unlink");
 }
 
+t_iolst	*first_re(t_ast *ast)
+{
+	if (ast->u_node.cmd->heredoc != NULL)
+		return ast->u_node.cmd->heredoc;
+	if (ast->u_node.cmd->strapp != NULL)
+		return ast->u_node.cmd->strapp;
+	if (ast->u_node.cmd->strin != NULL)
+		return ast->u_node.cmd->strin;
+	if (ast->u_node.cmd->strout != NULL)
+		return ast->u_node.cmd->strout;
+	return (NULL);
+}
+
+// int	open_file(t_ast *ast, int pipe1[2], int num_cmds, int i)
+// {
+// 	int	file_fd;
+// 	t_iolst	*ref_redirects;
+
+// 	ref_redirects = first_re(ast);
+// 	file_fd = -1;
+// 	while (ref_redirects)
+// 	{
+// 		// if (ast->u_node.cmd->heredoc != NULL)
+// 		// 	handle_heredoc(ast);
+// 		if (ft_strncmp(ref_redirects->redir, "<", 1) == 0)
+// 		{
+// 			file_fd = open(ref_redirects->str, O_RDONLY);
+// 			if (redirect(file_fd, STDIN_FILENO) < 0)
+// 			{
+// 				ft_putstr_fd("no such file or director\n", 2);
+// 				exit(EXIT_FAILURE);
+// 			}
+// 		}
+// 		if (ft_strncmp(ref_redirects->redir, ">", 1) == 0 || ft_strncmp(ref_redirects->redir, ">>", 2) == 0)
+// 		{
+// 			if (ft_strncmp(ref_redirects->redir, ">", 1) == 0)
+// 				file_fd = open(ref_redirects->str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+// 			else
+// 				file_fd = open(ref_redirects->str, O_WRONLY | O_CREAT | O_APPEND, 0644);
+// 			if (file_fd < 0)
+// 				ft_putstr_fd("could not open outfile\n", 2);
+// 			redirect(file_fd, STDOUT_FILENO);
+// 				// ast_ref = ast_ref->next;
+// 			close(pipe1[1]);
+// 		}
+// 		else
+// 		{
+// 			if (i == num_cmds -1)
+// 				file_fd = 0;
+// 			else
+// 			{
+// 				if (dup2(pipe1[1], STDOUT_FILENO) < 0)
+// 					perror("could not dup pipe1[1]\n");
+// 				else
+// 					close(pipe1[1]);
+// 			}
+// 			file_fd = 0;
+// 		}
+// 		ref_redirects = ref_redirects->next;
+// 	}
+// 	return (file_fd);
+// }
+
+
 int	open_file(t_ast *ast, int pipe1[2], int num_cmds, int i)
 {
 	int	file_fd;
@@ -97,18 +157,22 @@ int	open_file(t_ast *ast, int pipe1[2], int num_cmds, int i)
 			// ast_ref = ast_ref->u_node.cmd->strin->next;
 		}
 	}
-	if (ast->u_node.cmd->strout != NULL)
+	if (ast->u_node.cmd->strout != NULL || ast->u_node.cmd->strapp != NULL)
 	{
 		ast_ref = ast->u_node.cmd->strout;
+		if (ast->u_node.cmd->strapp != NULL)
+			ast_ref = ast->u_node.cmd->strapp;
 		while (ast_ref)
 		{
-			file_fd = open(ast->u_node.cmd->strout->str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (ast->u_node.cmd->strout != NULL)
+				file_fd = open(ast->u_node.cmd->strout->str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			else
+				file_fd = open(ast->u_node.cmd->strapp->str, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (file_fd < 0)
 				ft_putstr_fd("could not open outfile\n", 2);
 			redirect(file_fd, STDOUT_FILENO);
 			ast_ref = ast_ref->next;
 		}
-		
 		close(pipe1[1]);
 	}
 	else
@@ -233,4 +297,3 @@ int	process_ast(t_ast *ast, t_env **our_env)
 	dup2(in, STDIN_FILENO);
 	return (child_id);
 }
-// <infile sort | uniq -c | sort -r | head -3 > outfile

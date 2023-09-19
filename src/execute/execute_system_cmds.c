@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:33:30 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/09/16 10:25:45 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/09/19 21:50:31 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,16 +86,17 @@ char	*cmd_path(char **splitted_paths, char *cmd)
 
 void	execute_system_cmds(t_cmd *cmd, t_env *env)
 {
-	char	**cmd_args_joined;
-	char	*cmd_plus_path;
-	char	**paths_splitted;
-	extern char** environ;
+	char		**cmd_args_joined;
+	char		*cmd_plus_path;
+	char		**paths_splitted;
+	extern char	**environ;
 
 	cmd_args_joined = join_cmd(cmd);
 	if (ft_strchr(cmd->cmd, '/'))
 	{
 		cmd_plus_path = cmd->cmd;
-		cmd->cmd = ft_substr(cmd->cmd, ((ft_strrchr(cmd->cmd, '/') + 1) - cmd->cmd), ft_strlen(cmd->cmd));
+		cmd->cmd = ft_substr(cmd->cmd, ((ft_strrchr(cmd->cmd, '/') + 1)
+					- cmd->cmd), ft_strlen(cmd->cmd));
 		cmd_args_joined = join_cmd(cmd);
 	}
 	else
@@ -103,14 +104,9 @@ void	execute_system_cmds(t_cmd *cmd, t_env *env)
 		paths_splitted = ft_split(env_get(env, "PATH"), ':');
 		cmd_plus_path = cmd_path(paths_splitted, cmd->cmd);
 	}
-	// FILE *fd = fopen("outfile", "w");
-	// fprintf(fd, "%s\t%s\n", cmd_plus_path, cmd_args_joined[1]);
-	// dup2(STDERR_FILENO, STDOUT_FILENO);
-	// close(STDERR_FILENO);
 	if (execve(cmd_plus_path, cmd_args_joined, environ) < 0)
 	{
 		ft_putstr_fd("failed at execve\n", 2);
-		// printf("failed at execve\n");
 		exit(EXIT_FAILURE);
 	}
 }

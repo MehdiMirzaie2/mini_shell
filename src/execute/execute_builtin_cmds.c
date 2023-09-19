@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:43:28 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/16 11:33:12 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/09/19 21:05:43 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,6 @@ void	execute_builtin_cmds(t_cmd *cmd_struct, t_env **our_env)
 		ft_env(*our_env);
 	else if (ft_strncmp(cmd_struct->cmd, "export", 6) == 0)
 		export(our_env, cmd_struct->args->str);
-	// else if (ft_strncmp(cmd_struct->cmd, "echo", 4) == 0)
-	// {
-	// 	if (cmd_struct->strout == NULL)
-	// 		ft_echo(cmd_struct->args->str, NULL, 0);
-	// 	else
-	// 		ft_echo(cmd_struct->args->str, cmd_struct->strout->str, 0);
-	// }
 	else if (ft_strncmp(cmd_struct->cmd, "echo", 4) == 0)
 	{
 		if (cmd_struct->strout == NULL)

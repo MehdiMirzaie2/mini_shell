@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 13:41:38 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/09/16 10:34:50 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/09/19 21:05:59 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,6 @@ int	redirect(int from, int to)
 		return (-1);
 	return (0);
 }
-
-// int	re_input(int from, int to)
-// {
-// 	if (dup2(from, to) == -1)
-// 		return (-1);
-// 	if (close(from) == -1)
-// 		return (-1);
-// 	return (0);
-// }
-
-// int	re_output(int from, int to)
-// {
-// 	if (dup2(from, to) == -1)
-// 		return (-1);
-// 	if (close(from) == -1)
-// 		return (-1);
-// 	return (0);
-// }
 
 int	get_num_cmd(t_ast *ast)
 {

@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 23:34:10 by clovell           #+#    #+#             */
-/*   Updated: 2023/08/23 23:35:14 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/16 02:53:50 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,37 @@ struct s_token
 	t_token		*next;
 };
 
+/* token.c */
+
+
+
+/* token_debug.c */
 size_t	get_token_index(t_ttoken t);
 char	*get_token_desc(t_ttoken t, int tostring);
+void	tlst_print(t_token *start);
+
+/* lexer.c */
 void	*tlst_destroy(t_token *token);
 t_token	*tlst_dup_pass(t_token *head);
 t_token	*tlst_token_new(char *str, t_ttoken type, t_token *parent);
 t_token	*tlst_create(char *str);
-void	tlst_print(t_token *start);
 
-int		ft_isspace(int c);
+/* lexer_utils.c */
+/* Returns true if the lexer should increment the string.
+ * Such as when beginning a quoted sequence or 
+ * there are 2 char wide operators (<< >> && || etc)
+ */
+bool		istok_advancable(t_ttoken tok);
 
+/* Returns the ttoken associated with the 
+ * first symbols sequence of a string 
+ */
+t_ttoken	get_ttoken(char *str);
+
+/* Advances the string used by the lexer in certain ways:
+ * For a quoted sequence it will advance until the end of a quoted sequence.
+ * Otherwise it will advanced till the end of the current word.
+ * (ie First occurance of `isspace`)
+ */
+char	*tokstr_advance(char *str, char c, bool quoted);
 #endif

@@ -6,13 +6,14 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:07:14 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/20 13:53:50 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/09/20 14:21:51 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 #include "shell.h"
 #include <stdio.h> // must delete later
+#include <sys/wait.h>
 
 void	terminate(int sig)
 {

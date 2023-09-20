@@ -15,17 +15,13 @@
 # include <limits.h>
 # include <string.h>
 
-// #include "../../lib/include/libft.h"
 # include "libft.h"
 # include "ast.h"
+# include "builtins.h"
 
 #define IN dup(STDIN_FILENO)
 
-
-// # include "execute.h"
-
 typedef struct s_vars			t_vars;
-typedef struct s_env			t_env;
 typedef struct s_shell			t_shell;
 typedef struct s_fd				t_fd;
 
@@ -33,12 +29,6 @@ struct s_fd
 {
 	int	saved_out_in_fd;
 	int	temp_out_in_fd;
-};
-struct s_env
-{
-	char	*name;
-	char	*args;
-	t_env	*next;
 };
 
 extern int	g_value;
@@ -57,13 +47,6 @@ void handle_sigint(int sig);
 int redirect_input(char *filename);
 // int	redirect_output(char *filename);
 t_fd	redirect_output(char *filename);
-// builtins
-void	ft_cd(char *path, t_env **our_env);
-void	ft_env(t_env *our_env);
-void	export(t_env **our_env, char *args);
-void	ft_echo(t_arglst *args, char *filename);
-void	unset(t_env *our_env, char *name);
-void	ft_pwd(void);
 
 /*
 Deletes /tmp/mytempfileXXXXXX which was created for heredoc

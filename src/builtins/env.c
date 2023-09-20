@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
+/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:02 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/19 21:54:06 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/09/20 12:45:25 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ bool	valid_identifier(char **name_and_args, char *args)
 
 // the following should append the path to existing paths
 // export PATH=$PATH:/place/with/the/file
-void	export(t_env **our_env, char *args)
+void	ft_export(t_env **our_env, char *args)
 {
 	t_env	*ref;
 	char	**name_and_args;

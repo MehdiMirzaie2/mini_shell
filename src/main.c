@@ -63,6 +63,7 @@ int main(int argc, char **argv, char **env)
 	char	buff[PATH_MAX + 1];
 	const int in = dup(STDIN_FILENO);
 	const int out = dup(STDOUT_FILENO);
+	static int			exit_status;
 	// int	child_id;
 
 	// child_id = 0;
@@ -81,11 +82,11 @@ int main(int argc, char **argv, char **env)
 		// 	exit(EXIT_FAILURE);
 		// printf("%d\n", __LINE__);
 		rl_gets(&line_read, ft_strfmt("%s> ", getcwd(buff, PATH_MAX + 1))); // Pass the pointer by reference
-		if (ft_strncmp("exit", line_read, 4) == 0)
-		{
-			free_env(our_env);
-			exit(EXIT_SUCCESS);
-		}
+		// if (ft_strncmp("exit", line_read, 4) == 0)
+		// {
+		// 	free_env(our_env);
+		// 	exit(EXIT_SUCCESS);
+		// }
 		// Do something with line_read, if needed
 		t_token *lst = tlst_create(line_read);
 		ast = ast_build(lst);
@@ -94,14 +95,14 @@ int main(int argc, char **argv, char **env)
 		dup2(in, STDIN_FILENO);
 		dup2(out, STDOUT_FILENO);
 		// tast_print(ast);
-		process_ast(ast, &our_env);
+		process_ast(ast, &our_env, &exit_status);
 		// execute_builtin_cmds(ast->u_node.cmd, &our_env);
 		// execute_system_cmds(ast->u_node.cmd, our_env);
 
 		// Free the memory after you're done using it
 		tlst_destroy(lst);
 		ast_memman(&ast, 0, true);
-		
+
 	}
 	free_env(our_env);
 	return (0);

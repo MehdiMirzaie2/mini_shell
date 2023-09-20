@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
+/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 13:41:38 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/09/19 21:05:59 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/09/20 12:14:56 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ bool	is_builtin(char	*cmd)
 	if (!ft_strncmp(cmd, "cd", 2) || !ft_strncmp(cmd, "env", 3)
 		|| !ft_strncmp(cmd, "echo", 4) || !ft_strncmp(cmd, "pwd", 3)
 		|| !ft_strncmp(cmd, "$?", 2) || !ft_strncmp(cmd, "export", 6)
-		|| !ft_strncmp(cmd, "unset", 5))
+		|| !ft_strncmp(cmd, "unset", 5) || !ft_strncmp(cmd, "exit", 4))
 		return (true);
 	return (false);
 }
@@ -39,6 +39,19 @@ int	get_num_cmd(t_ast *ast)
 	while (ast)
 	{
 		ast = ast->u_node.link.second;
+		num++;
+	}
+	return (num);
+}
+
+int	get_num_args(t_cmd *cmd)
+{
+	int	num;
+
+	num = 0;
+	while (cmd->args)
+	{
+		cmd->args = cmd->args->next;
 		num++;
 	}
 	return (num);

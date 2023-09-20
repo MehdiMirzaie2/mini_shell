@@ -43,6 +43,7 @@ SRCS        :=	main.c \
 				builtins/env.c \
 				builtins/echo.c \
 				builtins/pwd.c \
+				builtins/exit.c \
 				redirections/redirect_output.c \
 				execute/execute.c \
 				execute/execute_builtin_cmds.c \

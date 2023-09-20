@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
+/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:07:14 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/19 21:51:21 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/09/20 13:53:50 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,27 +191,28 @@ int	open_file(t_ast *ast, int pipe1[2], int num_cmds, int i)
 	return (file_fd);
 }
 
-void	execute(t_ast *ast_node, t_env **our_env)
+void	execute(t_ast *ast_node, t_env **our_env, int *exit_status)
 {
 	if (is_builtin(ast_node->u_node.cmd->cmd))
-		execute_builtin_cmds(ast_node->u_node.cmd, our_env);
+		execute_builtin_cmds(ast_node->u_node.cmd, our_env, exit_status);
 	else
 		execute_system_cmds(ast_node->u_node.cmd, *our_env);
 }
 
-void	one_command(t_ast *ast, t_env **our_env)
+void	one_command(t_ast *ast, t_env **our_env, int *exit_status)
 {
 	if (is_builtin(ast->u_node.cmd->cmd))
-		execute_builtin_cmds(ast->u_node.cmd, our_env);
-	else
-	{
-		if (fork() == 0) //add error checks
-			execute_system_cmds(ast->u_node.cmd, *our_env);
-		wait(NULL);
-	}
+		execute_builtin_cmds(ast->u_node.cmd, our_env, exit_status);
+	// else
+	// {
+	// 	if (fork() == 0) //add error checks
+	// 		execute_system_cmds(ast->u_node.cmd, *our_env);
+	// 	wait(NULL);
+	// }
 }
 
-int	process_ast(t_ast *ast, t_env **our_env)
+// int	process_ast(t_ast *ast, t_env **our_env)
+int		process_ast(t_ast *ast, t_env **our_env, int *exit_status)
 {
 	t_ast	*next_ast_node;
 	int		pipe1[2];
@@ -227,7 +228,7 @@ int	process_ast(t_ast *ast, t_env **our_env)
 
 	if (ast->type == E_ASTCMD && ast->u_node.cmd->heredoc == NULL
 		&& is_builtin(ast->u_node.cmd->cmd))
-		one_command(ast, our_env);
+		one_command(ast, our_env, exit_status);
 	else
 	{
 		num_cmds = get_num_cmd(ast);
@@ -251,7 +252,7 @@ int	process_ast(t_ast *ast, t_env **our_env)
 					printf("errro %d %d\n", file_fd, __LINE__);
 					exit(EXIT_FAILURE);
 				}
-				execute(next_ast_node, our_env);
+				execute(next_ast_node, our_env, exit_status);
 				exit(EXIT_SUCCESS);
 			}
 			// command 2
@@ -276,14 +277,10 @@ int	process_ast(t_ast *ast, t_env **our_env)
 						printf("errro %d %d\n", file_fd, __LINE__);
 						exit(EXIT_FAILURE);
 					}
-					execute(next_ast_node, our_env);
-					exit(EXIT_SUCCESS);
+					execute(next_ast_node, our_env, exit_status);
+					// exit(EXIT_SUCCESS);
 				}
-
 			}
-			// wait(&status); // wait for child
-			// if (status == 130)
-			// 	continue;
 			if (dup2(pipe1[0], STDIN_FILENO) < 0)
 				perror("dup to pipe1[0] error\n");
 			close(pipe1[0]);
@@ -292,7 +289,12 @@ int	process_ast(t_ast *ast, t_env **our_env)
 		}
 		i = 0;
 		while (i++ < num_cmds)
-			wait(NULL);
+		{
+			wait(exit_status);
+			printf("%d\n", *exit_status);
+			// if (*exit_status != 0)
+			// 	break ;
+		}
 	}
 	dup2(in, STDIN_FILENO);
 	return (child_id);

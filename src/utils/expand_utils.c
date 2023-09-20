@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 18:25:09 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/10 20:25:04 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/20 15:20:26 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft_extra.h"
@@ -14,7 +14,7 @@
 
 static int	isenvstr(int c)
 {
-	return (c == '_' || ft_isalnum(c));
+	return (c == '_' || ft_isalnum(c) || c == '?');
 }
 
 int until_expandstr_end(char *str, int i)

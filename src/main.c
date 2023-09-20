@@ -6,7 +6,7 @@
 /*   By: mmirzaie  <mmirzaie@student.42.fr>			+#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2023/08/08 12:50:42 by mmirzaie		  #+#	#+#			 */
-/*   Updated: 2023/09/11 01:46:45 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/20 15:21:45 by clovell          ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -94,8 +94,10 @@ int main(int argc, char **argv, char **env)
 		line_read = NULL;
 		dup2(in, STDIN_FILENO);
 		dup2(out, STDOUT_FILENO);
-		// tast_print(ast);
+		tlst_print(lst);
+		tast_print(ast);
 		process_ast(ast, &our_env, &exit_status);
+		env_set(our_env, "?", ft_itoa(WEXITSTATUS(exit_status)));
 		// execute_builtin_cmds(ast->u_node.cmd, &our_env);
 		// execute_system_cmds(ast->u_node.cmd, our_env);
 

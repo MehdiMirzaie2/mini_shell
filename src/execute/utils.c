@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 13:41:38 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/09/20 12:14:56 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/09/20 15:12:23 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,16 @@ int	get_num_cmd(t_ast *ast)
 int	get_num_args(t_cmd *cmd)
 {
 	int	num;
+	t_arglst	*ref_args;
+	// t_cmd	*ref_cmd;
 
+	ref_args = cmd->args;
 	num = 0;
-	while (cmd->args)
+	while (ref_args)
 	{
-		cmd->args = cmd->args->next;
+		ref_args = ref_args->next;
 		num++;
 	}
+	// ref_cmd = cmd;
 	return (num);
 }

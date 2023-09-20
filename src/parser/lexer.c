@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 23:10:17 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/16 02:54:49 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/20 14:44:10 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ t_token	*tlst_create(char *str)
 	{
 		while (isspace(*str))
 			str++;
+		if (*str == '\0')
+			break ;
 		c = *str;
 		token = get_ttoken(str);
 		tmp = tlst_token_new(str, token, tmp);

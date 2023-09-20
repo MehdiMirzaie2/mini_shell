@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:22:01 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/13 16:47:46 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/09/20 14:18:51 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,17 @@ static void	cmd_redir(t_cmd *cmd, t_token **adv)
 
 static void	cmd_start(t_cmd *cmd, t_token **adv)
 {
-	const t_token	tok = (**adv);
+	const t_token	tk = (**adv);
 
-	if ((tok.type & E_TTWG) == 0)
+	if ((tk.type & E_TTWG) == 0)
 		cmd_redir(cmd, adv);
 	else
 	{
 		if (cmd->cmd == NULL)
-			cmd->cmd = ft_strdup(tok.str);
+			cmd->cmd = ft_strdup(tk.str);
 		else
-			arglst_add(tok.str, 1, &cmd->args)->expand = (tok.type & E_TTSQ) == 0;
-		*adv = tok.next;
+			arglst_add(tk.str, 1, &cmd->args)->expand = (tk.type & E_TTSQ) == 0;
+		*adv = tk.next;
 	}
 }
 

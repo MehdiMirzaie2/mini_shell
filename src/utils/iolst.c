@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:47:11 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/11 10:12:34 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/09/20 14:57:13 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "error.h"
 
 
-t_iolst *iolst_add(char *redir, char *str, int dup, t_iolst **head)
+t_iolst *iolst_add(t_ttoken tok, char *str, int dup, t_iolst **head)
 {
 	t_iolst	*next;
 	t_iolst	*elem;
@@ -26,14 +26,11 @@ t_iolst *iolst_add(char *redir, char *str, int dup, t_iolst **head)
 	iolst_memman(&elem, false);
 	ft_assert(elem == NULL, E_ERR_MALLOCFAIL, __FILE__, __LINE__);
 	elem->dup = dup != 0;
-	elem->redir = redir;
+	elem->type = tok;
 	elem->str = str;
 	if (dup)
 		elem->str = ft_strdup(str);
-	if (dup)
-		elem->redir = ft_strdup(redir);
 	ft_assert(elem->str == NULL, E_ERR_STRDUP, __FILE__, __LINE__);
-	ft_assert(elem->redir == NULL, E_ERR_STRDUP, __FILE__, __LINE__);
 	while (next != NULL && next->next != NULL)
 		next = next->next;
 	if (next != NULL)
@@ -54,8 +51,6 @@ static void	iolst_destroy(t_iolst **lst)
 		next = curr->next;
 		if (curr->dup != 0)
 			free(curr->str);
-		if (curr->dup != 0)
-			free(curr->redir);
 		curr->str = NULL;
 		free(curr);
 		curr = next;

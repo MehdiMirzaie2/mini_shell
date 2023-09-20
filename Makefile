@@ -33,6 +33,7 @@ SRCS        :=	main.c \
 				utils/expand_utils.c \
 				parser/lexer.c \
 				parser/lexer_utils.c \
+				parser/debug_token.c \
 				parser/ast.c \
 				parser/debug_ast.c \
 				parser/cmd_builder.c \

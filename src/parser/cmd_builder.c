@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:22:01 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/20 14:18:51 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/20 14:57:38 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	cmd_redir(t_cmd *cmd, t_token **adv)
 		return ;
 	if (tok.next != NULL && (tok.next->type & E_TTWG) != 0)
 	{
-		iolst_add(tok.str, tok.next->str, 1, targets[tok.type]);
+		iolst_add(tok.type, tok.next->str, 1, targets[tok.type]);
 		*adv = (*adv)->next->next;
 		return ;
 	}

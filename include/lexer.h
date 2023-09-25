@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 23:34:10 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/16 02:53:50 by clovell          ###   ########.fr       */
+/*   Updated: 2023/09/20 17:46:40 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef enum e_ttoken t_ttoken;
  */
 enum e_ttoken
 {
-	E_TTNA = 0, 
+	E_TTNA = 0,
 	E_TTLA = 0x1,
 	E_TTRA = 0x2,
 	E_TTLLA = 0x3,

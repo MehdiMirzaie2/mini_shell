@@ -6,14 +6,14 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:15:27 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/19 21:48:54 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/09/25 18:14:22 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
 #include "shell.h"
 
-t_ast	*get_next_node(t_ast *ast, bool reset)
+t_ast	*get_next_node(t_ast *ast, int num_cmds)
 {
 	static int		go_right = 0;
 	static bool		checked_left = false;
@@ -37,7 +37,7 @@ t_ast	*get_next_node(t_ast *ast, bool reset)
 		go_right++;
 		checked_left = true;
 	}
-	if (reset)
+	if (num_cmds == 1)
 		return (go_right = 0, checked_left = false, next_node);
 	return (next_node);
 }

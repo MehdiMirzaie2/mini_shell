@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 11:34:11 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/20 15:13:57 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/09/20 16:11:13 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,3 @@ void	exiting(int	*value, t_cmd *cmd)
 	exit(*value);
 }
 
-void	put_exitstatus(int value)
-{
-	printf("command not found: %d\n", value);
-}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:02 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/20 12:45:25 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/09/20 17:04:03 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	unset(t_env *our_env, char *name)
 	t_env	*to_free;
 
 	ref = our_env;
+	prev = ref;
 	while (ft_strcmp(ref->name, name) != 0)
 	{
 		prev = ref;

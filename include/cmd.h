@@ -14,22 +14,12 @@ struct s_cmd
 
 	bool	has_pipe;
 	bool	has_redirect;
+	t_iolst *redirects;
 	t_iolst *heredoc;
 	t_iolst *strin;
 	t_iolst *strout;
 	t_iolst *strapp;
 };
-
-
-// struct s_cmd
-// {
-// 	char *cmd;
-// 	t_arglst *args;
-
-// 	bool	has_pipe;
-// 	bool	has_redirect;
-// 	t_iolst	*redirects;
-// };
 
 void cmd_memman(t_cmd	**cmd, bool destroy);
 void cmd_build(t_cmd *cmd, t_token **token);

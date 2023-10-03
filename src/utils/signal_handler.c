@@ -6,10 +6,12 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 16:48:35 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/20 14:20:43 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/03 15:44:37 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include <sys/wait.h>
+// #include <readline/readline.h>
 #include "shell.h"
 
 void    delete_tempfile(void)
@@ -43,7 +45,7 @@ void handle_sigint(int sig)
             wait(NULL);
             dup2(STDIN_FILENO, IN);
             write(2, "\n", 1);
-           //rl_replace_line("", 0);
+            // rl_replace_line("", 0);
             rl_on_new_line();
             rl_redisplay();
         }
@@ -54,4 +56,6 @@ void handle_sigint(int sig)
             exit(130);
         }
     }
+    if (sig == SIGQUIT)
+        return ;
 }

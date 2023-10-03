@@ -18,6 +18,7 @@
 # include "libft.h"
 # include "ast.h"
 # include "builtins.h"
+# include "utils.h"
 
 #define IN dup(STDIN_FILENO)
 

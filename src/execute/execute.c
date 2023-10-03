@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:07:14 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/25 20:47:42 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/03 22:00:18 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,6 @@
 #include "shell.h"
 #include <stdio.h>
 #include <sys/wait.h>
-
-t_iolst	*first_re(t_cmd *cmd)
-{
-	if (cmd->heredoc != NULL)
-		return (cmd->heredoc);
-	if (cmd->strapp != NULL)
-		return (cmd->strapp);
-	if (cmd->strin != NULL)
-		return (cmd->strin);
-	if (cmd->strout != NULL)
-		return (cmd->strout);
-	return (NULL);
-}
 
 bool	is_last_cmd(int num_cmds, int pipe1[2])
 {
@@ -36,9 +23,24 @@ bool	is_last_cmd(int num_cmds, int pipe1[2])
 	return (false);
 }
 
-int	open_and_redirect(char *name, int rw, int permission)
+void	open_and_redirect(char *name, int rw, int permission)
 {
-	
+	int	file_fd;
+
+	if (!permission)
+		file_fd = open(name, rw);
+	else
+		file_fd = open(name, rw, permission);
+	if (file_fd < 0)
+		error_exit(" No such file or directory\n", EXIT_FAILURE);
+	if (!permission)
+	{
+		if (redirect(file_fd, STDIN_FILENO) < 0)
+			error_exit(" No such file or directory\n", EXIT_FAILURE);
+	}
+	else
+		if (redirect(file_fd, STDOUT_FILENO) < 0)
+			error_exit(" No such file or directory\n", EXIT_FAILURE);
 }
 
 void	open_file(t_ast *ast, int pipe1[2], int num_cmds)
@@ -46,7 +48,7 @@ void	open_file(t_ast *ast, int pipe1[2], int num_cmds)
 	int		file_fd;
 	t_iolst	*ref_redirects;
 
-	ref_redirects = first_re(ast->u_node.cmd);
+	ref_redirects = ast->u_node.cmd->redirects;
 	if (ref_redirects == NULL)
 		if (is_last_cmd(num_cmds, pipe1))
 			return ;
@@ -60,7 +62,7 @@ void	open_file(t_ast *ast, int pipe1[2], int num_cmds)
 			if (redirect(file_fd, STDIN_FILENO) < 0)
 				error_exit(" No such file or directory\n", EXIT_FAILURE);
 		}
-		else if (ref_redirects->type == E_TTRA
+		if (ref_redirects->type == E_TTRA
 			|| ref_redirects->type == E_TTRRA)
 		{
 			if (ref_redirects->type == E_TTRA)
@@ -74,9 +76,9 @@ void	open_file(t_ast *ast, int pipe1[2], int num_cmds)
 			redirect(file_fd, STDOUT_FILENO);
 			close(pipe1[1]);
 		}
-		else
-			if (is_last_cmd(num_cmds, pipe1))
-				return ;
+		// else
+		// 	if (is_last_cmd(num_cmds, pipe1))
+		// 		return ;
 		ref_redirects = ref_redirects->next;
 	}
 }
@@ -87,6 +89,14 @@ void	execute(t_ast *ast_node, t_env **our_env, int *exit_status)
 		execute_builtin_cmds(ast_node->u_node.cmd, our_env, exit_status);
 	else
 		execute_system_cmds(ast_node->u_node.cmd, *our_env);
+}
+
+void	create_childs(t_ast *node, int pipe1[2], t_env **our_env, int *exit_status, int num_cmds)
+{
+	open_file(node, pipe1, num_cmds);
+	close(pipe1[0]);
+	execute(node, our_env, exit_status);
+	exit(EXIT_SUCCESS);
 }
 
 void	process_ast(t_ast *ast, t_env **our_env, int *exit_status)
@@ -115,13 +125,15 @@ void	process_ast(t_ast *ast, t_env **our_env, int *exit_status)
 		next_ast_node = get_next_node(ast, num_cmds);
 		if (pipe(pipe1) < 0)
 			perror("error making pipe\n");
-		if ((fork()) == 0)
-		{
-			open_file(next_ast_node, pipe1, num_cmds);
-			close(pipe1[0]);
-			execute(next_ast_node, our_env, exit_status);
-			exit(EXIT_SUCCESS);
-		}
+		if (fork() == 0)
+			create_childs(next_ast_node, pipe1, our_env, exit_status, num_cmds);
+		// if (fork() == 0)
+		// {
+		// 	open_file(next_ast_node, pipe1, num_cmds);
+		// 	close(pipe1[0]);
+		// 	execute(next_ast_node, our_env, exit_status);
+		// 	exit(EXIT_SUCCESS);
+		// }
 		if (--num_cmds > 0)
 		{
 			if (dup2(pipe1[0], STDIN_FILENO) < 0)
@@ -146,7 +158,12 @@ void	process_ast(t_ast *ast, t_env **our_env, int *exit_status)
 		num_cmds--;
 	}
 	while (i-- > 0)
+	{
 		wait(exit_status);
+		// if (*exit_status != 0)
+		// while (i-- > 0)
+		// 	wait(NULL);
+	}
 	dup2(in, STDIN_FILENO);
 }
 //clearing standard in; important

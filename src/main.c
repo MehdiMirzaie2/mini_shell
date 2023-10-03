@@ -48,7 +48,9 @@ void	init_rl(t_env *our_env, int	*exit_status)
 	while (1)
 	{
 		env_set(our_env, "?", ft_itoa(WEXITSTATUS(exit_status)));
+		init_termios();
 		rl_gets(&line_read, ft_strfmt("%s> ", getcwd(buff, PATH_MAX + 1)));
+		reset_termios();
 		lst = tlst_create(line_read);
 		ast = ast_build(lst);
 		ast_expandall(ast, our_env);

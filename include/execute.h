@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:31:46 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/25 20:22:32 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/09/25 22:00:12 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,18 @@
 # include "shell.h"
 
 typedef struct s_pipex		t_pipex;
+typedef enum e_permissions	t_permissions;
 struct s_pipex
 {
 	t_env	*our_env;
 	t_ast	*cmd;
+};
+
+enum e_permissions
+{
+	E_IN = O_RDONLY,
+	E_OUT = O_WRONLY | O_CREAT | O_TRUNC,
+	E_APPEND = O_WRONLY | O_CREAT | O_APPEND,
 };
 
 t_ast	*get_next_node(t_ast *ast, int num_cmds);

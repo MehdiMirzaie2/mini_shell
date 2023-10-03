@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 13:21:50 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/16 02:59:44 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/03 15:52:00 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdio.h>
@@ -19,7 +19,7 @@ t_ttoken	get_ttoken(char *str)
 	char			*fnd;
 	const char		*list = "\'\"|<>";
 	const t_ttoken	types[] = {
-		E_TTSQ, E_TTDQ, E_TTNCP, E_TTLA, E_TTRA,
+		E_TTWD, E_TTWD, E_TTNCP, E_TTLA, E_TTRA,
 	};
 
 	if (str == NULL || *str == '\0')
@@ -37,7 +37,7 @@ t_ttoken	get_ttoken(char *str)
 bool	istok_advancable(t_ttoken tok)
 {
 	const t_ttoken	adv[] = {
-		E_TTSQ, E_TTDQ, E_TTLLA, E_TTRRA,
+		E_TTLLA, E_TTRRA,
 	};
 	unsigned int	i;
 
@@ -50,19 +50,29 @@ bool	istok_advancable(t_ttoken tok)
 	return (false);
 }
 
-char	*tokstr_advance(char *str, char c, bool quoted)
+t_token	*tlst_token_new(char *str, t_ttoken type, t_token *parent)
 {
-	if (quoted)
-	{
-		while (*str && (c == '\'' || c == '\"') && *str != c)
-			str++;
-		if (*str == c)
-			str++;
-	}
-	else
-	{
-		while (*str && !ft_isspace(*str))
-			str++;
-	}
-	return (str);
+	t_token	*token;
+
+	token = malloc(sizeof(t_token));
+	ft_assert(token == NULL, E_ERR_MALLOCFAIL, __FILE__, __LINE__);
+	token->str = str;
+	token->type = type;
+	token->next = NULL;
+	while (parent != NULL && parent->next != NULL)
+		parent = parent->next;
+	if (parent != NULL)
+		parent->next = token;
+	return (token);
+}
+
+void	*tlst_destroy(t_token *token)
+{
+	if (token == NULL)
+		return (NULL);
+	tlst_destroy(token->next);
+	if (token->dup == true)
+		free(token->str);
+	free(token);
+	return (NULL);
 }

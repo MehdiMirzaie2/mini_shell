@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 18:25:09 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/20 15:20:26 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/03 23:50:04 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft_extra.h"
@@ -17,23 +17,84 @@ static int	isenvstr(int c)
 	return (c == '_' || ft_isalnum(c) || c == '?');
 }
 
-int until_expandstr_end(char *str, int i)
+t_sd_stat	until_var_or_quote(char *str, int i, bool mode, void *ctx)
 {
-	if (str[i] != '$' && !isenvstr(str[i]))
-		return (2);
-	if (i != 0 && str[i] == '$' && isenvstr(str[i + 1]))
-		return (2);
-	return (1);
+	char *const quote = ctx;
+
+	(void)mode;
+	if (str[i] == '\0' || str[i] == *quote)
+		return (E_SD_STOP);
+	if (*quote != '\'' && str[i] == '$')
+		return (E_SD_STOP);	
+	if (*quote != '\0' && (str[i] == '\'' || str[i] == '\"'))
+		return (E_SD_STOP | E_SD_COPY);
+	else if (str[i] == '\'' || str[i] == '\"')
+		return (E_SD_STOP);
+	return (E_SD_COPY);
 }
 
-int until_expandstr_start(char *str, int i)
+t_sd_stat	until_var_end(char *str, int i, bool mode, void *ctx)
 {
+	(void)mode;
+	(void)ctx;
 	if (str[i] == '\0')
-		return (2);
-	if (str[i] == '$' && isenvstr(str[i + 1]))
-		return (2);
-	return (1);
+		return (E_SD_STOP);
+	if (str[i] != '$' && !isenvstr(str[i]))
+		return (E_SD_STOP);
+	if (i != 0 && str[i] == '$' && isenvstr(str[i + 1]))
+		return (E_SD_STOP);
+	return (E_SD_COPY);
 }
+/*
+static t_sd_stat pass_quote_situ(char *str, int i, bool check, void *pctx)
+{
+	char	*depth = pctx;
+	char	old;
+	
+	old = depth[check];
+	if (str[i] == '\0')
+		return (E_SD_STOP);
+	if (str[i] == '\"' || str[i] == '\'')
+	{
+		if (depth[check] == '\0')
+			depth[check] = str[i];
+		else if (depth[check] == str[i])
+			depth[check] = '\0';
+		if (str[i] == old || depth[check] == str[i])
+		    return (E_SD_SKIP);
+	}
+	return (E_SD_COPY);
+}
+
+t_sd_stat until_expandstr_end(char *str, int i, bool check, void *pctx)
+{
+	(void)check;
+	(void)pctx;
+	if (str[i] == '\0')
+		return (E_SD_STOP);
+	if (str[i] != '$' && !isenvstr(str[i]))
+		return (E_SD_STOP);
+	if (i != 0 && str[i] == '$' && isenvstr(str[i + 1]))
+		return (E_SD_STOP);
+	return (E_SD_COPY);
+}
+
+t_sd_stat until_expandstr_start(char *str, int i, bool check, void *pctx)
+{
+	int		*const depth = pctx;
+	bool	expand;
+	int		situ;
+	
+	situ = pass_quote_situ(str, i, check, pctx);
+	if (situ != E_SD_COPY)
+		return (situ);
+	expand = depth[check] != '\'';
+	if (expand && str[i] == '$' && isenvstr(str[i + 1]))
+		return (E_SD_STOP);
+	depth[2]++;
+	return (E_SD_COPY);
+}
+*/
 /*
 int until_expandstr_end(int c)
 {

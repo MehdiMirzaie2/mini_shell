@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 23:34:10 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/20 17:46:40 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/02 17:20:38 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 #ifndef LEXER_H
 # define LEXER_H
+# include "libft_extra.h"
 
 typedef struct s_token t_token;
 typedef enum e_ttoken t_ttoken;
@@ -85,22 +86,73 @@ struct s_token
 	t_token		*next;
 };
 
-/* token.c */
-
-
-
-/* token_debug.c */
+/*** token_debug.c ***/
 size_t	get_token_index(t_ttoken t);
 char	*get_token_desc(t_ttoken t, int tostring);
 void	tlst_print(t_token *start);
 
-/* lexer.c */
-void	*tlst_destroy(t_token *token);
-t_token	*tlst_dup_pass(t_token *head);
-t_token	*tlst_token_new(char *str, t_ttoken type, t_token *parent);
+/*** lexer.c ***/
+
+/* Given a string command returns a t_token linked list.
+ * Each token contains a char* to the start of the token within `str`
+ * Use tlst_dup_pass to convert the char* to unique string tokens
+ */
 t_token	*tlst_create(char *str);
 
-/* lexer_utils.c */
+/* Advances the string used by the lexer in certain ways:
+ * For a quoted sequence it will advance until the end of a quoted sequence.
+ * Otherwise it will advanced till the end of the current word.
+ * (ie First occurance of `isspace`)
+ */
+char	*tokstr_advance(char *str, char c, bool quoted);
+
+/* Converts tokens' string into proper groups
+ *
+ * Given a token linked list this function will convert the char* `str`'s
+ * into proper extracted strings.
+ *
+ * For example given a token linked list made with
+ * "echo hello 123"
+ * Results in a linked list of
+ * "echo hello 123" -> "hello 123" -> "123"
+ * After passing that tlst to -tlst_dup_pass it will become
+ * "echo" -> "hello" -> "123"
+ */
+t_token	*tlst_dup_pass(t_token *head);
+
+
+/* Strdupctx function and other uses.
+ *
+ * Given the begining of a string `str`,
+ * and as i iterates from 0 to strlen(str),
+ * it will eventually return 2 for the end of an argument.
+ *
+ * For strings that don't have quotes in them or around, it will:
+ * Return 2 when the end of the word is encountered.
+ * For more advances strings with quotes:
+ * Only return 2 if it reaches \0 or: 
+ * if it's not in a quote region and encounters an isspace char
+ *
+ * Quote Regions:
+ * A quote region becomes active when str[i] see's a quote (' or ") and
+ *  wasn't already in a quote region.
+ * A quote region becomes in-active when str[i] see's same quote character type
+ * that begun the a quote reigon
+ *
+ * Quote regions are tracked by the strdupctx context varaible, as a char[2].
+ * context[0(check == false)] for dup mode (copies characters)
+ * context[1(check == true)] for check mode (counts characters)
+ * examples:
+ * QR QuoteRegion
+ * NQE Non-QuoteRegion
+ * "<QR>'<QR>'"<NQR>'<QQ>"<QR>"'<NQ>
+ *
+ * Primarily used for `ft_strdupctx` 
+ * but could be used manually to say advanced a string to the next arg.
+ */
+t_sd_stat	sd_until_arg_end(char *str, int i, bool check, void *pctx);
+
+/*** lexer_utils.c ***/
 /* Returns true if the lexer should increment the string.
  * Such as when beginning a quoted sequence or 
  * there are 2 char wide operators (<< >> && || etc)
@@ -112,10 +164,7 @@ bool		istok_advancable(t_ttoken tok);
  */
 t_ttoken	get_ttoken(char *str);
 
-/* Advances the string used by the lexer in certain ways:
- * For a quoted sequence it will advance until the end of a quoted sequence.
- * Otherwise it will advanced till the end of the current word.
- * (ie First occurance of `isspace`)
- */
-char	*tokstr_advance(char *str, char c, bool quoted);
+void	*tlst_destroy(t_token *token);
+t_token	*tlst_token_new(char *str, t_ttoken type, t_token *parent);
+
 #endif

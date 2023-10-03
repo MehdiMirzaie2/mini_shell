@@ -6,17 +6,32 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 23:03:48 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/20 16:55:28 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/02 17:21:34 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <stdbool.h>
+#ifndef LIBFT_EXTRA_H
+# define LIBFT_EXTRA_H
+
+# include "libft.h"
+# include <stdbool.h>
+
+typedef enum e_sd_stat	t_sd_stat;
+
+enum	e_sd_stat
+{
+	E_SD_SKIP = 0,
+	E_SD_COPY = 1,
+	E_SD_STOP = 4
+};
+
 /* String Duplicate Until
  * Creates a duplicated string from that start of 'src'
  * Until a character from 'until' is found.
  */
-typedef int	(*t_strdupctxfn)(char*, int, bool, void*);
+typedef t_sd_stat	(*t_strdupctxfn)(char*, int, bool, void*);
+
+
 
 char *ft_strdupu(char *src, char *until);
 char *ft_strdupct(char *src, int (*check)(int c));
@@ -25,3 +40,4 @@ char *ft_strdupctx(char *src, void *ctx, t_strdupctxfn check);
 
 int	ft_isspace(int c);
 int	ft_isalnum(int c);
+#endif

@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:31:46 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/25 22:00:12 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/04 00:01:19 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,22 @@ void	error_exit(char *error, int val);
 
 // utils
 int		get_num_cmd(t_ast *ast);
+
+/*
+gets the number of args inside a command structure
+*/
 int		get_num_args(t_cmd *cmd);
+
+/*
+using dup2 it will redirect from "from" to "to", and close "from";
+*/
 int		redirect(int from, int to);
+
 bool	is_builtin(t_cmd	*cmd);
+
+/*
+same as is_builtin but it checks if the cmd will change the env;
+*/
 bool	is_envbuiltin(t_cmd	*cmd);
-
-
-t_iolst	*first_re(t_cmd *cmd);
 
 #endif

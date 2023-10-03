@@ -18,18 +18,13 @@
 # include "libft.h"
 # include "ast.h"
 # include "builtins.h"
+# include "utils.h"
 
 #define IN dup(STDIN_FILENO)
 
 typedef struct s_vars			t_vars;
 typedef struct s_shell			t_shell;
 typedef struct s_fd				t_fd;
-
-struct s_fd
-{
-	int	saved_out_in_fd;
-	int	temp_out_in_fd;
-};
 
 extern int	g_value;
 
@@ -43,11 +38,6 @@ char	*my_strtok(char *srcString, char *delim);
 void handle_sigint(int sig);
 // void handle_siguser1(int sig);
 
-// redirections
-int redirect_input(char *filename);
-// int	redirect_output(char *filename);
-t_fd	redirect_output(char *filename);
-
 /*
 Deletes /tmp/mytempfileXXXXXX which was created for heredoc
 */
@@ -57,8 +47,6 @@ void    delete_tempfile(void);
 Adds a node to the neivornmefaat ars
 */
 void add_node_to_env(t_env **our_env, char *name, char *args);
-
-// void	ft_pwd(void);
 
 /* env.c */
 /* Creates a new environement variable list */

@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 11:06:15 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/19 21:56:39 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/09/22 12:04:56 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,20 @@ char	*join_args(t_arglst *args)
 
 	args_joined = NULL;
 	has_flag = false;
-	if (!ft_strncmp(args->str, "-n", 2))
-	{
-		has_flag = true;
-		args = args->next;
-	}
-	args_joined = args->str;
-	args = args->next;
+	if (!args)
+		return ("\n");
 	while (args)
 	{
-		args_joined = ft_strjoin(strcat(args_joined, " "), args->str);
+		if (!ft_strncmp(args->str, "-n", 2))
+			has_flag = true;
+		else
+		{
+			if (args_joined == NULL)
+				args_joined = args->str;
+			else
+				args_joined = ft_strjoin(strcat(args_joined, " "), args->str);
+		}
+		
 		args = args->next;
 	}
 	if (!has_flag)
@@ -36,23 +40,12 @@ char	*join_args(t_arglst *args)
 	return (args_joined);
 }
 
-void	ft_echo(t_arglst *args, char *filename)
+void	ft_echo(t_cmd *cmd)
 {
-	t_fd	fds;
 	char	*args_joined;
 
-	args_joined = join_args(args);
-	if (filename == NULL)
-	{
-		(void)filename;
-		(void)fds;
-		ft_putstr_fd(args_joined, 1);
-	}
-	else
-	{
-		fds = redirect_output(filename);
-		ft_putstr_fd(args_joined, fds.temp_out_in_fd);
-		dup2(fds.saved_out_in_fd, STDOUT_FILENO);
-		close(fds.saved_out_in_fd);
-	}
+	args_joined = join_args(cmd->args);
+	if (args_joined == NULL)
+		return ;
+	printf("%s", args_joined);
 }

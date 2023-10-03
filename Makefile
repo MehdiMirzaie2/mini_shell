@@ -3,14 +3,17 @@ NAME        := minishell
 
 LIBS        := ft
 LIBS_TARGET := lib/libft.a
+# /opt/homebrew/opt/readline/lib/libreadline.a
 
 INCS        := include	\
 			   lib/include
+# /opt/homebrew/opt/readline/include
+
 OS := $(shell uname)
 ARCH := $(shell uname -m)
 
 ifeq ($(OS), Darwin) # MacOS specific commands
-ifeq ($(ARCH),arm64)
+ifeq ($(ARCH), arm64)
 LIBS_TARGET += /opt/homebrew/opt/readline/lib/libreadline.a
 INC	+= /opt/homebrew/opt/readline/include
 else
@@ -31,6 +34,7 @@ SRCS        :=	main.c \
 				utils/ft_strdup_extra.c \
 				utils/ft_space.c \
 				utils/expand_utils.c \
+				utils/termios.c \
 				parser/lexer.c \
 				parser/lexer_utils.c \
 				parser/debug_token.c \
@@ -44,12 +48,12 @@ SRCS        :=	main.c \
 				builtins/echo.c \
 				builtins/pwd.c \
 				builtins/exit.c \
-				redirections/redirect_output.c \
 				execute/execute.c \
 				execute/execute_builtin_cmds.c \
 				execute/execute_system_cmds.c \
 				execute/get_next_node.c \
 				execute/utils.c \
+				execute/heredoc.c
 
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 

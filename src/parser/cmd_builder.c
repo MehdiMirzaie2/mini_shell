@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:22:01 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/20 14:57:38 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/03 20:57:28 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,25 +41,42 @@ void	cmd_memman(t_cmd **cmd, bool destroy)
 static void	cmd_redir(t_cmd *cmd, t_token **adv)
 {
 	const t_token	tok = (**adv);
-	t_iolst **const	targets[] = {
-	[E_TTLA] = &cmd->strin,
-	[E_TTRA] = &cmd->strout,
-	[E_TTRRA] = &cmd->strapp,
-	[E_TTLLA] = &cmd->heredoc
-	};
 
 	cmd->has_redirect = true;
 	if ((tok.type & E_TTLR) == 0)
 		return ;
 	if (tok.next != NULL && (tok.next->type & E_TTWG) != 0)
 	{
-		iolst_add(tok.type, tok.next->str, 1, targets[tok.type]);
+		iolst_add(tok.type, tok.next->str, 1, &cmd->redirects);
 		*adv = (*adv)->next->next;
 		return ;
 	}
 	//printf("missing or unexpected token");
 	//logmsg("unexpected token"); // handle more info
 }
+
+// static void	cmd_redir(t_cmd *cmd, t_token **adv)
+// {
+// 	const t_token	tok = (**adv);
+// 	// t_iolst **const	targets[] = {
+// 	// [E_TTLA] = &cmd->strin,
+// 	// [E_TTRA] = &cmd->strout,
+// 	// [E_TTRRA] = &cmd->strapp,
+// 	// [E_TTLLA] = &cmd->heredoc
+// 	// };
+
+// 	cmd->has_redirect = true;
+// 	if ((tok.type & E_TTLR) == 0)
+// 		return ;
+// 	if (tok.next != NULL && (tok.next->type & E_TTWG) != 0)
+// 	{
+// 		iolst_add(tok.type, tok.next->str, 1, targets[tok.type]);
+// 		*adv = (*adv)->next->next;
+// 		return ;
+// 	}
+// 	//printf("missing or unexpected token");
+// 	//logmsg("unexpected token"); // handle more info
+// }
 
 static void	cmd_start(t_cmd *cmd, t_token **adv)
 {

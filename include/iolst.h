@@ -10,6 +10,7 @@ struct s_iolst
 	t_ttoken	type;
 	char		*str;
 	int			dup;
+	// t_ttoken	type;s
 
 	t_iolst		*next;
 };

@@ -6,11 +6,24 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:33:30 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/09/19 21:50:31 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/09/25 18:13:31 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+#include "execute.h"
+
+char	*get_lastredirect(t_iolst	*redirects)
+{
+	t_iolst	*ref_redirects;
+
+	ref_redirects = redirects;
+	if (redirects == NULL)
+		return (NULL);
+	while (ref_redirects->next)
+		ref_redirects = ref_redirects->next;
+	return (ref_redirects->str);
+}
 
 char	**join_cmd(t_cmd *cmd)
 {
@@ -18,23 +31,19 @@ char	**join_cmd(t_cmd *cmd)
 	int			num_args;
 	t_arglst	*args_ref;
 
-	num_args = 1;
-	args_ref = cmd->args;
-	while (args_ref)
-	{
-		args_ref = args_ref->next;
-		num_args++;
-	}
-	joined = malloc(sizeof(char *) * num_args + 1);
+	num_args = get_num_args(cmd);
+	joined = malloc(sizeof(char *) * (num_args + 2));
 	joined[0] = cmd->cmd;
+	if (num_args == 0)
+		return (joined[1] = NULL, joined);
+	joined[num_args] = NULL;
 	num_args = 1;
 	args_ref = cmd->args;
-	while (args_ref)
+	while (args_ref && num_args >= 1)
 	{
 		joined[num_args++] = args_ref->str;
 		args_ref = args_ref->next;
 	}
-	joined[num_args] = NULL;
 	return (joined);
 }
 
@@ -80,7 +89,7 @@ char	*cmd_path(char **splitted_paths, char *cmd)
 		++splitted_paths;
 	}
 	ft_putstr_fd(cmd, 2);
-	perror(" command not found");
+	ft_putstr_fd(" :command not found\n", 2);
 	exit(127);
 }
 

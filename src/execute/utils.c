@@ -3,21 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 13:41:38 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/09/20 12:14:56 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/03 22:05:17 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-bool	is_builtin(char	*cmd)
+bool	is_builtin(t_cmd *cmd)
 {
-	if (!ft_strncmp(cmd, "cd", 2) || !ft_strncmp(cmd, "env", 3)
-		|| !ft_strncmp(cmd, "echo", 4) || !ft_strncmp(cmd, "pwd", 3)
-		|| !ft_strncmp(cmd, "$?", 2) || !ft_strncmp(cmd, "export", 6)
-		|| !ft_strncmp(cmd, "unset", 5) || !ft_strncmp(cmd, "exit", 4))
+	char	*command;
+
+	if (!cmd)
+		return (false);
+	command = cmd->cmd;
+	if (!ft_strncmp(command, "echo", 4) || !ft_strncmp(command, "exit", 4))
+		return (true);
+	return (false);
+}
+
+bool	is_envbuiltin(t_cmd	*cmd)
+{
+	char	*command;
+
+	if (!cmd)
+		return (false);
+	command = cmd->cmd;
+	if (!ft_strncmp(command, "cd", 2) || !ft_strncmp(command, "env", 3)
+		|| !ft_strncmp(command, "pwd", 3) || !ft_strncmp(command, "export", 6)
+		|| !ft_strncmp(command, "unset", 5))
 		return (true);
 	return (false);
 }
@@ -46,12 +62,14 @@ int	get_num_cmd(t_ast *ast)
 
 int	get_num_args(t_cmd *cmd)
 {
-	int	num;
+	int			num;
+	t_arglst	*ref_args;
 
+	ref_args = cmd->args;
 	num = 0;
-	while (cmd->args)
+	while (ref_args)
 	{
-		cmd->args = cmd->args->next;
+		ref_args = ref_args->next;
 		num++;
 	}
 	return (num);

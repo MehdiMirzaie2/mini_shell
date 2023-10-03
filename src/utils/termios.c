@@ -1,37 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   termios.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/14 14:43:18 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/25 17:50:45 by mehdimirzai      ###   ########.fr       */
+/*   Created: 2023/09/26 12:06:05 by mehdimirzai       #+#    #+#             */
+/*   Updated: 2023/09/26 12:11:31 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <termios.h>
 
-void	ft_putstr_fd(char *s, int fd)
+void	init_termios(void)
 {
-	if (!s)
-		return ;
-	while (*s)
-	{
-		ft_putchar_fd(*s, fd);
-		s++;
-	}
+	struct termios	t;
+
+	tcgetattr(0, &t);
+	t.c_lflag = t.c_lflag & ~ECHOCTL;
+	tcsetattr(0, TCSANOW, &t);
 }
 
-void	ft_putstr_fd_nl(char *s, int fd, bool nl)
+void	reset_termios(void)
 {
-	if (!s)
-		return ;
-	while (*s)
-	{
-		ft_putchar_fd(*s, fd);
-		s++;
-	}
-	if (nl == true)
-		ft_putchar_fd('\n', fd);
+	struct termios	t;
+
+	tcgetattr(0, &t);
+	t.c_lflag = t.c_lflag | ECHOCTL;
+	tcsetattr(0, TCSANOW, &t);
 }

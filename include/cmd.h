@@ -14,6 +14,7 @@ struct s_cmd
 
 	bool	has_pipe;
 	bool	has_redirect;
+	t_iolst *redirects;
 	t_iolst *heredoc;
 	t_iolst *strin;
 	t_iolst *strout;

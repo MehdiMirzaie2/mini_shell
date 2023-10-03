@@ -31,29 +31,20 @@ void	cmd_memman(t_cmd **cmd, bool destroy)
 		if (*cmd == NULL)
 			return ;
 		arglst_memman(&ptr->args, true);
-		iolst_memman(&ptr->heredoc, true);
-		iolst_memman(&ptr->strapp, true);
-		iolst_memman(&ptr->strin, true);
-		iolst_memman(&ptr->strout, true);
+		iolst_memman(&ptr->redirects, true);
 	}
 }
 
 static void	cmd_redir(t_cmd *cmd, t_token **adv)
 {
 	const t_token	tok = (**adv);
-	t_iolst **const	targets[] = {
-	[E_TTLA] = &cmd->strin,
-	[E_TTRA] = &cmd->strout,
-	[E_TTRRA] = &cmd->strapp,
-	[E_TTLLA] = &cmd->heredoc
-	};
 
 	cmd->has_redirect = true;
 	if ((tok.type & E_TTLR) == 0)
 		return ;
 	if (tok.next != NULL && (tok.next->type & E_TTWG) != 0)
 	{
-		iolst_add(tok.type, tok.next->str, 1, targets[tok.type]);
+		iolst_add(tok.type, tok.next->str, 1, &cmd->redirects);
 		*adv = (*adv)->next->next;
 		return ;
 	}

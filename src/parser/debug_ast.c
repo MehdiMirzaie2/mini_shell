@@ -68,7 +68,7 @@ static void	tast_printl(t_ast *ast, int level)
 				lst = lst->next;
 			}
 		}
-		tiolst_print(ast->u_node.cmd->heredoc, "\nHEREDOC ", level);
+		tiolst_print(ast->u_node.cmd->redirects, "\nHEREDOC ", level);
 		tiolst_print(ast->u_node.cmd->strin, "STRIN ", level);
 		tiolst_print(ast->u_node.cmd->strout, "STROUT ", level);
 		tiolst_print(ast->u_node.cmd->strapp, "STRAPP ", level);

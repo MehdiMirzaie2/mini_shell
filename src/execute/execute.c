@@ -40,10 +40,10 @@ void	handle_heredoc(t_ast *ast)
 		ft_putstr_fd("error making temp file for heredoc\n", 2);
 		exit(127);
 	}
-	limiter_len = ft_strlen(ast->u_node.cmd->heredoc->str);
+	limiter_len = ft_strlen(ast->u_node.cmd->redirects->str);
 	// printf("got to %d\n", __LINE__);
 	lines = readline("heredoc> ");
-	while (ft_strncmp(lines, ast->u_node.cmd->heredoc->str, limiter_len) != 0)
+	while (ft_strncmp(lines, ast->u_node.cmd->redirects->str, limiter_len) != 0)
 	{
 		// signal(SIGUSR1, terminate);
 		ft_putstr_fd(lines, fd);
@@ -70,8 +70,8 @@ void	handle_heredoc(t_ast *ast)
 
 t_iolst	*first_re(t_ast *ast)
 {
-	if (ast->u_node.cmd->heredoc != NULL)
-		return ast->u_node.cmd->heredoc;
+	if (ast->u_node.cmd->redirects != NULL)
+		return ast->u_node.cmd->redirects;
 	if (ast->u_node.cmd->strapp != NULL)
 		return ast->u_node.cmd->strapp;
 	if (ast->u_node.cmd->strin != NULL)
@@ -138,7 +138,7 @@ int	open_file(t_ast *ast, int pipe1[2], int num_cmds, int i)
 	t_iolst	*ast_ref = NULL;
 
 	file_fd = -1;
-	if (ast->u_node.cmd->heredoc != NULL)
+	if (ast->u_node.cmd->redirects != NULL)
 		handle_heredoc(ast);
 	if (ast->u_node.cmd->strin != NULL)
 	{
@@ -227,7 +227,7 @@ int		process_ast(t_ast *ast, t_env **our_env, int *exit_status)
 	// int		status;
 
 
-	if (ast->type == E_ASTCMD && ast->u_node.cmd->heredoc == NULL
+	if (ast->type == E_ASTCMD && ast->u_node.cmd->redirects == NULL
 		&& is_builtin(ast->u_node.cmd->cmd))
 		one_command(ast, our_env, exit_status);
 	else

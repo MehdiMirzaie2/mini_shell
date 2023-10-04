@@ -6,12 +6,13 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 20:15:32 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/07 19:44:11 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/02 17:12:55 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
+#include "libft_extra.h"
 
 /* Creates a duplicated string from that start of 'src'
  * Until a character from 'until' is found.
@@ -111,5 +112,49 @@ char *ft_strdupi(char *src, int (*check)(char *src, int index))
 		i++;
 	}
 	ret[j] = '\0';
+	return (ret);
+}
+
+
+static int strdupctx_loop(char *str[2], void *ctx, bool check, t_strdupctxfn func)
+{
+	char *const src = str[0];
+	char *const ret = str[1];
+	t_sd_stat	state;
+	int			i;
+	int			j;
+
+	j = 0;
+	i = 0;
+	while (src[i])
+	{
+		state = func(src, i, check, ctx);
+		if (state & E_SD_COPY)
+		{
+			if (!check)
+				ret[j] = src[i];
+			j++;	
+		}
+		if (state & E_SD_STOP)
+			break ;
+		i++;
+	}
+	return (j);
+}
+
+// TODO: Info
+char *ft_strdupctx(char *src, void *ctx, t_strdupctxfn func)
+{
+	char	*ret;
+	int		i;
+
+	if (src == NULL)
+		return (NULL);
+	i = strdupctx_loop((char *[2]){src, NULL}, ctx, true, func);
+	ret = malloc(sizeof(char) * (i + 1));
+	if (ret == NULL)
+		return (NULL);
+	i = strdupctx_loop((char *[2]){src, ret}, ctx, false, func);
+	ret[i] = '\0';
 	return (ret);
 }

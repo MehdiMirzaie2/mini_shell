@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 14:14:57 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/11 01:15:26 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/03 23:51:35 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "shell.h"
@@ -33,7 +33,7 @@ void	cmd_expand(t_cmd *cmd, t_env *env)
 	t_arglst	*arg;
 	char		*tmp;
 
-	// TODO: for redirections?
+	// TODO: Do for redirections using cmd->redirects after mehdi:redirects2.0 is finished
 	tmp = cmd->cmd;
 	cmd->cmd = expand_str(cmd->cmd, env);
 	if (cmd->cmd != tmp)
@@ -65,15 +65,11 @@ void	cmd_expand(t_cmd *cmd, t_env *env)
  *	For example: echo $. #prints '$.' (. is not _, A-Z, a-z or 0-90)
  *
  *  unproc_expand_str:
- *	~`any = until_expandstr_start` with ~`str += len(any)`
- *	Should usually result with str pointing to the START of a 'proper var'
- *	Improper vars and non-vars characters stop the duplication.
- *
- *	`strdupi` with `until_expandstr_end` returns the proper var name.
+ * TODO: Write description
  */
 char	*expand_str(char *str, t_env *env)
 {
-	char	*expand;
+	char		*expand;
 
 	expand = ft_strdup("");
 	ft_assert(str == NULL, E_ERR_BADPARAM, __FILE__, __LINE__);
@@ -83,34 +79,25 @@ char	*expand_str(char *str, t_env *env)
 	return (expand);
 }
 
+
 /* Assume valid inputs.
  * SEE:expand_str
  */
 static char	*unproc_expand_str(char *str, t_env *env, char *expand)
 {
-	char	*any;
-	char	*tmp;
-	char	*next;
+	char mode;
 
-	while (true)
+	while (*str)
 	{
-		any = ft_strdupi(str, until_expandstr_start);
-		ft_assert(any == NULL, E_ERR_MALLOCFAIL, __FILE__, __LINE__);
-		str += ft_strlen(any);
-		expand = ft_strfmt("%S%S", expand, any);
-		ft_assert(expand == NULL, E_ERR_MALLOCFAIL, __FILE__, __LINE__);
-		if (ft_strchr(str, '$') == NULL)
-			break ;
-		tmp = ft_strdupi(str, until_expandstr_end);
-		ft_assert(tmp == NULL, E_ERR_MALLOCFAIL, __FILE__, __LINE__);
-		if (tmp[0] == '$')
-			next = env_get(env, &tmp[1]);
-		else
-			next = env_get(env, tmp);
-		str += ft_strlen(tmp);
-		free(tmp);
-		if (next != NULL)
-			expand = ft_strfmt("%S%s", expand, next);
+		mode = '\0';
+		if (*str == '\'' || *str == '\"')
+			mode = *str;
+		if (*str == '\"')
+			str = handle_double(str, mode, &expand, env);
+		else if (*str == '\'')
+			str = handle_single(str, &expand);
+		else while (*str && (*str != '\'' && *str != '\"'))
+			str = handle_word(str, mode, &expand, env);
 	}
 	return (expand);
 }

@@ -6,7 +6,7 @@
 /*   By: mmirzaie  <mmirzaie@student.42.fr>			+#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2023/08/08 12:50:42 by mmirzaie		  #+#	#+#			 */
-/*   Updated: 2023/09/20 15:21:45 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/04 23:04:06 by clovell          ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	init_rl(t_env *our_env, int	*exit_status)
 	ast = NULL;
 	while (1)
 	{
-		env_set(our_env, "?", ft_itoa(WEXITSTATUS(exit_status)));
+		env_set(our_env, "?", ft_itoa(WEXITSTATUS(*exit_status)));
 		init_termios();
 		rl_gets(&line_read, ft_strfmt("%s> ", getcwd(buff, PATH_MAX + 1)));
 		reset_termios();

@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 23:10:17 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/20 14:44:10 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/04 23:02:33 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,6 @@
 #include "libft_extra.h"
 #include "libft.h"
 #include "lexer.h"
-
-t_token	*tlst_token_new(char *str, t_ttoken type, t_token *parent)
-{
-	t_token	*token;
-
-	token = malloc(sizeof(t_token));
-	ft_assert(token == NULL, E_ERR_MALLOCFAIL, __FILE__, __LINE__);
-	token->str = str;
-	token->type = type;
-	token->next = NULL;
-	while (parent != NULL && parent->next != NULL)
-		parent = parent->next;
-	if (parent != NULL)
-		parent->next = token;
-	return (token);
-}
 
 t_token	*tlst_create(char *str)
 {
@@ -53,56 +37,63 @@ t_token	*tlst_create(char *str)
 		c = *str;
 		token = get_ttoken(str);
 		tmp = tlst_token_new(str, token, tmp);
-		if (istok_advancable(token))
-			str++;
-		if (token == E_TTWD)
-			str = tokstr_advance(str, c, false);
-		str = tokstr_advance(str, c, true);
+		str = tokstr_advance(str, c, false);
 	}
 	tmp = start->next;
 	free(start);
 	return (tlst_dup_pass(tmp));
 }
 
-void	*tlst_destroy(t_token *token)
+char	*tokstr_advance(char *str, char c, bool quoted)
 {
-	if (token == NULL)
-		return (NULL);
-	tlst_destroy(token->next);
-	if (token->dup == true)
-		free(token->str);
-	free(token);
-	return (NULL);
+	int		i;
+	char	depth;
+
+	if (quoted)
+		depth = c;
+	else
+		depth = '\0';
+	i = 0;
+	while (str[i] && ft_isspace(str[i]))
+		i++;
+	while (sd_until_arg_end(str, i, 0, &depth) != E_SD_STOP)
+		i++;
+	return (&str[i]);
 }
 
-int	tlst_token_dup(char *str, int i)
+t_sd_stat sd_until_arg_end(char *str, int i, bool check, void *pctx)
 {
+	char *depth = pctx;
+	
 	if (str[i] == '\0')
-		return (2);
-	if (str[0] == '\"' || str[0] == '\'')
+		return (E_SD_STOP);
+	if (str[i] == '\"' || str[i] == '\'')
 	{
-		if (i > 0 && str[0] == str[i])
-			return (2);
-		else if (str[0] == str[i])
-			return (0);
+		if (depth[check] == '\0')
+			depth[check] = str[i];
+		else if (depth[check] == str[i])
+			depth[check] = '\0';
 	}
-	else if (ft_isspace(str[i]))
-		return (2);
-	return (1);
+	else if (ft_isspace(str[i]) && depth[check] == '\0')
+		return (E_SD_STOP);
+	return (E_SD_COPY);
 }
 
 t_token	*tlst_dup_pass(t_token *head)
 {
 	t_token	*next;
 	char	lstr[2];
+	char	depth[2];
 
 	lstr[1] = '\0';
 	next = head;
 	while (next != NULL)
 	{
+		depth[0] = '\0';
+		depth[1] = '\0';
 		lstr[0] = next->str[0];
 		if ((next->type & (E_TTGS | E_TTWD)) != 0)
-			next->str = ft_strdupi(next->str, tlst_token_dup);
+			next->str = ft_strdupctx(next->str, depth, sd_until_arg_end);
 		else
 			next->str = ft_strdup(lstr);
 		if (next->str == NULL)

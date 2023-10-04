@@ -82,8 +82,17 @@ void cmd_expand(t_cmd *cmd, t_env *env);
 char *expand_str(char *str, t_env *env);
 
 /* expand_utils.c */
-int until_expandstr_start(char *str, int i);
-int until_expandstr_end(char *str, int i);
+int	isenvstr(int c);
+t_sd_stat	until_var_end(char *str, int i, bool mode, void *ctx);
+t_sd_stat	until_var_or_quote(char *str, int i, bool mode, void *ctx);
+
+
+/* expand_handle.c */
+char *handle_single(char *str, char **expand);
+char *handle_var(char *str, char **expand, t_env *env);
+char *handle_word(char *str, char quote, char **expand, t_env *env);
+char *handle_double(char *str, char quote, char **expand, t_env *env);
+
 
 /* TODO: Remove?
 int until_expandstr_start(int c);

@@ -33,8 +33,9 @@ SRCS        :=	main.c \
 				utils/iolst.c \
 				utils/ft_strdup_extra.c \
 				utils/ft_space.c \
-				utils/expand_utils.c \
 				utils/termios.c \
+				utils/expand_utils.c \
+				utils/expand_handle.c \
 				parser/lexer.c \
 				parser/lexer_utils.c \
 				parser/debug_token.c \

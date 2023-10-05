@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 23:51:38 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/05 14:08:54 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/05 14:50:29 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,18 @@ char	*handle_var(char *str, char **expand, t_env *env)
 	char	*value;
 
 	key = ft_strdupctx(str, NULL, until_var_end);
-	value = env_get(env, &key[1]);
-	str += ft_strlen(key);
-	*expand = ft_strfmt("%S%s", *expand, value);
+	if (ft_strlen(key) >= 2)
+	{
+		value = env_get(env, &key[1]); 
+		str += ft_strlen(key);
+		if (value != NULL)
+			*expand = ft_strfmt("%S%s", *expand, value);
+	}
+	else
+	{
+		str++;
+		*expand = ft_strfmt("%S%s", *expand, "$");
+	}
 	return (str);
 }
 

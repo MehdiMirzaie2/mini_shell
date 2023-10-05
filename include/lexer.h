@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
+/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 23:34:10 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/02 17:20:38 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/05 14:25:21 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "standard.h"
-
 #ifndef LEXER_H
 # define LEXER_H
-# include "libft_extra.h"
 
-typedef struct s_token t_token;
-typedef enum e_ttoken t_ttoken;
+# include "libft_extra.h"
+# include "standard.h"
+
+typedef struct s_token	t_token;
+typedef enum e_ttoken	t_ttoken;
 
 /*
  *	E_TTNA: Not applicable (no token)
@@ -71,7 +71,7 @@ enum e_ttoken
  *
  * str:	The start of the string that is linked with this token.
  * 		if 'dup' is false this string may overlap other tokens.
- * 
+ *
  * dup:	true when str is a filtered copy of the input.
  * 		false when str is just the pointer inside the input.
  *
@@ -87,9 +87,9 @@ struct s_token
 };
 
 /*** token_debug.c ***/
-size_t	get_token_index(t_ttoken t);
-char	*get_token_desc(t_ttoken t, int tostring);
-void	tlst_print(t_token *start);
+size_t		get_token_index(t_ttoken t);
+char		*get_token_desc(t_ttoken t, int tostring);
+void		tlst_print(t_token *start);
 
 /*** lexer.c ***/
 
@@ -97,14 +97,14 @@ void	tlst_print(t_token *start);
  * Each token contains a char* to the start of the token within `str`
  * Use tlst_dup_pass to convert the char* to unique string tokens
  */
-t_token	*tlst_create(char *str);
+t_token		*tlst_create(char *str);
 
 /* Advances the string used by the lexer in certain ways:
  * For a quoted sequence it will advance until the end of a quoted sequence.
  * Otherwise it will advanced till the end of the current word.
  * (ie First occurance of `isspace`)
  */
-char	*tokstr_advance(char *str, char c, bool quoted);
+char		*tokstr_advance(char *str, char c, bool quoted);
 
 /* Converts tokens' string into proper groups
  *
@@ -118,8 +118,7 @@ char	*tokstr_advance(char *str, char c, bool quoted);
  * After passing that tlst to -tlst_dup_pass it will become
  * "echo" -> "hello" -> "123"
  */
-t_token	*tlst_dup_pass(t_token *head);
-
+t_token		*tlst_dup_pass(t_token *head);
 
 /* Strdupctx function and other uses.
  *
@@ -130,7 +129,7 @@ t_token	*tlst_dup_pass(t_token *head);
  * For strings that don't have quotes in them or around, it will:
  * Return 2 when the end of the word is encountered.
  * For more advances strings with quotes:
- * Only return 2 if it reaches \0 or: 
+ * Only return 2 if it reaches \0 or:
  * if it's not in a quote region and encounters an isspace char
  *
  * Quote Regions:
@@ -147,24 +146,24 @@ t_token	*tlst_dup_pass(t_token *head);
  * NQE Non-QuoteRegion
  * "<QR>'<QR>'"<NQR>'<QQ>"<QR>"'<NQ>
  *
- * Primarily used for `ft_strdupctx` 
+ * Primarily used for `ft_strdupctx`
  * but could be used manually to say advanced a string to the next arg.
  */
 t_sd_stat	sd_until_arg_end(char *str, int i, bool check, void *pctx);
 
 /*** lexer_utils.c ***/
 /* Returns true if the lexer should increment the string.
- * Such as when beginning a quoted sequence or 
+ * Such as when beginning a quoted sequence or
  * there are 2 char wide operators (<< >> && || etc)
  */
 bool		istok_advancable(t_ttoken tok);
 
-/* Returns the ttoken associated with the 
- * first symbols sequence of a string 
+/* Returns the ttoken associated with the
+ * first symbols sequence of a string
  */
 t_ttoken	get_ttoken(char *str);
 
-void	*tlst_destroy(t_token *token);
-t_token	*tlst_token_new(char *str, t_ttoken type, t_token *parent);
+void		*tlst_destroy(t_token *token);
+t_token		*tlst_token_new(char *str, t_ttoken type, t_token *parent);
 
 #endif

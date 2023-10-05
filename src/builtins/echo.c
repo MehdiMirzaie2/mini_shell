@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
+/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 11:06:15 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/22 12:04:56 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/05 14:05:34 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ char	*join_args(t_arglst *args)
 			else
 				args_joined = ft_strjoin(strcat(args_joined, " "), args->str);
 		}
-		
 		args = args->next;
 	}
 	if (!has_flag)

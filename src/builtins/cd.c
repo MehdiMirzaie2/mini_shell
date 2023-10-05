@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
+/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 21:54:18 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/09/25 20:18:56 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/05 12:14:29 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,28 +43,17 @@ void	update_pwd(t_env **our_env)
 	ref->args = ft_strdup(getcwd(buff, PATH_MAX + 1));
 }
 
-void	ft_cd(t_cmd *cmd, t_env **our_env)
+int	ft_cd(t_cmd *cmd, t_env **our_env)
 {
 	if (cmd->args == NULL)
 		chdir(getenv("HOME"));
 	else if (chdir(cmd->args->str) == -1)
 	{
-		write(2, "cd: no such file or directory: ", 31);
+		write(2, "cd: ", 4);
 		ft_putstr_fd(cmd->args->str, 2);
-		write(2, "\n", 1);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		return (256);
 	}
 	update_pwd(our_env);
+	return (0);
 }
-
-// void	ft_cd(char *path, t_env **our_env)
-// {
-// 	if (path == NULL)
-// 		chdir(getenv("HOME"));
-// 	else if (chdir(path) == -1)
-// 	{
-// 		write(2, "cd: no such file or directory: ", 31);
-// 		ft_putstr_fd(path, 2);
-// 		write(2, "\n", 1);
-// 	}
-// 	update_pwd(our_env);
-// }

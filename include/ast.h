@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
+/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 02:47:59 by clovell           #+#    #+#             */
-/*   Updated: 2023/08/30 14:14:27 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/05 14:19:20 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef AST_H
 # define AST_H
@@ -49,7 +48,7 @@ struct s_ast
 	union
 	{
 		t_cmd	*cmd;
-		struct s_astlink { 
+		struct s_astlink {
 			t_ast			*first;
 			t_ast			*second;
 			t_astlinktype	type;

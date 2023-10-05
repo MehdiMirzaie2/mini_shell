@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:47:11 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/20 14:57:13 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/05 14:16:35 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 #include "iolst.h"
 #include "error.h"
 
-
-t_iolst *iolst_add(t_ttoken tok, char *str, int dup, t_iolst **head)
+t_iolst	*iolst_add(t_ttoken tok, char *str, int dup, t_iolst **head)
 {
 	t_iolst	*next;
 	t_iolst	*elem;
@@ -58,9 +57,9 @@ static void	iolst_destroy(t_iolst **lst)
 	*lst = NULL;
 }
 
-void iolst_memman(t_iolst **lst, bool destroy)
+void	iolst_memman(t_iolst **lst, bool destroy)
 {
-	const t_iolst builder = {0};
+	const t_iolst	builder = {0};
 
 	if (!destroy)
 	{

@@ -66,14 +66,16 @@ int	main(int argc, char **argv, char **env)
 	t_env		*our_env;
 	static int	exit_status = 0;
 
-	(void)argc;
 	(void)argv;
-	our_env = malloc(sizeof(t_env));
-	create_env(our_env, env);
-	signal(SIGINT, handle_sigint);
-	signal(SIGUSR1, handle_sigint);
-	init_rl(our_env, &exit_status);
-	free_env(our_env);
+	if (argc == 1)
+	{
+		our_env = malloc(sizeof(t_env));
+		create_env(our_env, env);
+		signal(SIGINT, handle_sigint);
+		signal(SIGUSR1, handle_sigint);
+		init_rl(our_env, &exit_status);
+		free_env(our_env);
+	}
 	return (0);
 }
 

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
+/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:02 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/20 17:04:03 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/05 12:43:03 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	unset(t_env *our_env, char *name)
+int	unset(t_env *our_env, t_arglst *args)
 {
 	t_env	*ref;
 	t_env	*prev;
@@ -20,7 +20,9 @@ void	unset(t_env *our_env, char *name)
 
 	ref = our_env;
 	prev = ref;
-	while (ft_strcmp(ref->name, name) != 0)
+	if (args == NULL)
+		return (0);
+	while (ft_strcmp(ref->name, args->str) != 0)
 	{
 		prev = ref;
 		ref = ref->next;
@@ -30,6 +32,7 @@ void	unset(t_env *our_env, char *name)
 	free(to_free->args);
 	free(to_free->name);
 	free(to_free);
+	return (0);
 }
 
 void	add_node_to_env(t_env **our_env, char *name, char *args)
@@ -61,16 +64,18 @@ bool	valid_identifier(char **name_and_args, char *args)
 
 // the following should append the path to existing paths
 // export PATH=$PATH:/place/with/the/file
-void	ft_export(t_env **our_env, char *args)
+int	ft_export(t_env **our_env, t_arglst *args)
 {
 	t_env	*ref;
 	char	**name_and_args;
 	int		name_len;
 
 	ref = *our_env;
-	name_and_args = ft_split(args, '=');
-	if (!valid_identifier(name_and_args, args))
-		return ;
+	if (args == NULL)
+		return (0);
+	name_and_args = ft_split(args->str, '=');
+	if (!valid_identifier(name_and_args, args->str) || name_and_args[1] == NULL)
+		return (256);
 	name_len = ft_strlen(name_and_args[0]);
 	while (ref && ft_strncmp(ref->name, name_and_args[0], name_len) != 0)
 		ref = ref->next;
@@ -83,6 +88,7 @@ void	ft_export(t_env **our_env, char *args)
 		add_node_to_env(our_env, name_and_args[0], name_and_args[1]);
 	free(name_and_args[0]);
 	free(name_and_args[1]);
+	return (0);
 }
 
 void	ft_env(t_env *our_env)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shell.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/05 14:26:51 by mmirzaie          #+#    #+#             */
+/*   Updated: 2023/10/05 14:27:33 by mmirzaie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef SHELL_H
 # define SHELL_H
 
@@ -30,7 +42,6 @@ extern int	g_value;
 
 // main
 char *rl_gets(char **line_read, char *header);
-
 
 char	*my_strtok(char *srcString, char *delim);
 
@@ -88,11 +99,10 @@ t_sd_stat	until_var_or_quote(char *str, int i, bool mode, void *ctx);
 
 
 /* expand_handle.c */
-char *handle_single(char *str, char **expand);
-char *handle_var(char *str, char **expand, t_env *env);
-char *handle_word(char *str, char quote, char **expand, t_env *env);
-char *handle_double(char *str, char quote, char **expand, t_env *env);
-
+char		*handle_single(char *str, char **expand);
+char		*handle_var(char *str, char **expand, t_env *env);
+char		*handle_word(char *str, char quote, char **expand, t_env *env);
+char		*handle_double(char *str, char quote, char **expand, t_env *env);
 
 /* TODO: Remove?
 int until_expandstr_start(int c);

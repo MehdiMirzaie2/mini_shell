@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arglst.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
+/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 17:35:59 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/13 15:24:12 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/05 14:07:05 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "arglst.h"
 #include "error.h"
 
-t_arglst *arglst_add(char *str, int dup, t_arglst **head)
+t_arglst	*arglst_add(char *str, int dup, t_arglst **head)
 {
 	t_arglst	*next;
 	t_arglst	*elem;
@@ -38,11 +38,11 @@ t_arglst *arglst_add(char *str, int dup, t_arglst **head)
 	return (elem);
 }
 
-void arglst_memman(t_arglst **lst, bool destroy)
+void	arglst_memman(t_arglst **lst, bool destroy)
 {
-	const t_arglst builder = {0};
-	t_arglst	*curr;
-	t_arglst	*next;
+	const t_arglst	builder = {0};
+	t_arglst		*curr;
+	t_arglst		*next;
 
 	if (!destroy)
 	{
@@ -52,7 +52,7 @@ void arglst_memman(t_arglst **lst, bool destroy)
 		return ;
 	}
 	if (*lst == NULL)
-		return;
+		return ;
 	curr = *lst;
 	while (curr != NULL)
 	{

@@ -15,7 +15,7 @@ ARCH := $(shell uname -m)
 ifeq ($(OS), Darwin) # MacOS specific commands
 ifeq ($(ARCH), arm64)
 LIBS_TARGET += /opt/homebrew/opt/readline/lib/libreadline.a
-INC	+= /opt/homebrew/opt/readline/include
+INCs += /opt/homebrew/opt/readline/include
 else
 LIBS_TARGET += /usr/local/Cellar/readline/8.1.2/lib/libreadline.a
 INCS += /usr/local/Cellar/readline/8.1.2/include

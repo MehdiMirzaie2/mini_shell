@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
+/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:31:36 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/25 20:21:47 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/05 14:19:48 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "ast.h"
 # include "cmd.h"
 
-typedef struct s_env			t_env;
+typedef struct s_env	t_env;
 
 struct s_env
 {
@@ -25,11 +25,11 @@ struct s_env
 	t_env	*next;
 };
 
-void	ft_cd(t_cmd *cmd, t_env **our_env);
+int		ft_cd(t_cmd *cmd, t_env **our_env);
 void	ft_env(t_env *our_env);
-void	ft_export(t_env **our_env, char *args);
+int		ft_export(t_env **our_env, t_arglst *args);
+int		unset(t_env *our_env, t_arglst *args);
 void	ft_echo(t_cmd *cmd);
-void	unset(t_env *our_env, char *name);
 void	ft_pwd(void);
 void	exiting(int	*value, t_cmd *cmd);
 

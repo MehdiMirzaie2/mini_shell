@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup_extra.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
+/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 20:15:32 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/02 17:12:55 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/05 14:14:25 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 /* Creates a duplicated string from that start of 'src'
  * Until a character from 'until' is found.
  */
-char *ft_strdupu(char *src, char *until)
+char	*ft_strdupu(char *src, char *until)
 {
-	int	i;
-	char *ret;
+	int		i;
+	char	*ret;
 
 	if (src == NULL || until == NULL)
 		return (NULL);
@@ -34,7 +34,7 @@ char *ft_strdupu(char *src, char *until)
 	return (ret);
 }
 
-/* 
+/*
  * Creates a duplicated string from that start of 'src'
  * Until a character satisfies he function 'check'.
  * check should be a function inside ctypes.h or similar:
@@ -53,10 +53,10 @@ char *ft_strdupu(char *src, char *until)
  *		int isascii(int c);
  *		int isblank(int c);
  * */
-char *ft_strdupct(char *src, int (*check)(int c))
+char	*ft_strdupct(char *src, int (*check)(int c))
 {
-	int	i;
-	char *ret;
+	int		i;
+	char	*ret;
 
 	if (src == NULL)
 		return (NULL);
@@ -84,12 +84,12 @@ char *ft_strdupct(char *src, int (*check)(int c))
  *  should be deterministic.
  *  should stop string when encountering '\0'.
  */
-char *ft_strdupi(char *src, int (*check)(char *src, int index))
+char	*ft_strdupi(char *src, int (*check)(char *src, int index))
 {
-	int	i;
-	int	j;
-	char *ret;
-	int state;
+	int		i;
+	int		j;
+	char	*ret;
+	int		state;
 
 	i = 0;
 	if (src == NULL)
@@ -108,18 +108,16 @@ char *ft_strdupi(char *src, int (*check)(char *src, int index))
 		if (state == 2)
 			break ;
 		else if (state == 1)
-			ret[j++] = src[i];
-		i++;
+			ret[j++] = src[i++];
 	}
-	ret[j] = '\0';
-	return (ret);
+	return (ret[j] = '\0', ret);
 }
 
-
-static int strdupctx_loop(char *str[2], void *ctx, bool check, t_strdupctxfn func)
+static int	strdupctx_loop(char *str[2], void *ctx,
+	bool check, t_strdupctxfn func)
 {
-	char *const src = str[0];
-	char *const ret = str[1];
+	char *const	src = str[0];
+	char *const	ret = str[1];
 	t_sd_stat	state;
 	int			i;
 	int			j;
@@ -133,7 +131,7 @@ static int strdupctx_loop(char *str[2], void *ctx, bool check, t_strdupctxfn fun
 		{
 			if (!check)
 				ret[j] = src[i];
-			j++;	
+			j++;
 		}
 		if (state & E_SD_STOP)
 			break ;
@@ -143,7 +141,7 @@ static int strdupctx_loop(char *str[2], void *ctx, bool check, t_strdupctxfn fun
 }
 
 // TODO: Info
-char *ft_strdupctx(char *src, void *ctx, t_strdupctxfn func)
+char	*ft_strdupctx(char *src, void *ctx, t_strdupctxfn func)
 {
 	char	*ret;
 	int		i;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
+/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:07:14 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/03 23:58:16 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/05 14:45:20 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,14 +99,17 @@ static void	execute(t_ast *ast, t_env **our_env, int *exit_status, int num_cmds)
 void	process_ast(t_ast *ast, t_env **our_env, int *exit_status)
 {
 	const int	in = dup(STDIN_FILENO);
-	t_cmd		*first_cmd;
+	t_cmd		*first_cmd = NULL;
+	t_ast		*first_node = NULL;
 	int			num_cmds;
 
-	if (ast->type == E_ASTCMD)
-		first_cmd = ast->u_node.cmd;
-	else
-		first_cmd = ast->u_node.link.first->u_node.cmd;
-	if (is_envbuiltin(first_cmd))
+	// if (ast->type == E_ASTCMD)
+	// 	first_cmd = ast->u_node.cmd;
+	// else
+	// 	first_cmd = ast->u_node.link.first->u_node.cmd;
+	first_node = get_next_node(ast, 1);
+	first_cmd = first_node->u_node.cmd;
+	if (!ft_strncmp(first_cmd->cmd, "exit", 5) || is_envbuiltin(first_cmd))
 	{
 		open_file(ast, NULL, 1);
 		execute_builtin_cmds(ast->u_node.cmd, our_env, exit_status);
@@ -116,6 +119,7 @@ void	process_ast(t_ast *ast, t_env **our_env, int *exit_status)
 	execute(ast, our_env, exit_status, num_cmds);
 	while (num_cmds-- > 0)
 		wait(exit_status);
+	// printf("%d\n", *exit_status);
 	dup2(in, STDIN_FILENO);
 }
 //clearing standard in; important

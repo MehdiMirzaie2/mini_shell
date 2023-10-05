@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_space.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
+/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 14:19:50 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/04 21:46:36 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/05 14:10:01 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int ft_isspace(int c)
+int	ft_isspace(int c)
 {
-	int is;
-	
+	int	is;
+
 	is = c == ' ' || c == '\t' || c == '\v';
 	is = is || c == '\r' || c == '\f';
 	return (is);

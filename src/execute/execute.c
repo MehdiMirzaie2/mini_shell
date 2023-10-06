@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:07:14 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/06 16:47:53 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/07 09:35:26 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,12 @@ static void	open_file(t_ast *ast, int pipe1[2], int num_cmds)
 	while (redirects)
 	{
 		if (redirects->type == E_TTLLA)
+		{
+			while (redirects->next)
+				if (redirects->next->type == E_TTLLA)
+					redirects = redirects->next;
 			handle_heredoc(ast);
+		}
 		if (redirects->type == E_TTLA)
 			open_and_redirect(redirects->str, O_RDONLY, 0);
 		if (redirects->type == E_TTRA || redirects->type == E_TTRRA)
@@ -83,7 +88,6 @@ static void	execute(t_ast *ast, t_env **our_env, int *exit_status, int num_cmds)
 		if (fork() == 0)
 		{
 			signal(SIGINT, SIG_IGN);
-			// signal(SIGUSR1, handle_sigusr1);
 			open_file(node, pipe1, num_cmds);
 			close(pipe1[0]);
 			if (is_builtin(node->u_node.cmd) || is_envbuiltin(node->u_node.cmd))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 17:54:48 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/06 16:23:06 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/07 09:34:37 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,13 @@ void	error_exit(char *error, int val)
 
 void	readheredoc(t_ast *ast, int fd, const char *filename)
 {
-	char		*lines;
+	char	*lines;
+	t_iolst	*redirects;
 
+	redirects = ast->u_node.cmd->redirects;
+	while (redirects->next)
+		if (redirects->next->type == E_TTLLA)
+			redirects = redirects->next;
 	signal(SIGINT, handle_sigintheredoc);
 	lines = readline("heredoc> ");
 	if (!lines)
@@ -32,12 +37,12 @@ void	readheredoc(t_ast *ast, int fd, const char *filename)
 			perror("unlink");
 		exit(130);
 	}
-	while (ft_strcmp(lines, ast->u_node.cmd->redirects->str) != 0)
+	while (ft_strcmp(lines, redirects->str) != 0)
 	{
 		ft_putstr_fd_nl(lines, fd, true);
 		free(lines);
 		lines = readline("heredoc> ");
-		if (!lines || g_value == SIGUSR1)
+		if (!lines)
 		{
 			if (unlink(filename) == -1)
 				perror("unlink");

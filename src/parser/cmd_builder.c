@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
+/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:22:01 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/03 20:57:28 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/06 16:28:26 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ static void	cmd_redir(t_cmd *cmd, t_token **adv)
 		*adv = (*adv)->next->next;
 		return ;
 	}
-	//printf("missing or unexpected token");
-	//logmsg("unexpected token"); // handle more info
 }
 
 // static void	cmd_redir(t_cmd *cmd, t_token **adv)

@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:07:14 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/05 14:45:20 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/06 16:47:53 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ static void	execute(t_ast *ast, t_env **our_env, int *exit_status, int num_cmds)
 			perror("error making pipe\n");
 		if (fork() == 0)
 		{
+			signal(SIGINT, SIG_IGN);
+			// signal(SIGUSR1, handle_sigusr1);
 			open_file(node, pipe1, num_cmds);
 			close(pipe1[0]);
 			if (is_builtin(node->u_node.cmd) || is_envbuiltin(node->u_node.cmd))
@@ -107,6 +109,7 @@ void	process_ast(t_ast *ast, t_env **our_env, int *exit_status)
 	// 	first_cmd = ast->u_node.cmd;
 	// else
 	// 	first_cmd = ast->u_node.link.first->u_node.cmd;
+	signal(SIGINT, SIG_IGN);
 	first_node = get_next_node(ast, 1);
 	first_cmd = first_node->u_node.cmd;
 	if (!ft_strncmp(first_cmd->cmd, "exit", 5) || is_envbuiltin(first_cmd))
@@ -119,7 +122,6 @@ void	process_ast(t_ast *ast, t_env **our_env, int *exit_status)
 	execute(ast, our_env, exit_status, num_cmds);
 	while (num_cmds-- > 0)
 		wait(exit_status);
-	// printf("%d\n", *exit_status);
+	wait(NULL);
 	dup2(in, STDIN_FILENO);
 }
-//clearing standard in; important

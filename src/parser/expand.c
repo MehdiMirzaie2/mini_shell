@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
+/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 14:14:57 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/03 23:51:35 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/06 16:28:46 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "shell.h"
 #include "libft_extra.h"
 #include "error.h"

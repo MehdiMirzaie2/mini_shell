@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_system_cmds.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
+/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:33:30 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/09/25 18:13:31 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/06 16:48:42 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	**join_cmd(t_cmd *cmd)
 	joined[0] = cmd->cmd;
 	if (num_args == 0)
 		return (joined[1] = NULL, joined);
-	joined[num_args] = NULL;
+	joined[num_args + 1] = NULL;
 	num_args = 1;
 	args_ref = cmd->args;
 	while (args_ref && num_args >= 1)
@@ -47,7 +47,6 @@ char	**join_cmd(t_cmd *cmd)
 	return (joined);
 }
 
-/*same as strcat but it places a '/' between the joined strings*/
 char	*ft_cmdcat(char *path, char *cmd)
 {
 	int		len_path;
@@ -93,12 +92,35 @@ char	*cmd_path(char **splitted_paths, char *cmd)
 	exit(127);
 }
 
+char **env_to_array(t_env *env)
+{
+	char **array;
+	t_env *next;
+	int	size;
+
+	next = env;
+	size = 0;
+	while (next != NULL)
+	{
+		next = next->next;
+		size++;
+	}
+	array = malloc(sizeof(char *) * (size + 1));
+	next = env;
+	array[size] = NULL;
+	while (--size >= 0)
+	{
+		array[size] = ft_strfmt("%s=%s", next->name, next->args);
+		next = next->next;
+	}
+	return (array);
+}
+
 void	execute_system_cmds(t_cmd *cmd, t_env *env)
 {
 	char		**cmd_args_joined;
 	char		*cmd_plus_path;
 	char		**paths_splitted;
-	extern char	**environ;
 
 	cmd_args_joined = join_cmd(cmd);
 	if (ft_strchr(cmd->cmd, '/'))
@@ -113,8 +135,10 @@ void	execute_system_cmds(t_cmd *cmd, t_env *env)
 		paths_splitted = ft_split(env_get(env, "PATH"), ':');
 		cmd_plus_path = cmd_path(paths_splitted, cmd->cmd);
 	}
-	if (execve(cmd_plus_path, cmd_args_joined, environ) < 0)
+	//signal(SIGINT, SIG_DFL);
+	if (execve(cmd_plus_path, cmd_args_joined, env_to_array(env)) < 0)
 	{
+		ft_putstr_fd(strerror(errno), 2);
 		ft_putstr_fd("failed at execve\n", 2);
 		exit(EXIT_FAILURE);
 	}

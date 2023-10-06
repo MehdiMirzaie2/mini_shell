@@ -49,7 +49,10 @@ void	init_rl(t_env *our_env, int	*exit_status)
 	{
 		env_set(our_env, "?", ft_itoa(WEXITSTATUS(*exit_status)));
 		init_termios();
+			signal(SIGINT, handle_sigint);
 		rl_gets(&line_read, ft_strfmt("%s> ", getcwd(buff, PATH_MAX + 1)));
+		if (line_read == NULL || *line_read == '\0')
+			continue;
 		reset_termios();
 		lst = tlst_create(line_read);
 		ast = ast_build(lst);
@@ -64,18 +67,16 @@ void	init_rl(t_env *our_env, int	*exit_status)
 int	main(int argc, char **argv, char **env)
 {
 	t_env		*our_env;
-	static int	exit_status = 0;
+	static int	exit_status = 1;
 
 	(void)argv;
-	if (argc == 1)
-	{
-		our_env = malloc(sizeof(t_env));
-		create_env(our_env, env);
-		signal(SIGINT, handle_sigint);
-		signal(SIGUSR1, handle_sigint);
-		init_rl(our_env, &exit_status);
-		free_env(our_env);
-	}
+	(void)argc;
+	our_env = malloc(sizeof(t_env));
+	create_env(our_env, env);
+	signal(SIGINT, handle_sigint);
+	signal(SIGUSR1, SIG_IGN);
+	init_rl(our_env, &exit_status);
+	free_env(our_env);
 	return (0);
 }
 

@@ -16,8 +16,8 @@
       "args": [],
       "stopAtEntry": true,
       "externalConsole": false,
-      "cwd": "/Users/mehdimirzaie/Desktop/mini_shell",
-      "program": "/Users/mehdimirzaie/Desktop/shell/minishell",
+      "cwd": "/Users/mehdimirzaie/Desktop/mini2",
+      "program": "/Users/mehdimirzaie/Desktop/mini2/minishell",
       "MIMode": "gdb"
     }
   ]

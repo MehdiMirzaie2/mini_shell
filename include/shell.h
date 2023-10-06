@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:26:51 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/05 14:27:33 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/06 16:43:32 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # include "ast.h"
 # include "builtins.h"
 # include "utils.h"
+# include "mysignal.h"
 
 #define IN dup(STDIN_FILENO)
 
@@ -46,7 +47,7 @@ char *rl_gets(char **line_read, char *header);
 char	*my_strtok(char *srcString, char *delim);
 
 // utils/signals
-void handle_sigint(int sig);
+// void handle_sigint(int sig);
 // void handle_siguser1(int sig);
 
 /*
@@ -72,31 +73,34 @@ char	*env_get(t_env *our_env, char *name);
 /* Sets or creates a new environment variabled named 'key'
  * to the value of 'value' (duplicated)
  */
-void	env_set(t_env *our_env, char *key, char *value);
+void		env_set(t_env *our_env, char *key, char *value);
 
 /* expand.c */
 
 /* Expands env vars within the nodes and commands of an ast.
  */
-void ast_expandall(t_ast *ast, t_env *env);
+void		ast_expandall(t_ast *ast, t_env *env);
 
 /* Expands env vars within the name and args of a command.
  * USEDIN: ast_expandall.
  */
-void cmd_expand(t_cmd *cmd, t_env *env);
+void		cmd_expand(t_cmd *cmd, t_env *env);
 
 /* Returns a new string where env vars have been expanded.
  * Expanded string is a new string if the var was found.
  * otherwise it returns 'str'.
  * USEDIN: cmd_expand
  */
-char *expand_str(char *str, t_env *env);
+char		*expand_str(char *str, t_env *env);
 
 /* expand_utils.c */
-int	isenvstr(int c);
+int			isenvstr(int c);
 t_sd_stat	until_var_end(char *str, int i, bool mode, void *ctx);
 t_sd_stat	until_var_or_quote(char *str, int i, bool mode, void *ctx);
 
+// void handle_sigusr1(int sig);
+// void handle_sigintheredoc(int sig);
+// void handle_sigintexecute(int sig);
 
 /* expand_handle.c */
 char		*handle_single(char *str, char **expand);

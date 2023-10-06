@@ -3,19 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
+/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 17:54:48 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/04 09:06:41 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/06 16:23:06 by mmirzaie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 #include "execute.h"
-
-/*
-fix heredoc.
-*/
 
 void	error_exit(char *error, int val)
 {
@@ -28,7 +24,14 @@ void	readheredoc(t_ast *ast, int fd, const char *filename)
 {
 	char		*lines;
 
+	signal(SIGINT, handle_sigintheredoc);
 	lines = readline("heredoc> ");
+	if (!lines)
+	{
+		if (unlink(filename) == -1)
+			perror("unlink");
+		exit(130);
+	}
 	while (ft_strcmp(lines, ast->u_node.cmd->redirects->str) != 0)
 	{
 		ft_putstr_fd_nl(lines, fd, true);

@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 18:25:09 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/05 14:09:29 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/05 15:02:32 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	isenvstr(int c)
 {
-	return (c == '_' || ft_isalnum(c) || c == '?');
+	return (c == '_' || ft_isalnum(c)); 
 }
 
 t_sd_stat	until_var_or_quote(char *str, int i, bool mode, void *ctx)
@@ -39,6 +39,8 @@ t_sd_stat	until_var_end(char *str, int i, bool mode, void *ctx)
 	(void)ctx;
 	if (str[i] == '\0')
 		return (E_SD_STOP);
+	if (i == 1 && str[0] == '$' && str[1] == '?')
+		return (E_SD_STOP | E_SD_COPY);
 	if (str[i] != '$' && !isenvstr(str[i]))
 		return (E_SD_STOP);
 	if (i != 0 && str[i] == '$' && isenvstr(str[i + 1]))

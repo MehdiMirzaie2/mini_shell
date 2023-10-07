@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 14:14:57 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/06 16:28:46 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/07 17:18:49 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,27 +29,42 @@ void	ast_expandall(t_ast *ast, t_env *env)
 		cmd_expand(ast->u_node.cmd, env);
 }
 
+static void	args_redirect_expand(t_arglst *arg, t_iolst *lst, t_env *env);
+
 void	cmd_expand(t_cmd *cmd, t_env *env)
 {
-	t_arglst	*arg;
 	char		*tmp;
 
-	// TODO: Do for redirections using cmd->redirects after mehdi:redirects2.0 is finished
 	tmp = cmd->cmd;
 	cmd->cmd = expand_str(cmd->cmd, env);
 	if (cmd->cmd != tmp)
 		free(tmp);
-	arg = cmd->args;
+	args_redirect_expand(cmd->args, cmd->redirects, env);
+}
+
+static void	args_redirect_expand(t_arglst *arg, t_iolst *lst, t_env *env)
+{
+	char	*tmp;
+
 	while (arg)
 	{
-		if (arg->expand)
-		{
-			tmp = arg->str;
-			arg->str = expand_str(arg->str, env);
-			if (tmp != arg->str && arg->dup)
-				free(tmp);
-		}
+		tmp = arg->str;
+		arg->str = expand_str(arg->str, env);
+		ft_assert(tmp != NULL && arg->str == NULL,
+			E_ERR_MALLOCFAIL, __FILE__, __LINE__);
+		if (tmp != arg->str && arg->dup)
+			free(tmp);
 		arg = arg->next;
+	}
+	while (lst)
+	{
+		tmp = lst->str;
+		lst->str = expand_str(lst->str, env);
+		ft_assert(tmp != NULL && lst->str == NULL,
+			E_ERR_MALLOCFAIL, __FILE__, __LINE__);
+		if (tmp != lst->str && lst->dup)
+			free(tmp);
+		lst = lst->next;
 	}
 }
 
@@ -80,13 +95,12 @@ char	*expand_str(char *str, t_env *env)
 	return (expand);
 }
 
-
 /* Assume valid inputs.
  * SEE:expand_str
  */
 static char	*unproc_expand_str(char *str, t_env *env, char *expand)
 {
-	char mode;
+	char	mode;
 
 	while (*str)
 	{
@@ -97,8 +111,9 @@ static char	*unproc_expand_str(char *str, t_env *env, char *expand)
 			str = handle_double(str, mode, &expand, env);
 		else if (*str == '\'')
 			str = handle_single(str, &expand);
-		else while (*str && (*str != '\'' && *str != '\"'))
-			str = handle_word(str, mode, &expand, env);
+		else
+			while (*str && (*str != '\'' && *str != '\"'))
+				str = handle_word(str, mode, &expand, env);
 	}
 	return (expand);
 }

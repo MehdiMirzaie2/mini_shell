@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 23:10:17 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/04 23:02:33 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/07 17:21:01 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,14 @@ char	*tokstr_advance(char *str, char c, bool quoted)
 	i = 0;
 	while (str[i] && ft_isspace(str[i]))
 		i++;
-	while (sd_until_arg_end(str, i, 0, &depth) != E_SD_STOP)
-		i++;
+	i = iter_strdupctx(str, NULL, &depth, sd_until_arg_end);
 	return (&str[i]);
 }
 
-t_sd_stat sd_until_arg_end(char *str, int i, bool check, void *pctx)
+t_sd_stat	sd_until_arg_end(char *str, int i, bool check, void *pctx)
 {
-	char *depth = pctx;
-	
+	char *const	depth = pctx;
+
 	if (str[i] == '\0')
 		return (E_SD_STOP);
 	if (str[i] == '\"' || str[i] == '\'')
@@ -74,8 +73,13 @@ t_sd_stat sd_until_arg_end(char *str, int i, bool check, void *pctx)
 		else if (depth[check] == str[i])
 			depth[check] = '\0';
 	}
-	else if (ft_isspace(str[i]) && depth[check] == '\0')
+	else if (depth[check] != '\0')
+		return (E_SD_COPY);
+	if (ft_isspace(str[i]))
 		return (E_SD_STOP);
+	else if ((str[i] == '<' || str[i] == '>') && \
+			((get_ttoken(&str[i + 1]) & E_TTLR) == 0))
+		return (E_SD_STOP | E_SD_COPY);
 	return (E_SD_COPY);
 }
 

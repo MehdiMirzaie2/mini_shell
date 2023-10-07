@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 00:33:50 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/11 01:36:24 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/07 17:22:49 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	ft_errx(t_error err, char *file, int line)
 	exit(err);
 }
 
+/*
 // XXX FT_PUTBACKTRACE XXX
 // USE FIRST VARIANT FOR NON-EVAL PURPOSES
 // TODO COMMENT AND SWITCH TO SECOND VARIANT BEFORE EVAL
@@ -66,9 +67,9 @@ static void ft_putbacktrace(void)
 	ft_putstr_fd("Backtrace: \n", STDERR_FILENO);
     backtrace_symbols_fd(buffer, nptrs, STDOUT_FILENO);
 }
-
+*/
 // SECOND VARIANT
-//static void ft_putbacktrace(void)
-//{
-//    ft_putstr_fd("backtrace unavailable!\n", STDERR_FILENO);
-//}
+static void	ft_putbacktrace(void)
+{
+	ft_putstr_fd("backtrace unavailable!\n", STDERR_FILENO);
+}

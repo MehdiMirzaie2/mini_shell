@@ -6,7 +6,8 @@
 /*   By: mmirzaie  <mmirzaie@student.42.fr>			+#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2023/08/08 12:50:42 by mmirzaie		  #+#	#+#			 */
-/*   Updated: 2023/10/04 23:04:06 by clovell          ###   ########.fr       */
+
+/*   Updated: 2023/10/07 15:55:59 by clovell          ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -55,7 +56,9 @@ void	init_rl(t_env *our_env, int	*exit_status)
 			continue;
 		reset_termios();
 		lst = tlst_create(line_read);
+		tlst_print(lst);
 		ast = ast_build(lst);
+		tast_print(ast);
 		ast_expandall(ast, our_env);
 		line_read = NULL;
 		process_ast(ast, &our_env, exit_status);

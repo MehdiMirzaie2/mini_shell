@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 20:15:32 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/05 14:14:25 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/07 17:25:38 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*ft_strdupu(char *src, char *until)
  *		int isxdigit(int c);
  *		int isascii(int c);
  *		int isblank(int c);
- * */
+ */
 char	*ft_strdupct(char *src, int (*check)(int c))
 {
 	int		i;
@@ -70,54 +70,8 @@ char	*ft_strdupct(char *src, int (*check)(int c))
 	return (ret);
 }
 
-/* Creates a duplicated of 'src' where 'check' determins:
- * when the string should start.
- * when the string should end.
- * what characters to include.
- *
- * check return values:
- * 0 exclude char
- * 1 include char
- * 2 stop string
- *
- * check:
- *  should be deterministic.
- *  should stop string when encountering '\0'.
- */
-char	*ft_strdupi(char *src, int (*check)(char *src, int index))
+int	iter_strdupctx(char *src, char *ret, void *ctx, t_strdupctxfn func)
 {
-	int		i;
-	int		j;
-	char	*ret;
-	int		state;
-
-	i = 0;
-	if (src == NULL)
-		return (NULL);
-	while (src[i] && check(src, i) != 2)
-		i++;
-	ret = malloc(sizeof(char) * (i + 1));
-	if (ret == NULL)
-		return (NULL);
-	i = 0;
-	j = 0;
-	state = 0;
-	while (src[i])
-	{
-		state = check(src, i);
-		if (state == 2)
-			break ;
-		else if (state == 1)
-			ret[j++] = src[i++];
-	}
-	return (ret[j] = '\0', ret);
-}
-
-static int	strdupctx_loop(char *str[2], void *ctx,
-	bool check, t_strdupctxfn func)
-{
-	char *const	src = str[0];
-	char *const	ret = str[1];
 	t_sd_stat	state;
 	int			i;
 	int			j;
@@ -126,10 +80,10 @@ static int	strdupctx_loop(char *str[2], void *ctx,
 	i = 0;
 	while (src[i])
 	{
-		state = func(src, i, check, ctx);
+		state = func(src, i, ret != NULL, ctx);
 		if (state & E_SD_COPY)
 		{
-			if (!check)
+			if (ret != NULL)
 				ret[j] = src[i];
 			j++;
 		}
@@ -137,6 +91,8 @@ static int	strdupctx_loop(char *str[2], void *ctx,
 			break ;
 		i++;
 	}
+	if (ret != NULL && !(state & E_SD_STOP_IM))
+		ret[j] = '\0';
 	return (j);
 }
 
@@ -148,11 +104,10 @@ char	*ft_strdupctx(char *src, void *ctx, t_strdupctxfn func)
 
 	if (src == NULL)
 		return (NULL);
-	i = strdupctx_loop((char *[2]){src, NULL}, ctx, true, func);
+	i = iter_strdupctx(src, NULL, ctx, func);
 	ret = malloc(sizeof(char) * (i + 1));
 	if (ret == NULL)
 		return (NULL);
-	i = strdupctx_loop((char *[2]){src, ret}, ctx, false, func);
-	ret[i] = '\0';
+	i = iter_strdupctx(src, ret, ctx, func);
 	return (ret);
 }

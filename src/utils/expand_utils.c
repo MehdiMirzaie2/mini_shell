@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 18:25:09 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/05 15:02:32 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/07 16:19:40 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	isenvstr(int c)
 {
-	return (c == '_' || ft_isalnum(c)); 
+	return (c == '_' || ft_isalnum(c));
 }
 
 t_sd_stat	until_var_or_quote(char *str, int i, bool mode, void *ctx)

@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 20:54:17 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/11 16:31:39 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/07 17:24:19 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 static void	get_append(char **format, va_list *list, char **tmp)
 {
-	char fmt;
+	char	fmt;
 
 	if (**format == '%')
 	{

@@ -49,10 +49,10 @@ static void	tast_cmdprint(t_ast *ast, int level)
 	printf("PIPE\n");
 	printtabs(level + 1);
 	printf("FIRST:\n");
-	tast_printl(ast->u_node.link.first, level + 2);
+	tast_printl(ast->link.first, level + 2);
 	printtabs(level + 1);
 	printf("SECOND:\n");
-	tast_printl(ast->u_node.link.second, level + 2);
+	tast_printl(ast->link.second, level + 2);
 }
 
 static void	tast_printl(t_ast *ast, int level)
@@ -64,8 +64,8 @@ static void	tast_printl(t_ast *ast, int level)
 		tast_cmdprint(ast, level);
 	else
 	{
-		printf("CMD %s\n", ast->u_node.cmd->cmd);
-		lst = ast->u_node.cmd->args;
+		printf("CMD %s\n", ast->cmd->cmd);
+		lst = ast->cmd->args;
 		if (lst != NULL)
 		{
 			printtabs(level);
@@ -76,7 +76,7 @@ static void	tast_printl(t_ast *ast, int level)
 				lst = lst->next;
 			}
 		}
-		tiolst_print(ast->u_node.cmd->redirects, level);
+		tiolst_print(ast->cmd->redirects, level);
 	}
 }
 

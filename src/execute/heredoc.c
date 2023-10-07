@@ -25,7 +25,7 @@ void	readheredoc(t_ast *ast, int fd, const char *filename)
 	char	*lines;
 	t_iolst	*redirects;
 
-	redirects = ast->u_node.cmd->redirects;
+	redirects = ast->cmd->redirects;
 	while (redirects->next)
 		if (redirects->next->type == E_TTLLA)
 			redirects = redirects->next;

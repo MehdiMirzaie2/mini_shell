@@ -25,14 +25,14 @@ t_ast	*get_next_node(t_ast *ast, int num_cmds)
 	if (!ast || ast->type == E_ASTCMD)
 		return (ast);
 	while (i++ < go_right)
-		ast = ast->u_node.link.second;
+		ast = ast->link.second;
 	if (checked_left == false)
-		return (checked_left = true, ast->u_node.link.first);
-	if (ast->u_node.link.second->type == E_ASTCMD)
-		next_node = ast->u_node.link.second;
+		return (checked_left = true, ast->link.first);
+	if (ast->link.second->type == E_ASTCMD)
+		next_node = ast->link.second;
 	else
 	{
-		next_node = ast->u_node.link.second->u_node.link.first;
+		next_node = ast->link.second->link.first;
 		checked_left = false;
 		go_right++;
 		checked_left = true;

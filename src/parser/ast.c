@@ -40,18 +40,18 @@ void	ast_memman(t_ast **ast, t_asttype type, bool destroy)
 		ft_assert(ast == NULL, E_ERR_MALLOCFAIL, __FILE__, __LINE__);
 		**ast = builder;
 		if (type == E_ASTCMD)
-			cmd_memman(&(*ast)->u_node.cmd, false);
+			cmd_memman(&(*ast)->cmd, false);
 	}
 	else
 	{
 		if (*ast == NULL)
 			return ;
 		if ((*ast)->type == E_ASTCMD)
-			cmd_memman(&(*ast)->u_node.cmd, true);
+			cmd_memman(&(*ast)->cmd, true);
 		else
 		{
-			ast_memman(&(*ast)->u_node.link.first, E_ASTCMD, true);
-			ast_memman(&(*ast)->u_node.link.second, E_ASTCMD, true);
+			ast_memman(&(*ast)->link.first, E_ASTCMD, true);
+			ast_memman(&(*ast)->link.second, E_ASTCMD, true);
 		}
 		free(*ast);
 	}

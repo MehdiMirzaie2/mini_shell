@@ -26,7 +26,7 @@ void	astb_addcmd(t_astbuilder *builder)
 	t_ttoken		type;
 	t_astlinktype	link;
 
-	cmd_build((*builder->work)->u_node.cmd, &builder->current);
+	cmd_build((*builder->work)->cmd, &builder->current);
 	if (builder->current == NULL)
 		return ;
 	type = builder->current->type;
@@ -65,11 +65,11 @@ void	astb_branch(t_astbuilder *builder, t_astlinktype type)
 
 	latest = *builder->work;
 	if (latest->type == E_ASTCMD)
-		latest->u_node.cmd->has_redirect = true;
+		latest->cmd->has_redirect = true;
 	ast_memman(builder->work, E_ASTLINK, false);
-	(*builder->work)->u_node.link.first = latest;
-	(*builder->work)->u_node.link.type = type;
-	builder->work = &(*builder->work)->u_node.link.second;
+	(*builder->work)->link.first = latest;
+	(*builder->work)->link.type = type;
+	builder->work = &(*builder->work)->link.second;
 }
 
 void	astbuilder_memman(t_astbuilder **astb, bool destroy)

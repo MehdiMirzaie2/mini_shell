@@ -22,11 +22,11 @@ void	ast_expandall(t_ast *ast, t_env *env)
 		return ;
 	if (ast->type == E_ASTLINK)
 	{
-		ast_expandall(ast->u_node.link.first, env);
-		ast_expandall(ast->u_node.link.second, env);
+		ast_expandall(ast->link.first, env);
+		ast_expandall(ast->link.second, env);
 	}
 	else
-		cmd_expand(ast->u_node.cmd, env);
+		cmd_expand(ast->cmd, env);
 }
 
 static void	args_redirect_expand(t_arglst *arg, t_iolst *lst, t_env *env);

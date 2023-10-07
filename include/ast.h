@@ -53,7 +53,7 @@ struct s_ast
 			t_ast			*second;
 			t_astlinktype	type;
 		} link;
-	} u_node;
+	};
 };
 
 /* ast.c */

@@ -47,7 +47,7 @@ static void	open_file(t_ast *ast, int pipe1[2], int num_cmds)
 {
 	t_iolst	*redirects;
 
-	redirects = ast->u_node.cmd->redirects;
+	redirects = ast->cmd->redirects;
 	if (redirects == NULL)
 		if (is_last_cmd(num_cmds, pipe1))
 			return ;
@@ -90,10 +90,10 @@ static void	execute(t_ast *ast, t_env **our_env, int *exit_status, int num_cmds)
 			signal(SIGINT, SIG_IGN);
 			open_file(node, pipe1, num_cmds);
 			close(pipe1[0]);
-			if (is_builtin(node->u_node.cmd) || is_envbuiltin(node->u_node.cmd))
-				execute_builtin_cmds(node->u_node.cmd, our_env, exit_status);
+			if (is_builtin(node->cmd) || is_envbuiltin(node->cmd))
+				execute_builtin_cmds(node->cmd, our_env, exit_status);
 			else
-				execute_system_cmds(node->u_node.cmd, *our_env);
+				execute_system_cmds(node->cmd, *our_env);
 			exit(EXIT_SUCCESS);
 		}
 		redirect(pipe1[0], STDIN_FILENO);
@@ -110,17 +110,17 @@ void	process_ast(t_ast *ast, t_env **our_env, int *exit_status)
 	int			num_cmds;
 
 	// if (ast->type == E_ASTCMD)
-	// 	first_cmd = ast->u_node.cmd;
+	// 	first_cmd = ast->cmd;
 	// else
-	// 	first_cmd = ast->u_node.link.first->u_node.cmd;
+	// 	first_cmd = ast->link.first->cmd;
 	signal(SIGINT, SIG_IGN);
 	first_node = get_next_node(ast, 1);
-	first_cmd = first_node->u_node.cmd;
+	first_cmd = first_node->cmd;
 	if (!ft_strncmp(first_cmd->cmd, "exit", 5) || is_envbuiltin(first_cmd))
 	{
 		open_file(ast, NULL, 1);
-		execute_builtin_cmds(ast->u_node.cmd, our_env, exit_status);
-		ast = ast->u_node.link.second;
+		execute_builtin_cmds(ast->cmd, our_env, exit_status);
+		ast = ast->link.second;
 	}
 	num_cmds = get_num_cmd(ast);
 	execute(ast, our_env, exit_status, num_cmds);

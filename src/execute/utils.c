@@ -54,7 +54,7 @@ int	get_num_cmd(t_ast *ast)
 	num = 0;
 	while (ast)
 	{
-		ast = ast->u_node.link.second;
+		ast = ast->link.second;
 		num++;
 	}
 	return (num);

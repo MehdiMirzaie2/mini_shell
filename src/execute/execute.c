@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:07:14 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/07 09:35:26 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/09 14:48:31 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 #include <stdio.h>
 #include <sys/wait.h>
 
-static bool	is_last_cmd(int num_cmds, int pipe1[2])
+static bool	is_last_cmd(int num_cmds)
 {
 	if (num_cmds == 1)
 		return (true);
-	redirect(pipe1[1], STDOUT_FILENO);
 	return (false);
 }
 
@@ -27,20 +26,21 @@ static void	open_and_redirect(char *name, int rw, int permission)
 {
 	int	file_fd;
 
+	file_fd = 0;
 	if (!permission)
-		file_fd = open(name, rw);
+		file_fd = open(name, rw, 0644);
 	else
 		file_fd = open(name, rw, permission);
 	if (file_fd < 0)
-		error_exit(" No such file or directory\n", EXIT_FAILURE);
+		error_exit(ft_strfmt("%s: %s", name, "No such file or directory\n"), EXIT_FAILURE);
 	if (!permission)
 	{
 		if (redirect(file_fd, STDIN_FILENO) < 0)
-			error_exit(" No such file or directory\n", EXIT_FAILURE);
+			error_exit(ft_strfmt("%s: %s", name, "No such file or directory\n"), EXIT_FAILURE);
 	}
 	else
 		if (redirect(file_fd, STDOUT_FILENO) < 0)
-			error_exit(" No such file or directory\n", EXIT_FAILURE);
+			error_exit(ft_strfmt("%s: %s", name, "No such file or directory\n"), EXIT_FAILURE);
 }
 
 static void	open_file(t_ast *ast, int pipe1[2], int num_cmds)
@@ -49,8 +49,12 @@ static void	open_file(t_ast *ast, int pipe1[2], int num_cmds)
 
 	redirects = ast->cmd->redirects;
 	if (redirects == NULL)
-		if (is_last_cmd(num_cmds, pipe1))
+	{
+		if (is_last_cmd(num_cmds))
 			return ;
+		else
+			redirect(pipe1[1], STDOUT_FILENO);
+	}
 	while (redirects)
 	{
 		if (redirects->type == E_TTLLA)
@@ -71,6 +75,11 @@ static void	open_file(t_ast *ast, int pipe1[2], int num_cmds)
 				open_and_redirect(redirects->str,
 					O_WRONLY | O_CREAT | O_APPEND, 0644);
 		}
+		else if (!is_last_cmd(num_cmds))
+			redirect(pipe1[1], STDOUT_FILENO);
+		else
+			if (pipe1)
+				close(pipe1[1]);
 		redirects = redirects->next;
 	}
 }
@@ -88,6 +97,7 @@ static void	execute(t_ast *ast, t_env **our_env, int *exit_status, int num_cmds)
 		if (fork() == 0)
 		{
 			signal(SIGINT, SIG_IGN);
+			signal(SIGQUIT, SIG_IGN);
 			open_file(node, pipe1, num_cmds);
 			close(pipe1[0]);
 			if (is_builtin(node->cmd) || is_envbuiltin(node->cmd))
@@ -105,27 +115,26 @@ static void	execute(t_ast *ast, t_env **our_env, int *exit_status, int num_cmds)
 void	process_ast(t_ast *ast, t_env **our_env, int *exit_status)
 {
 	const int	in = dup(STDIN_FILENO);
-	t_cmd		*first_cmd = NULL;
-	t_ast		*first_node = NULL;
+	const int	out = dup(STDOUT_FILENO);
 	int			num_cmds;
 
-	// if (ast->type == E_ASTCMD)
-	// 	first_cmd = ast->cmd;
-	// else
-	// 	first_cmd = ast->link.first->cmd;
 	signal(SIGINT, SIG_IGN);
-	first_node = get_next_node(ast, 1);
-	first_cmd = first_node->cmd;
-	if (!ft_strncmp(first_cmd->cmd, "exit", 5) || is_envbuiltin(first_cmd))
+	if (ast->type == E_ASTCMD && (is_builtin(ast->cmd)
+		|| is_envbuiltin(ast->cmd)))
 	{
 		open_file(ast, NULL, 1);
 		execute_builtin_cmds(ast->cmd, our_env, exit_status);
-		ast = ast->link.second;
 	}
-	num_cmds = get_num_cmd(ast);
-	execute(ast, our_env, exit_status, num_cmds);
-	while (num_cmds-- > 0)
-		wait(exit_status);
-	wait(NULL);
+	else
+	{
+		signal(SIGINT, SIG_IGN);
+		num_cmds = get_num_cmd(ast);
+		init_termios();
+		execute(ast, our_env, exit_status, num_cmds);
+		reset_termios();
+		while (num_cmds-- > 0)
+			wait(exit_status);
+	}
+	dup2(out, STDOUT_FILENO);
 	dup2(in, STDIN_FILENO);
 }

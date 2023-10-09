@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_handle.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 23:51:38 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/06 16:26:35 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/07 13:23:37 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

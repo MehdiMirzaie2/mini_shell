@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 16:48:35 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/06 16:42:33 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/07 13:43:02 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,13 @@ void	delete_tempfile(void)
 	}
 }
 
+void handle_siquitsystem(int sig)
+{
+	(void)sig;
+	// exit(EXIT_FAILURE);
+	ft_putstr_fd("\n^\\Quit: 3 hello\n", 2);
+}
+
 // void	handle_sigusr1(int sig)
 // {
 // 	if (sig == SIGUSR1)
@@ -48,6 +55,8 @@ void	handle_sigintheredoc(int sig)
 void	handle_sigintexecute(int sig)
 {
 	(void)sig;
+	write(2, "\n", 1);
+	// exit(EXIT_FAILURE);
 	return ;
 }
 

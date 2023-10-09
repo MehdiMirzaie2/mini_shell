@@ -6,3 +6,7 @@ minishell
 *.swo
 .build/
 *.a
+out
+infile
+outfile
+

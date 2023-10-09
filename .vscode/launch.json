@@ -11,14 +11,22 @@
     },
     {
       "name": "C/C++ Runner: Debug Session",
-      "type": "lldb",
+      "type": "cppdbg",
       "request": "launch",
       "args": [],
-      "stopAtEntry": true,
+      "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/Users/mehdimirzaie/Desktop/mini2",
-      "program": "/Users/mehdimirzaie/Desktop/mini2/minishell",
-      "MIMode": "gdb"
+      "cwd": "/Users/mehdimirzaie/Desktop/shell2/src",
+      "program": "/Users/mehdimirzaie/Desktop/shell2/src/build/Debug/outDebug",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
     }
   ]
 }

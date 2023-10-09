@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 13:55:32 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/09/25 17:47:45 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/07 13:19:14 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,12 @@ void	ft_putnbr_fd(int n, int fd);
 // christopher
 char	*ft_strfmt(char *fmt, ...);
 
+
+// mehdi
+/*
+removes all the "to_remove character" from the haystack.
+*/
+char	*ft_remove_char(char *haystack, char to_remove);
 // bonus
 typedef struct s_list
 {

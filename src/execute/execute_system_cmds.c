@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_system_cmds.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:33:30 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/06 16:48:42 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/07 19:29:08 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	*cmd_path(char **splitted_paths, char *cmd)
 		++splitted_paths;
 	}
 	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd(" :command not found\n", 2);
+	ft_putstr_fd(" : command not found\n", 2);
 	exit(127);
 }
 
@@ -116,12 +116,26 @@ char **env_to_array(t_env *env)
 	return (array);
 }
 
+int isDirectoryExists(const char *path)
+{
+    struct stat stats;
+
+    stat(path, &stats);
+
+    // Check for file existence
+    if (S_ISDIR(stats.st_mode))
+        return 1;
+
+    return 0;
+}
+
 void	execute_system_cmds(t_cmd *cmd, t_env *env)
 {
 	char		**cmd_args_joined;
 	char		*cmd_plus_path;
 	char		**paths_splitted;
 
+	signal(SIGINT, handle_sigintexecute);
 	cmd_args_joined = join_cmd(cmd);
 	if (ft_strchr(cmd->cmd, '/'))
 	{
@@ -135,11 +149,16 @@ void	execute_system_cmds(t_cmd *cmd, t_env *env)
 		paths_splitted = ft_split(env_get(env, "PATH"), ':');
 		cmd_plus_path = cmd_path(paths_splitted, cmd->cmd);
 	}
-	//signal(SIGINT, SIG_DFL);
+	// signal(SIGQUIT, handle_siquitsystem);
 	if (execve(cmd_plus_path, cmd_args_joined, env_to_array(env)) < 0)
 	{
-		ft_putstr_fd(strerror(errno), 2);
-		ft_putstr_fd("failed at execve\n", 2);
-		exit(EXIT_FAILURE);
+		if (isDirectoryExists(cmd->cmd))
+		{
+			ft_putstr_fd(cmd->cmd, 2);
+			ft_putstr_fd(": is a directory\n", 2);
+		}
+		else
+			ft_putstr_fd(ft_strfmt("%s: %s\n", cmd_args_joined[0], strerror(errno)), 2);
+		exit(126);
 	}
 }

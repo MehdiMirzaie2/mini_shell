@@ -56,9 +56,9 @@ void	init_rl(t_env *our_env, int	*exit_status)
 			continue;
 		reset_termios();
 		lst = tlst_create(line_read);
-		tlst_print(lst);
+		// tlst_print(lst);
 		ast = ast_build(lst);
-		tast_print(ast);
+		// tast_print(ast);
 		ast_expandall(ast, our_env);
 		line_read = NULL;
 		process_ast(ast, &our_env, exit_status);
@@ -77,7 +77,7 @@ int	main(int argc, char **argv, char **env)
 	our_env = malloc(sizeof(t_env));
 	create_env(our_env, env);
 	signal(SIGINT, handle_sigint);
-	signal(SIGUSR1, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	init_rl(our_env, &exit_status);
 	free_env(our_env);
 	return (0);

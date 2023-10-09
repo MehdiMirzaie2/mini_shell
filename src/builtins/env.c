@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:02 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/05 12:43:03 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/07 12:15:55 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@ int	unset(t_env *our_env, t_arglst *args)
 	prev = ref;
 	if (args == NULL)
 		return (0);
-	while (ft_strcmp(ref->name, args->str) != 0)
+	while (ref && ft_strcmp(ref->name, args->str) != 0)
 	{
 		prev = ref;
 		ref = ref->next;
 	}
+	if (ref == NULL)
+		return (0);
 	to_free = ref;
 	prev->next = prev->next->next;
 	free(to_free->args);
@@ -74,8 +76,10 @@ int	ft_export(t_env **our_env, t_arglst *args)
 	if (args == NULL)
 		return (0);
 	name_and_args = ft_split(args->str, '=');
-	if (!valid_identifier(name_and_args, args->str) || name_and_args[1] == NULL)
+	if (!valid_identifier(name_and_args, args->str))
 		return (256);
+	if (!ft_strchr(args->str, '='))
+		return (0);
 	name_len = ft_strlen(name_and_args[0]);
 	while (ref && ft_strncmp(ref->name, name_and_args[0], name_len) != 0)
 		ref = ref->next;

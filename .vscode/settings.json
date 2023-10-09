@@ -30,7 +30,8 @@
   ],
   "C_Cpp.errorSquiggles": "disabled",
   "files.associations": {
-    "termios.h": "c"
+    "termios.h": "c",
+    "typeinfo": "c"
   },
   "C_Cpp_Runner.msvcWarnings": [
     "/W4",

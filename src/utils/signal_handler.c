@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 16:48:35 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/07 13:43:02 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/10 10:14:24 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	handle_sigintexecute(int sig)
 {
 	(void)sig;
 	write(2, "\n", 1);
-	// exit(EXIT_FAILURE);
 	return ;
 }
 

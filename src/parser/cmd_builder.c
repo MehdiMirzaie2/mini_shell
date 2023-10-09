@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:22:01 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/06 16:28:26 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/09 22:23:06 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,12 @@ static void	cmd_redir(t_cmd *cmd, t_token **adv)
 // static void	cmd_redir(t_cmd *cmd, t_token **adv)
 // {
 // 	const t_token	tok = (**adv);
-// 	// t_iolst **const	targets[] = {
-// 	// [E_TTLA] = &cmd->strin,
-// 	// [E_TTRA] = &cmd->strout,
-// 	// [E_TTRRA] = &cmd->strapp,
-// 	// [E_TTLLA] = &cmd->heredoc
-// 	// };
+// 	t_iolst **const	targets[] = {
+// 	[E_TTLA] = &cmd->strin,
+// 	[E_TTRA] = &cmd->strout,
+// 	[E_TTRRA] = &cmd->strapp,
+// 	[E_TTLLA] = &cmd->heredoc
+// 	};
 
 // 	cmd->has_redirect = true;
 // 	if ((tok.type & E_TTLR) == 0)
@@ -72,9 +72,9 @@ static void	cmd_redir(t_cmd *cmd, t_token **adv)
 // 		*adv = (*adv)->next->next;
 // 		return ;
 // 	}
-// 	//printf("missing or unexpected token");
-// 	//logmsg("unexpected token"); // handle more info
-// }
+// // 	//printf("missing or unexpected token");
+// // 	//logmsg("unexpected token"); // handle more info
+// // }
 
 static void	cmd_start(t_cmd *cmd, t_token **adv)
 {

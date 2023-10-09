@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:33:30 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/07 19:29:08 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/09 15:21:56 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,78 +25,11 @@ char	*get_lastredirect(t_iolst	*redirects)
 	return (ref_redirects->str);
 }
 
-char	**join_cmd(t_cmd *cmd)
+char	**env_to_array(t_env *env)
 {
-	char		**joined;
-	int			num_args;
-	t_arglst	*args_ref;
-
-	num_args = get_num_args(cmd);
-	joined = malloc(sizeof(char *) * (num_args + 2));
-	joined[0] = cmd->cmd;
-	if (num_args == 0)
-		return (joined[1] = NULL, joined);
-	joined[num_args + 1] = NULL;
-	num_args = 1;
-	args_ref = cmd->args;
-	while (args_ref && num_args >= 1)
-	{
-		joined[num_args++] = args_ref->str;
-		args_ref = args_ref->next;
-	}
-	return (joined);
-}
-
-char	*ft_cmdcat(char *path, char *cmd)
-{
-	int		len_path;
-	int		len_cmd;
-	char	*file_path;
-	int		i;
-	int		j;
-
-	i = -1;
-	j = -1;
-	len_path = ft_strlen(path);
-	len_cmd = ft_strlen(cmd);
-	file_path = malloc(sizeof(char) * (len_cmd + len_path + 2));
-	if (file_path == NULL)
-		return (NULL);
-	while (++i < len_path)
-		file_path[i] = path[i];
-	file_path[i++] = '/';
-	while (++j < len_cmd)
-		file_path[i + j] = cmd[j];
-	file_path[i + j] = '\0';
-	return (file_path);
-}
-
-char	*cmd_path(char **splitted_paths, char *cmd)
-{
-	char	*file_path;
-	int		val;
-
-	if (strncmp(cmd, "./", 2) == 0)
-		return (cmd);
-	while (*splitted_paths)
-	{
-		file_path = ft_cmdcat(*splitted_paths, cmd);
-		val = access(file_path, X_OK);
-		if (val == 0)
-			return (file_path);
-		free(file_path);
-		++splitted_paths;
-	}
-	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd(" : command not found\n", 2);
-	exit(127);
-}
-
-char **env_to_array(t_env *env)
-{
-	char **array;
-	t_env *next;
-	int	size;
+	char	**array;
+	t_env	*next;
+	int		size;
 
 	next = env;
 	size = 0;
@@ -116,17 +49,26 @@ char **env_to_array(t_env *env)
 	return (array);
 }
 
-int isDirectoryExists(const char *path)
+int	is_directory_exists(const char *path)
 {
-    struct stat stats;
+	struct stat	stats;
 
-    stat(path, &stats);
+	stat(path, &stats);
+	if (S_ISDIR(stats.st_mode))
+		return (1);
+	return (0);
+}
 
-    // Check for file existence
-    if (S_ISDIR(stats.st_mode))
-        return 1;
-
-    return 0;
+void error_execve(char *cmd, char *path)
+{
+	if (is_directory_exists(cmd))
+	{
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": is a directory\n", 2);
+	}
+	else
+		ft_putstr_fd(ft_strfmt("%s: %s\n", path,
+				strerror(errno)), 2);
 }
 
 void	execute_system_cmds(t_cmd *cmd, t_env *env)
@@ -149,16 +91,9 @@ void	execute_system_cmds(t_cmd *cmd, t_env *env)
 		paths_splitted = ft_split(env_get(env, "PATH"), ':');
 		cmd_plus_path = cmd_path(paths_splitted, cmd->cmd);
 	}
-	// signal(SIGQUIT, handle_siquitsystem);
 	if (execve(cmd_plus_path, cmd_args_joined, env_to_array(env)) < 0)
 	{
-		if (isDirectoryExists(cmd->cmd))
-		{
-			ft_putstr_fd(cmd->cmd, 2);
-			ft_putstr_fd(": is a directory\n", 2);
-		}
-		else
-			ft_putstr_fd(ft_strfmt("%s: %s\n", cmd_args_joined[0], strerror(errno)), 2);
+		error_execve(cmd->cmd, cmd_args_joined[0]);
 		exit(126);
 	}
 }

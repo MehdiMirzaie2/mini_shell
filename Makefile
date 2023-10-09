@@ -52,6 +52,7 @@ SRCS        :=	main.c \
 				execute/execute_system_cmds.c \
 				execute/get_next_node.c \
 				execute/utils.c \
+				execute/execve_arg_create.c \
 				execute/heredoc.c
 
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)

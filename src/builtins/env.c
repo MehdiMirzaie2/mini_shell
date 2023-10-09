@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:02 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/07 12:15:55 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/09 15:10:26 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,16 @@ void	ft_env(t_env *our_env)
 	ref = our_env;
 	while (ref->next != NULL)
 	{
-		printf("%s=%s\n", ref->name, ref->args);
-		ref = ref->next;
+		if (!ft_strcmp(ref->name, "?"))
+			ref = ref->next;
+		else
+		{
+			printf("%s=%s\n", ref->name, ref->args);
+			ref = ref->next;
+		}
 	}
-	printf("%s=%s\n", ref->name, ref->args);
+	if (!ft_strcmp(ref->name, "?"))
+			ref = ref->next;
+	else
+		printf("%s=%s\n", ref->name, ref->args);
 }

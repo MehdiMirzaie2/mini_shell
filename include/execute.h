@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:31:46 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/04 00:01:19 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/09 14:59:59 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,9 @@ bool	is_builtin(t_cmd	*cmd);
 same as is_builtin but it checks if the cmd will change the env;
 */
 bool	is_envbuiltin(t_cmd	*cmd);
+
+char	**join_cmd(t_cmd *cmd);
+char	*ft_cmdcat(char *path, char *cmd);
+char	*cmd_path(char **splitted_paths, char *cmd);
 
 #endif

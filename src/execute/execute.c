@@ -87,7 +87,7 @@ static void	execute(t_ast *ast, t_env **our_env, int *exit_status, int num_cmds)
 			perror("error making pipe\n");
 		if (fork() == 0)
 		{
-			signal(SIGINT, SIG_IGN);
+			signal(SIGINT, SIG_DFL);
 			open_file(node, pipe1, num_cmds);
 			close(pipe1[0]);
 			if (is_builtin(node->cmd) || is_envbuiltin(node->cmd))

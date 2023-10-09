@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 23:10:17 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/07 17:21:01 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/09 16:42:38 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ t_sd_stat	sd_until_arg_end(char *str, int i, bool check, void *pctx)
 	else if ((str[i] == '<' || str[i] == '>') && \
 			((get_ttoken(&str[i + 1]) & E_TTLR) == 0))
 		return (E_SD_STOP | E_SD_COPY);
+	else if (str[i] == '|')
+			return (E_SD_STOP | ((i == 0) * E_SD_COPY));
 	return (E_SD_COPY);
 }
 

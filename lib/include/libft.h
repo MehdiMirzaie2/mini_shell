@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 13:55:32 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/10 14:06:21 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/10 21:24:12 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void		ft_putnbr_fd(int n, int fd);
 
 // christopher
 char		*ft_strfmt(char *fmt, ...);
+void	ft_printf_fd(int fd, char *fmt, ...);
 
 
 // mehdi

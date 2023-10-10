@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:22:01 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/10 18:00:17 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/10 21:27:38 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,11 @@ static int	cmd_redir(t_cmd *cmd, t_token **adv)
 		*adv = (*adv)->next->next;
 		return (0) ;
 	}
-	// TODO: Handle meory leaks
+	// TODO: Handle memory leaks
 	if (tok.next == NULL)
-		ft_putstr_fd("msh: parser error near \\n\n", 2);
+		ft_putstr_fd("msh: syntax error near `newline`\n", 2);
 	else
-		ft_putstr_fd(ft_strfmt("msh: parser error near `%s'\n", tok.next->str), 2);
+		ft_printf_fd(STDERR_FILENO, "msh: syntax error near `%s`\n", tok.next->str);
 	return (1);
 }
 

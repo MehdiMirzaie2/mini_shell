@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 12:49:13 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/05 14:08:02 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/10 22:19:29 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,26 @@ void	create_env(t_env *our_env, char **env)
 	}
 }
 
-void	free_env(t_env *env)
+void	free_env(t_env *env, bool all)
 {
-	if (env == NULL)
-		return ;
-	free_env(env->next);
-	free(env->name);
-	free(env->args);
-	free(env);
+	t_env *next;
+
+	if (all)
+	{
+		next = env;
+		while (next)
+		{
+			env = next;
+			next = next->next;
+			free(env->name);
+			free(env->args);
+			free(env);
+		}
+	}
+	else
+	{
+		free(env->name);
+		free(env->args);
+		free(env);
+	}
 }

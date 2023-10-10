@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:26:51 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/10 11:01:39 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/10 22:19:57 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void		add_node_to_env(t_env **our_env, char *name, char *args);
 /* env.c */
 /* Creates a new environement variable list */
 void		create_env(t_env *our_env, char **env);
-void		free_env(t_env *env);
+void		free_env(t_env *env, bool all);
 
 /* Return the value of an environement variable.
  * Returns NULL if environement variable doesn't exist.

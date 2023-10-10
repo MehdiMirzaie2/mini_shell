@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:02 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/10 17:09:10 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/10 22:21:33 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@ bool	valid_identifier(char **name_and_args, char *cmd)
 	return (true);
 }
 
-int	unset(t_env *our_env, t_arglst *args)
+int	unset(t_env **env, t_arglst *args)
 {
+	t_env	*const our_env = *env;
 	t_env	*ref;
 	t_env	*prev;
 	t_env	*to_free;
@@ -46,10 +47,11 @@ int	unset(t_env *our_env, t_arglst *args)
 	if (ref == NULL)
 		return (0);
 	to_free = ref;
-	prev->next = prev->next->next;
-	free(to_free->args);
-	free(to_free->name);
-	free(to_free);
+	if (prev == ref)
+		*env = our_env->next;
+	else
+		prev->next = prev->next->next;
+	free_env(to_free, false);
 	return (0);
 }
 

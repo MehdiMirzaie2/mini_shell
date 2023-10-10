@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 11:03:38 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/10 18:10:14 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/10 22:20:21 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ void	init_rl(t_env *our_env, int	*exit_status)
 			continue ;
 		reset_termios();
 		lst = tlst_create(line_read);
-		//tlst_print(lst);
+		if (env_get(our_env, "MSHDBG"))
+			tlst_print(lst);
 		ast = ast_build(lst);
 		if (ast)
 		{
@@ -79,7 +80,7 @@ int	main(int argc, char **argv, char **env)
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	init_rl(our_env, &exit_status);
-	free_env(our_env);
+	free_env(our_env, true);
 	return (0);
 }
 

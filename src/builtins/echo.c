@@ -6,45 +6,33 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 11:06:15 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/09 13:07:59 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/10 17:08:41 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-char	*join_args(t_arglst *args)
-{
-	char	*args_joined;
-	bool	has_flag;
-
-	args_joined = NULL;
-	has_flag = false;
-	if (!args)
-		return ("\n");
-	while (args)
-	{
-		if (!ft_strncmp(args->str, "-n", 2))
-			has_flag = true;
-		else
-		{
-			if (args_joined == NULL)
-				args_joined = args->str;
-			else
-				args_joined = ft_strjoin(strcat(args_joined, " "), args->str);
-		}
-		args = args->next;
-	}
-	if (!has_flag)
-		args_joined = ft_strjoin(args_joined, "\n");
-	return (args_joined);
-}
-
 void	ft_echo(t_cmd *cmd)
 {
-	char	*args_joined;
+	t_arglst	*args;
+	int			println;
 
-	args_joined = join_args(cmd->args);
-	if (args_joined == NULL)
-		return ;
-	printf("%s", args_joined);
+	println = 1;
+	args = cmd->args;
+	if (args == NULL)
+		println = 1;
+	else if (ft_strncmp("-n", args->str, 2) == 0)
+	{
+		println = 0;
+		args = args->next;
+	}
+	while (args)
+	{
+		printf("%s", args->str);
+		args = args->next;
+		if (args)
+			printf(" ");
+	}
+	if (println)
+		printf("\n");
 }

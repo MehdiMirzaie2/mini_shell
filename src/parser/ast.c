@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 13:52:47 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/09 20:50:10 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/10 17:53:47 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,12 @@ t_ast	*ast_build(t_token *tokens)
 	builder->current = tokens;
 	ast_memman(&builder->head, E_ASTCMD, false);
 	builder->work = &builder->head;
-	astb_start(builder);
+	if(astb_start(builder))
+	{
+		ast_memman(&builder->head, E_ASTLINK, true);
+		astbuilder_memman(&builder, true);
+		return (NULL);
+	}
 	ast = builder->head;
 	astbuilder_memman(&builder, true);
 	return (ast);

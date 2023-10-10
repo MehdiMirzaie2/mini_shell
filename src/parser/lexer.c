@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 23:10:17 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/10 15:58:23 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/10 19:10:05 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ char	*tokstr_advance(char *str, char c, bool quoted)
 t_sd_stat	sd_until_arg_end(char *str, int i, bool check, void *pctx)
 {
 	char *const	depth = pctx;
+	const bool	arrow = str && (str[i] == '>' || str[i] == '<');
+	const bool	arrow_next = str && *str && (str[i+1] == '>' || str[i+1] == '<');
 
 	if (str[i] == '\0')
 		return (E_SD_STOP);
@@ -77,8 +79,9 @@ t_sd_stat	sd_until_arg_end(char *str, int i, bool check, void *pctx)
 		return (E_SD_COPY);
 	if (ft_isspace(str[i]))
 		return (E_SD_STOP);
-	else if ((str[i] == '<' || str[i] == '>') && \
-			((get_ttoken(&str[i + 1]) & E_TTLR) == 0))
+	else if (arrow && arrow_next && str[i] != str[i + 1])
+		return (E_SD_STOP | E_SD_COPY);
+	else if (arrow && ((get_ttoken(&str[i + 1]) & E_TTLR) == 0))
 		return (E_SD_STOP | E_SD_COPY);
 	else if (str[i] == '|')
 		return (E_SD_STOP | ((i == 0) * E_SD_COPY));

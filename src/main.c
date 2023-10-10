@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 11:03:38 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/10 15:37:28 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/10 18:10:14 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,17 @@ void	init_rl(t_env *our_env, int	*exit_status)
 			continue ;
 		reset_termios();
 		lst = tlst_create(line_read);
+		//tlst_print(lst);
 		ast = ast_build(lst);
-		ast_expandall(ast, our_env);
-		line_read = NULL;
-		process_ast(ast, &our_env, exit_status);
-		// handle_heredoc(ast->cmd->redirects);
+		if (ast)
+		{
+			ast_expandall(ast, our_env);
+			line_read = NULL;
+			process_ast(ast, &our_env, exit_status);
+			// handle_heredoc(ast->cmd->redirects);
+		}
 		tlst_destroy(lst);
-		ast_memman(&ast, 0, true);
+		ast_memman(&ast, E_ASTLINK, true);
 	}
 }
 

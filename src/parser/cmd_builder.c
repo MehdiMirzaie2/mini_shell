@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:22:01 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/09 22:23:06 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/10 18:00:17 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,25 @@ void	cmd_memman(t_cmd **cmd, bool destroy)
 	}
 }
 
-static void	cmd_redir(t_cmd *cmd, t_token **adv)
+static int	cmd_redir(t_cmd *cmd, t_token **adv)
 {
 	const t_token	tok = (**adv);
 
 	cmd->has_redirect = true;
 	if ((tok.type & E_TTLR) == 0)
-		return ;
+		return (0);
 	if (tok.next != NULL && (tok.next->type & E_TTWG) != 0)
 	{
 		iolst_add(tok.type, tok.next->str, 1, &cmd->redirects);
 		*adv = (*adv)->next->next;
-		return ;
+		return (0) ;
 	}
+	// TODO: Handle meory leaks
+	if (tok.next == NULL)
+		ft_putstr_fd("msh: parser error near \\n\n", 2);
+	else
+		ft_putstr_fd(ft_strfmt("msh: parser error near `%s'\n", tok.next->str), 2);
+	return (1);
 }
 
 // static void	cmd_redir(t_cmd *cmd, t_token **adv)
@@ -76,12 +82,15 @@ static void	cmd_redir(t_cmd *cmd, t_token **adv)
 // // 	//logmsg("unexpected token"); // handle more info
 // // }
 
-static void	cmd_start(t_cmd *cmd, t_token **adv)
+static int	cmd_start(t_cmd *cmd, t_token **adv)
 {
 	const t_token	tk = (**adv);
 
 	if ((tk.type & E_TTWG) == 0)
-		cmd_redir(cmd, adv);
+	{	
+		if (cmd_redir(cmd, adv))
+			return (1);
+	}
 	else
 	{
 		if (cmd->cmd == NULL)
@@ -90,18 +99,21 @@ static void	cmd_start(t_cmd *cmd, t_token **adv)
 			arglst_add(tk.str, 1, &cmd->args)->expand = (tk.type & E_TTSQ) == 0;
 		*adv = tk.next;
 	}
+	return (0);
 }
 
-void	cmd_build(t_cmd *cmd, t_token **tokenadv)
+int	cmd_build(t_cmd *cmd, t_token **tokenadv)
 {
 	t_ttoken	token;
 
 	token = (*tokenadv)->type;
 	while ((token & E_TTNC) == 0)
 	{
-		cmd_start(cmd, tokenadv);
+		if (cmd_start(cmd, tokenadv))
+			return  (1);
 		if (*tokenadv == NULL)
 			break ;
 		token = (*tokenadv)->type;
 	}
+	return (0);
 }

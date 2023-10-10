@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 13:21:50 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/03 15:52:00 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/10 19:07:43 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdio.h>
@@ -40,7 +40,7 @@ bool	istok_advancable(t_ttoken tok)
 		E_TTLLA, E_TTRRA,
 	};
 	unsigned int	i;
-
+	// TODO: Unused remove
 	i = 0;
 	while (i < sizeof adv)
 	{

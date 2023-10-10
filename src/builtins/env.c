@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:02 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/10 14:23:41 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/10 17:09:10 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	ft_env(t_env *our_env)
 		}
 	}
 	if (!ft_strcmp(ref->name, "?"))
-			ref = ref->next;
+		ref = ref->next;
 	else
 		printf("%s=%s\n", ref->name, ref->args);
 }

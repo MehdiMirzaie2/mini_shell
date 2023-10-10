@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 11:06:15 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/10 18:13:07 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/10 18:15:55 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_echo(t_cmd *cmd)
 	args = cmd->args;
 	if (args == NULL)
 		println = 1;
-	else if (ft_strncmp("-n", args->str, 3) == 0)
+	while (args && ft_strncmp("-n", args->str, 3) == 0)
 	{
 		println = 0;
 		args = args->next;

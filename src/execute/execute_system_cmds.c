@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:33:30 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/09 15:21:56 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/10 11:29:47 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	is_directory_exists(const char *path)
 	return (0);
 }
 
-void error_execve(char *cmd, char *path)
+void	error_execve(char *cmd, char *path)
 {
 	if (is_directory_exists(cmd))
 	{
@@ -77,7 +77,8 @@ void	execute_system_cmds(t_cmd *cmd, t_env *env)
 	char		*cmd_plus_path;
 	char		**paths_splitted;
 
-	signal(SIGINT, handle_sigintexecute);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, handle_sigintexecute);
 	cmd_args_joined = join_cmd(cmd);
 	if (ft_strchr(cmd->cmd, '/'))
 	{

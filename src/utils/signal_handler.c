@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 16:48:35 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/10 10:14:24 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/10 11:24:23 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,11 @@ void	delete_tempfile(void)
 	}
 }
 
-void handle_siquitsystem(int sig)
+void	handle_siquitsystem(int sig)
 {
 	(void)sig;
-	// exit(EXIT_FAILURE);
 	ft_putstr_fd("\n^\\Quit: 3 hello\n", 2);
 }
-
-// void	handle_sigusr1(int sig)
-// {
-// 	if (sig == SIGUSR1)
-// 	{
-// 		delete_tempfile();
-// 		exit(EXIT_SUCCESS);
-// 	}
-// }
 
 void	handle_sigintheredoc(int sig)
 {
@@ -55,7 +45,7 @@ void	handle_sigintheredoc(int sig)
 void	handle_sigintexecute(int sig)
 {
 	(void)sig;
-	write(2, "\n", 1);
+	write(2, "Quit: 3\n", 7);
 	return ;
 }
 

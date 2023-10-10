@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 13:41:38 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/03 22:05:17 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/10 12:18:22 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ bool	is_envbuiltin(t_cmd	*cmd)
 	command = cmd->cmd;
 	if (!ft_strncmp(command, "cd", 2) || !ft_strncmp(command, "env", 3)
 		|| !ft_strncmp(command, "pwd", 3) || !ft_strncmp(command, "export", 6)
-		|| !ft_strncmp(command, "unset", 5))
+		|| !ft_strncmp(command, "unset", 5) || !ft_strncmp(command, "exit", 4))
 		return (true);
 	return (false);
 }

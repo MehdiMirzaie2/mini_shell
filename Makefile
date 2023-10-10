@@ -47,6 +47,7 @@ SRCS        :=	main.c \
 				builtins/echo.c \
 				builtins/pwd.c \
 				builtins/exit.c \
+				execute/process_ast.c \
 				execute/execute.c \
 				execute/execute_builtin_cmds.c \
 				execute/execute_system_cmds.c \

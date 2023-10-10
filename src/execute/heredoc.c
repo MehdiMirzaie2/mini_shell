@@ -6,12 +6,13 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 17:54:48 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/07 09:34:37 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/10 16:05:58 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 #include "execute.h"
+
 
 void	error_exit(char *error, int val)
 {
@@ -20,15 +21,10 @@ void	error_exit(char *error, int val)
 	exit(val);
 }
 
-void	readheredoc(t_ast *ast, int fd, const char *filename)
+void	readheredoc(t_iolst *redirects, int fd, const char *filename)
 {
 	char	*lines;
-	t_iolst	*redirects;
 
-	redirects = ast->cmd->redirects;
-	while (redirects->next)
-		if (redirects->next->type == E_TTLLA)
-			redirects = redirects->next;
 	signal(SIGINT, handle_sigintheredoc);
 	lines = readline("heredoc> ");
 	if (!lines)
@@ -52,7 +48,7 @@ void	readheredoc(t_ast *ast, int fd, const char *filename)
 	}
 }
 
-void	handle_heredoc(t_ast *ast)
+void	handle_heredoc(t_iolst *redirects)
 {
 	const char	*filename = "/tmp/mytempfileXXXXXX";
 	int			fd;
@@ -61,7 +57,7 @@ void	handle_heredoc(t_ast *ast)
 	if (fd == -1)
 		error_exit("error making temp file for heredoc", 127);
 	init_termios();
-	readheredoc(ast, fd, filename);
+	readheredoc(redirects, fd, filename);
 	reset_termios();
 	close(fd);
 	fd = open(filename, O_RDONLY);

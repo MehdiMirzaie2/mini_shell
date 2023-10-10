@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:31:46 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/09 14:59:59 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/10 15:29:40 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,16 @@ enum e_permissions
 	E_APPEND = O_WRONLY | O_CREAT | O_APPEND,
 };
 
+void	execute(t_ast *ast, t_env **our_env, int *exit_status, int num_cmds);
+void	open_file(t_ast *ast, int pipe1[2], int num_cmds);
+
 t_ast	*get_next_node(t_ast *ast, int num_cmds);
 void	execute_builtin_cmds(t_cmd *cmd_struct, t_env **our_env,
 			int *exit_status);
 void	execute_system_cmds(t_cmd *cmd, t_env *env);
 void	process_ast(t_ast *ast, t_env **our_env, int *exit_status);
-void	handle_heredoc(t_ast *ast);
+// void	handle_heredoc(t_ast *ast);
+void	handle_heredoc(t_iolst *redirects);
 void	error_exit(char *error, int val);
 
 // utils

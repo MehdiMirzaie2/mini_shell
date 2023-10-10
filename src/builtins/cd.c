@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 21:54:18 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/05 12:14:29 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/10 12:12:28 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,10 @@ void	update_pwd(t_env **our_env)
 
 int	ft_cd(t_cmd *cmd, t_env **our_env)
 {
-	if (cmd->args == NULL)
+	if (cmd->args == NULL || !ft_strcmp(cmd->args->str, "~"))
 		chdir(getenv("HOME"));
+	else if (cmd->args->next != NULL)
+		return (0);
 	else if (chdir(cmd->args->str) == -1)
 	{
 		write(2, "cd: ", 4);

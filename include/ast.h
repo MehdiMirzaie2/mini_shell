@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 02:47:59 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/05 14:19:20 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/10 11:02:04 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,17 +69,4 @@ void	astbuilder_memman(t_astbuilder **astb, bool destroy);
 /* debug_ast.c */
 void	tast_print(t_ast *ast);
 
-// Should we use this struct instead to return an ast or an error?
-// struct s_astinfo
-// {
-// 	enum {
-// 		OKAY,
-// 		ERROR
-// 	} tag;
-// 	union
-// 	{
-// 		t_ast *ast;
-// 		char *error;
-// 	};
-// };
 #endif

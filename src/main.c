@@ -1,14 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: mmirzaie  <mmirzaie@student.42.fr>			+#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2023/08/08 12:50:42 by mmirzaie		  #+#	#+#			 */
-
-/*   Updated: 2023/10/07 15:55:59 by clovell          ###   ########.fr       */
-/*																			*/
+/*                                                    +:+ +:+         +:+     */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/08 11:03:38 by mehdimirzai       #+#    #+#             */
+/*   Updated: 2023/10/10 15:37:28 by mehdimirzai      ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
@@ -16,8 +15,6 @@
 #include "libft.h"
 #include "lexer.h"
 #include "ast.h"
-
-int	g_value;
 
 char	*rl_gets(char **line_read, char *header)
 {
@@ -50,18 +47,17 @@ void	init_rl(t_env *our_env, int	*exit_status)
 	{
 		env_set(our_env, "?", ft_itoa(WEXITSTATUS(*exit_status)));
 		init_termios();
-			signal(SIGINT, handle_sigint);
+		signal(SIGINT, handle_sigint);
 		rl_gets(&line_read, ft_strfmt("%s> ", getcwd(buff, PATH_MAX + 1)));
 		if (line_read == NULL || *line_read == '\0')
-			continue;
+			continue ;
 		reset_termios();
 		lst = tlst_create(line_read);
-		// tlst_print(lst);
 		ast = ast_build(lst);
-		// tast_print(ast);
 		ast_expandall(ast, our_env);
 		line_read = NULL;
 		process_ast(ast, &our_env, exit_status);
+		// handle_heredoc(ast->cmd->redirects);
 		tlst_destroy(lst);
 		ast_memman(&ast, 0, true);
 	}

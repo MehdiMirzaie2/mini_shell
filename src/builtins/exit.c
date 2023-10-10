@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 11:34:11 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/05 14:05:56 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/10 14:06:51 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,11 @@ void	exiting(int	*value, t_cmd *cmd)
 			*value = 255;
 		}
 		else
-			*value = ft_atoi(cmd->args->str);
+		{
+			*value = ft_atol(cmd->args->str);
+			if (*value > 2147483647 || *value < -2147483648)
+				error_exit(" numeric argument required", 255);
+		}
 	}
 	exit(*value);
 }

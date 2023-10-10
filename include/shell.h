@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:26:51 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/07 17:27:29 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/10 11:01:39 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,42 +33,32 @@
 # include "utils.h"
 # include "mysignal.h"
 
-#define IN dup(STDIN_FILENO)
-
-typedef struct s_vars			t_vars;
-typedef struct s_shell			t_shell;
-typedef struct s_fd				t_fd;
-
-extern int	g_value;
+typedef struct s_vars	t_vars;
+typedef struct s_shell	t_shell;
+typedef struct s_fd		t_fd;
 
 // main
-char *rl_gets(char **line_read, char *header);
-
-char	*my_strtok(char *srcString, char *delim);
-
-// utils/signals
-// void handle_sigint(int sig);
-// void handle_siguser1(int sig);
+char		*rl_gets(char **line_read, char *header);
 
 /*
 Deletes /tmp/mytempfileXXXXXX which was created for heredoc
 */
-void    delete_tempfile(void);
+void		delete_tempfile(void);
 
 /*
 Adds a node to the neivornmefaat ars
 */
-void add_node_to_env(t_env **our_env, char *name, char *args);
+void		add_node_to_env(t_env **our_env, char *name, char *args);
 
 /* env.c */
 /* Creates a new environement variable list */
-void    create_env(t_env *our_env, char **env);
-void	free_env(t_env *env);
+void		create_env(t_env *our_env, char **env);
+void		free_env(t_env *env);
 
 /* Return the value of an environement variable.
  * Returns NULL if environement variable doesn't exist.
  */
-char	*env_get(t_env *our_env, char *name);
+char		*env_get(t_env *our_env, char *name);
 
 /* Sets or creates a new environment variabled named 'key'
  * to the value of 'value' (duplicated)
@@ -98,18 +88,10 @@ int			isenvstr(int c);
 t_sd_stat	until_var_end(char *str, int i, bool mode, void *ctx);
 t_sd_stat	until_var_or_quote(char *str, int i, bool mode, void *ctx);
 
-// void handle_sigusr1(int sig);
-// void handle_sigintheredoc(int sig);
-// void handle_sigintexecute(int sig);
-
 /* expand_handle.c */
 char		*handle_single(char *str, char **expand);
 char		*handle_var(char *str, char **expand, t_env *env);
 char		*handle_word(char *str, char quote, char **expand, t_env *env);
 char		*handle_double(char *str, char quote, char **expand, t_env *env);
 
-/* TODO: Remove?
-int until_expandstr_start(int c);
-int until_expandstr_end(int c);
-*/
 #endif

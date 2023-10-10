@@ -6,11 +6,25 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:02 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/09 15:10:26 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/10 14:23:41 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+
+bool	valid_identifier(char **name_and_args, char *cmd)
+{
+	if (*name_and_args == NULL || ft_isdigit(*name_and_args[0])
+		|| strrchr(name_and_args[0], '-') != NULL
+		|| strrchr(name_and_args[0], '+') != NULL
+		|| strrchr(name_and_args[0], '=') != NULL)
+	{
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": not a valid identifier\n", 2);
+		return (false);
+	}
+	return (true);
+}
 
 int	unset(t_env *our_env, t_arglst *args)
 {
@@ -22,6 +36,8 @@ int	unset(t_env *our_env, t_arglst *args)
 	prev = ref;
 	if (args == NULL)
 		return (0);
+	if (!valid_identifier(&args->str, args->str))
+		exit(256);
 	while (ref && ft_strcmp(ref->name, args->str) != 0)
 	{
 		prev = ref;
@@ -48,20 +64,6 @@ void	add_node_to_env(t_env **our_env, char *name, char *args)
 	ref->args = ft_strdup(args);
 	ref->next = *our_env;
 	*our_env = ref;
-}
-
-bool	valid_identifier(char **name_and_args, char *args)
-{
-	if (*name_and_args == NULL || ft_isdigit(*name_and_args[0])
-		|| strrchr(name_and_args[0], '-') != NULL
-		|| strrchr(name_and_args[0], '+') != NULL)
-	{
-		ft_putstr_fd("export: \'", 2);
-		ft_putstr_fd(args, 2);
-		ft_putstr_fd("\': not a valid identifier\n", 2);
-		return (false);
-	}
-	return (true);
 }
 
 // the following should append the path to existing paths

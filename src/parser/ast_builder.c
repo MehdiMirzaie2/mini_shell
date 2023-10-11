@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 16:13:12 by clovell           #+#    #+#             */
-/*   Updated: 2023/09/13 16:46:51 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/10 17:51:24 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,17 @@
 #include "ast.h"
 #include "lexer.h"
 
-/* Assumes builder->work to be allocated but empty. */
-void	astb_start(t_astbuilder *builder)
-{
-	while (builder->current != NULL)
-		astb_addcmd(builder);
-}
 
-void	astb_addcmd(t_astbuilder *builder)
+
+static int	astb_addcmd(t_astbuilder *builder)
 {
 	t_ttoken		type;
 	t_astlinktype	link;
 
-	cmd_build((*builder->work)->cmd, &builder->current);
+	if (cmd_build((*builder->work)->cmd, &builder->current))
+		return (1);
 	if (builder->current == NULL)
-		return ;
+		return (0);
 	type = builder->current->type;
 	if (type == E_TTNCP)
 		link = E_ASTLINKPIPE;
@@ -37,12 +33,21 @@ void	astb_addcmd(t_astbuilder *builder)
 	else if (type == E_TTNCO)
 		link = E_ASTLINKOR;
 	else
-		return ;
+		return (0);
 	builder->current = builder->current->next;
 	astb_branch(builder, link);
 	ast_memman(builder->work, E_ASTCMD, false);
+	return (0);
 }
 
+/* Assumes builder->work to be allocated but empty. */
+int	astb_start(t_astbuilder *builder)
+{
+	while (builder->current != NULL)
+		if (astb_addcmd(builder))
+			return (1);
+	return (0);
+}
 /* Branches the current ast into two seperate sub trees
  * type: (E_TTP or E_TTAND or E_TTOR)
  *

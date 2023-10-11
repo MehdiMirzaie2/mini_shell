@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 02:47:59 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/10 11:02:04 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/10 17:51:37 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,7 @@ t_ast	*ast_build(t_token *tokens);
 void	ast_memman(t_ast **ast, t_asttype type, bool destroy);
 
 /* ast_builder.c */
-void	astb_start(t_astbuilder *builder);
-void	astb_addcmd(t_astbuilder *builder);
+int		astb_start(t_astbuilder *builder);
 void	astb_branch(t_astbuilder *builder, t_astlinktype type);
 void	astbuilder_memman(t_astbuilder **astb, bool destroy);
 

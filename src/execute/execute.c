@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:07:14 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/11 12:59:49 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/11 15:27:57 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,41 +97,52 @@ void	open_file(t_ast *ast, int pipe1[2], int num_cmds)
 
 void	execute(t_ast *ast, t_env **our_env, int *exit_status, int num_cmds)
 {
-	t_ast	*node;
-	int		pipe1[2];
-	// t_iolst	*start;
-	// pid_t 	child;
-	// start = ast->cmd->redirects;
-
+	t_ast		*node;
+	int			pipe1[2];
+	t_iolst		*start;
+	pid_t 		child;
+	const int	in = dup(STDIN_FILENO);
+	
 	while (num_cmds > 0)
 	{
 		node = get_next_node(ast, num_cmds);
+		start = node->cmd->redirects;
+		while (start)
+		{
+			if (start->type == E_TTLLA)
+			{
+				dup2(in, STDIN_FILENO);
+				break ;
+			}
+			start = start->next;		
+		}
 		if (pipe(pipe1) < 0)
 			perror("error making pipe\n");
-		if (fork() == 0)
+		(void)child;
+		if ((child = fork()) == 0)
 		{
 			signal(SIGINT, SIG_IGN);
 			signal(SIGQUIT, SIG_IGN);
-			open_file(node, pipe1, num_cmds);
 			close(pipe1[0]);
+			open_file(node, pipe1, num_cmds);
 			if (is_builtin(node->cmd) || is_envbuiltin(node->cmd))
 				execute_builtin_cmds(node->cmd, our_env, exit_status);
 			else
 				execute_system_cmds(node->cmd, *our_env);
 			exit(EXIT_SUCCESS);
 		}
-		// (void)child;
 		redirect(pipe1[0], STDIN_FILENO);
 		close(pipe1[1]);
 		num_cmds--;
-		// while (start)
-		// {
-		// 	if (start->type == E_TTLLA)
-		// 	{
-		// 		waitpid(child, exit_status, -1);
-		// 		break ;
-		// 	}
-		// 	start = start->next;		
-		// }
+		start = node->cmd->redirects;
+		while (start)
+		{
+			if (start->type == E_TTLLA)
+			{
+				waitpid(child, NULL, 0);
+				break ;
+			}
+			start = start->next;		
+		}
 	}
 }

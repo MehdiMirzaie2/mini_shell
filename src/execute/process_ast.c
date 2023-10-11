@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:48:49 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/10 14:52:36 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/11 12:34:54 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	process_ast(t_ast *ast, t_env **our_env, int *exit_status)
 	{
 		signal(SIGINT, SIG_IGN);
 		num_cmds = get_num_cmd(ast);
-		// init_termios();
 		execute(ast, our_env, exit_status, num_cmds);
 		(void)pids;
 		while (num_cmds-- > 0)

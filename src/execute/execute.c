@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:07:14 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/10 15:57:43 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/11 12:59:49 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,16 +99,16 @@ void	execute(t_ast *ast, t_env **our_env, int *exit_status, int num_cmds)
 {
 	t_ast	*node;
 	int		pipe1[2];
-	t_iolst *start;
-	pid_t 	child;
-	start = ast->cmd->redirects;
+	// t_iolst	*start;
+	// pid_t 	child;
+	// start = ast->cmd->redirects;
 
 	while (num_cmds > 0)
 	{
 		node = get_next_node(ast, num_cmds);
 		if (pipe(pipe1) < 0)
 			perror("error making pipe\n");
-		if ((child = fork()) == 0)
+		if (fork() == 0)
 		{
 			signal(SIGINT, SIG_IGN);
 			signal(SIGQUIT, SIG_IGN);
@@ -120,18 +120,18 @@ void	execute(t_ast *ast, t_env **our_env, int *exit_status, int num_cmds)
 				execute_system_cmds(node->cmd, *our_env);
 			exit(EXIT_SUCCESS);
 		}
-		(void)child;
+		// (void)child;
 		redirect(pipe1[0], STDIN_FILENO);
 		close(pipe1[1]);
 		num_cmds--;
-		while (start)
-		{
-			if (start->type == E_TTLLA)
-			{
-				waitpid(child, exit_status, -1);
-				break ;
-			}
-			start = start->next;		
-		}
+		// while (start)
+		// {
+		// 	if (start->type == E_TTLLA)
+		// 	{
+		// 		waitpid(child, exit_status, -1);
+		// 		break ;
+		// 	}
+		// 	start = start->next;		
+		// }
 	}
 }

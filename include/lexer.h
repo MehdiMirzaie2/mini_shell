@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 23:34:10 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/05 14:25:21 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/11 15:45:09 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef enum e_ttoken	t_ttoken;
  *	E_WD: Word
  *	E_TTNCP: Next command pipe (Stdout to Stdin)
  *	E_TTNCA: Next comamnd and (Exectute next command if first success)
- *	E_TTNCO: next command or (Execute next command if first failed)
+ *	E_TTNCO: Next command or (Execute next command if first failed)
  *	E_TTGS: Grouped Sequence, Either Single or Double Quote.
  *	E_TTLR: Left or Right, Either LA, RA, LLA or RRA.
  *	E_TTWG: Word Group, Either WD or GS.
@@ -87,8 +87,23 @@ struct s_token
 };
 
 /*** token_debug.c ***/
+/* Returns the token type number, this is not the same as the token enum.
+ * It is safe to use this for array indexing.
+ * It is not the same because t_ttoken type contains bitfields.
+ */
 size_t		get_token_index(t_ttoken t);
+
+/* Returns string information relating to a token typ (not a specific token).
+ * tostring, the type of information to be returned.
+ * 0 for english name of the token.
+ * 1 for the enum literal name.
+ * 2 for the character related to that token.
+ */
 char		*get_token_desc(t_ttoken t, int tostring);
+
+/* Prints the token list
+ * DEBUGINGING PURPOSES
+ */
 void		tlst_print(t_token *start);
 
 /*** lexer.c ***/
@@ -152,18 +167,27 @@ t_token		*tlst_dup_pass(t_token *head);
 t_sd_stat	sd_until_arg_end(char *str, int i, bool check, void *pctx);
 
 /*** lexer_utils.c ***/
-/* Returns true if the lexer should increment the string.
- * Such as when beginning a quoted sequence or
- * there are 2 char wide operators (<< >> && || etc)
- */
-bool		istok_advancable(t_ttoken tok);
 
 /* Returns the ttoken associated with the
  * first symbols sequence of a string
  */
 t_ttoken	get_ttoken(char *str);
 
+/* Frees a token list */ 
 void		*tlst_destroy(t_token *token);
+
+/* Creates a new token of `type` 
+ * appends it to `parent` if `parent` is not NULL.
+ * */
 t_token		*tlst_token_new(char *str, t_ttoken type, t_token *parent);
 
+/*** rules.c ***/
+/* Token list syntax error checking.
+ *
+ * Prints out the syntax error to the console.
+ * RETURNS 
+ *  This function returns 1 if there is a syntax error in the token list,
+ *  and returns 0 if there is no issues.
+ */
+int		tlst_syntax_check(t_token *lst);
 #endif

@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:33:30 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/11 15:28:43 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/11 16:14:49 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,7 @@ void	execute_system_cmds(t_cmd *cmd, t_env *env)
 
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, handle_sigintexecute);
-	if (*cmd->cmd == '\0')
-	{
-		cmd->cmd = cmd->args->str;
-		cmd->args = cmd->args->next;
-	}
+
 	cmd_args_joined = join_cmd(cmd);
 	if (ft_strchr(cmd->cmd, '/'))
 	{

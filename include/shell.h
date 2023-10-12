@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:26:51 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/10 22:19:57 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/11 19:51:18 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,19 @@
 typedef struct s_vars	t_vars;
 typedef struct s_shell	t_shell;
 typedef struct s_fd		t_fd;
+
+typedef struct s_mshctx	t_mshctx;
+
+struct s_mshctx
+{
+	t_env	*env;
+	t_ast	*ast;
+	t_token	*lst;
+	char	*line;
+	char	*prompt;
+};
+
+char *ft_strjoin_auto_free(char *first, bool free1, char *second, bool free2);
 
 // main
 char		*rl_gets(char **line_read, char *header);

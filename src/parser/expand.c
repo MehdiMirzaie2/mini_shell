@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 14:14:57 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/07 17:18:49 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/11 16:08:03 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	cmd_expand(t_cmd *cmd, t_env *env)
 	char		*tmp;
 
 	tmp = cmd->cmd;
-	cmd->cmd = expand_str(cmd->cmd, env);
+	if (cmd->cmd)
+		cmd->cmd = expand_str(cmd->cmd, env);
 	if (cmd->cmd != tmp)
 		free(tmp);
 	args_redirect_expand(cmd->args, cmd->redirects, env);

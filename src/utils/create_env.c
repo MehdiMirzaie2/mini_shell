@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 12:49:13 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/10 22:19:29 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/11 16:52:21 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	env_set(t_env *our_env, char *key, char *value)
 		if (ft_strcmp(next->name, key) == 0)
 		{
 			free(next->args);
-			next->args = ft_strdup(value);
+			next->args = value;
 			return ;
 		}
 		next = next->next;
@@ -45,7 +45,7 @@ void	env_set(t_env *our_env, char *key, char *value)
 	next->next = malloc(sizeof(t_env));
 	next = next->next;
 	next->name = key;
-	next->args = ft_strdup(value);
+	next->args = value;
 	next->next = NULL;
 }
 

@@ -42,6 +42,7 @@ SRCS        :=	main.c \
 				parser/cmd_builder.c \
 				parser/ast_builder.c \
 				parser/expand.c \
+				parser/rules.c \
 				builtins/cd.c \
 				builtins/env.c \
 				builtins/echo.c \
@@ -63,9 +64,9 @@ OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEPS        := $(OBJS:.o=.d)
 
 CC          := cc
-CFLAGS      := -Wall -Wextra -Werror -g3 $(DFLAGS)
+CFLAGS      := -Wall -Wextra -Werror -g3 $(DFLAGS) -fsanitize=address
 CPPFLAGS    := $(addprefix -I,$(INCS)) -MMD -MP
-LDFLAGS     := $(addprefix -L,$(dir $(LIBS_TARGET)))
+LDFLAGS     := $(addprefix -L,$(dir $(LIBS_TARGET))) -fsanitize=address
 LDLIBS      := $(addprefix -l,$(LIBS))
 RLFLAGS		:= -lreadline
 

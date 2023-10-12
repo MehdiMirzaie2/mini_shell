@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 13:41:38 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/10 12:18:22 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/11 20:24:49 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ bool	is_builtin(t_cmd *cmd)
 
 	if (!cmd)
 		return (false);
-	command = cmd->cmd;
-	if (!ft_strncmp(command, "echo", 4) || !ft_strncmp(command, "exit", 4))
+	command = get_command_name(cmd, false);
+	if (!command)
+		return (false);
+	if (!ft_strncmp(command, "echo", 5) || !ft_strncmp(command, "exit", 5))
 		return (true);
 	return (false);
 }
@@ -30,10 +32,12 @@ bool	is_envbuiltin(t_cmd	*cmd)
 
 	if (!cmd)
 		return (false);
-	command = cmd->cmd;
-	if (!ft_strncmp(command, "cd", 2) || !ft_strncmp(command, "env", 3)
-		|| !ft_strncmp(command, "pwd", 3) || !ft_strncmp(command, "export", 6)
-		|| !ft_strncmp(command, "unset", 5) || !ft_strncmp(command, "exit", 4))
+	command = get_command_name(cmd, false);
+	if (!command)
+		return (false);
+	if (!ft_strncmp(command, "cd", 2) || !ft_strncmp(command, "env", 4)
+		|| !ft_strncmp(command, "pwd", 4) || !ft_strncmp(command, "export", 7)
+		|| !ft_strncmp(command, "unset", 6) || !ft_strncmp(command, "exit", 5))
 		return (true);
 	return (false);
 }

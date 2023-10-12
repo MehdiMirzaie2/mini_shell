@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:48:49 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/11 12:34:54 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/12 15:41:22 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,34 @@
 #include <stdio.h>
 #include <sys/wait.h>
 
-void	process_ast(t_ast *ast, t_env **our_env, int *exit_status)
+char	*get_command_name(t_cmd *cmd, bool movearg)
 {
+	t_arglst *old;
+	char *name;
+	if (cmd == NULL)
+		return (NULL);
+	name = NULL;
+	if ((cmd->cmd == NULL || *cmd->cmd == '\0') && cmd->args != NULL)
+	{
+		if (cmd || cmd->cmd || *cmd->cmd == '\0')
+			free(cmd->cmd);
+		name = cmd->args->str;
+		if (movearg)
+		{	
+			old = cmd->args;
+			cmd->args = cmd->args->next;
+			arglst_memman(&old, true);
+		}
+	}
+	else
+		name = cmd->cmd;
+	return (name);
+}
+
+
+void	process_ast(t_mshctx msh, t_env **our_env, int *exit_status)
+{
+	t_ast	*const	ast = msh.ast;
 	const int	in = dup(STDIN_FILENO);
 	const int	out = dup(STDOUT_FILENO);
 	int			num_cmds;

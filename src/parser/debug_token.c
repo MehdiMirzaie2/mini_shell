@@ -6,29 +6,29 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 02:49:58 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/07 16:23:07 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/11 15:54:31 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdio.h>
 #include "lexer.h"
 
-char	*get_token_desc(t_ttoken t, int tostring)
+char	*get_token_desc(t_ttoken t, int version)
 {
 	char *const	des[] = {
-		"NA", "E_TTNA",
-		"Stdin Redirect", "E_TTLA",
-		"Stdout Redirect", "E_TTRA",
-		"Stdin Heredoc", "E_TTLLA",
-		"Stdout Append Redirect", "E_TTRRA",
-		"Double Quote", "E_TTDQ",
-		"Single Quote", "E_TTSQ",
-		"Word", "E_TTWD",
-		"Pipe", "E_TTWD",
-		"And", "E_TTNCA",
-		"Or", "E_TTNCO",
+		"NA", "E_TTNA", "newline",
+		"Stdin Redirect", "E_TTLA", "<",
+		"Stdout Redirect", "E_TTRA", ">",
+		"Stdin Heredoc", "E_TTLLA", "<<",
+		"Stdout Append Redirect", "E_TTRRA", ">>",
+		"Double Quote", "E_TTDQ", "",
+		"Single Quote", "E_TTSQ", "",
+		"Word", "E_TTWD", "",
+		"Pipe", "E_TTNCP", "|",
+		"And", "E_TTNCA", "&",
+		"Or", "E_TTNCO", "||",
 	};
 
-	return ((des[get_token_index(t) * 2 + (tostring != 0)]));
+	return ((des[get_token_index(t) * 3 + version]));
 }
 
 size_t	get_token_index(t_ttoken t)

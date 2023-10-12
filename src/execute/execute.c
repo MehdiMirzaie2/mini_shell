@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:07:14 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/11 16:39:22 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/12 17:34:20 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ void	execute(t_ast *ast, t_env **our_env, int *exit_status, int num_cmds)
 		}
 		if (pipe(pipe1) < 0)
 			perror("error making pipe\n");
+		get_command_name(&node->cmd->cmd, node->cmd, true);
 		(void)child;
 		if ((child = fork()) == 0)
 		{
@@ -125,7 +126,6 @@ void	execute(t_ast *ast, t_env **our_env, int *exit_status, int num_cmds)
 			signal(SIGQUIT, SIG_IGN);
 			close(pipe1[0]);
 			open_file(node, pipe1, num_cmds);
-			node->cmd->cmd = get_command_name(node->cmd, true);
 			if (!node->cmd->cmd)
 				exit(EXIT_SUCCESS);
 			if (is_builtin(node->cmd) || is_envbuiltin(node->cmd))

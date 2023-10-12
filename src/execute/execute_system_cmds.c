@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:33:30 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/11 16:14:49 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/12 23:35:59 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int	is_directory_exists(const char *path)
 
 void	error_execve(char *cmd)
 {
+	char *err;
+
 	if (is_directory_exists(cmd))
 	{
 		ft_putstr_fd(cmd, 2);
@@ -71,8 +73,9 @@ void	error_execve(char *cmd)
 		return ;
 	else
 	{
-		ft_putstr_fd(ft_strfmt("%s: %s\n", cmd,
-				strerror(errno)), 2);
+		err = ft_strfmt("%s: %s\n", cmd, strerror(errno));
+		ft_putstr_fd(err, 2);
+		free(err);
 		if (errno == EACCES)
 			exit(126);
 		exit(127);
@@ -84,27 +87,28 @@ void	execute_system_cmds(t_cmd *cmd, t_env *env)
 	char		**cmd_args_joined;
 	char		*cmd_plus_path;
 	char		**paths_splitted;
-	
+	char		**envp;
 
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, handle_sigintexecute);
-
-	cmd_args_joined = join_cmd(cmd);
 	if (ft_strchr(cmd->cmd, '/'))
 	{
 		error_execve(cmd->cmd);
 		cmd_plus_path = cmd->cmd;
 		cmd->cmd = ft_substr(cmd->cmd, 2, ft_strlen(cmd->cmd));
-		cmd_args_joined = join_cmd(cmd);
 	}
 	else
 	{
 		paths_splitted = ft_split(env_get(env, "PATH"), ':');
 		cmd_plus_path = cmd_path(paths_splitted, cmd->cmd);
 	}
-	if (execve(cmd_plus_path, cmd_args_joined, env_to_array(env)) < 0)
+	cmd_args_joined = join_cmd(cmd);
+	envp = env_to_array(env);
+	if (execve(cmd_plus_path, cmd_args_joined, envp) < 0)
 	{
+		free_strarr(envp);
 		error_execve(cmd->cmd);
+		free_strarr(cmd_args_joined);
 		exit(126);
 	}
 }

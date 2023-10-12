@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 13:41:38 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/11 20:24:49 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/12 17:18:56 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ bool	is_builtin(t_cmd *cmd)
 
 	if (!cmd)
 		return (false);
-	command = get_command_name(cmd, false);
+	command = NULL;
+	get_command_name(&command, cmd, false);
 	if (!command)
 		return (false);
 	if (!ft_strncmp(command, "echo", 5) || !ft_strncmp(command, "exit", 5))
@@ -32,7 +33,8 @@ bool	is_envbuiltin(t_cmd	*cmd)
 
 	if (!cmd)
 		return (false);
-	command = get_command_name(cmd, false);
+	command = NULL;
+	get_command_name(&command, cmd, false);
 	if (!command)
 		return (false);
 	if (!ft_strncmp(command, "cd", 2) || !ft_strncmp(command, "env", 4)

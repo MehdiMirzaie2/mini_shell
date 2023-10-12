@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 23:51:38 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/07 13:23:37 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/12 23:27:50 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ char	*handle_var(char *str, char **expand, t_env *env)
 		str++;
 		*expand = ft_strfmt("%S%s", *expand, "$");
 	}
+	free(key);
 	return (str);
 }
 

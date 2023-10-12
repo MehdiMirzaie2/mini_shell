@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:26:51 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/11 19:51:18 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/12 16:35:27 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,12 @@ struct s_mshctx
 	char	*line;
 	char	*prompt;
 };
+/* free.c */
+void free_mshctx(t_mshctx ctx);
+int	free_strarr(char **array);
 
-char *ft_strjoin_auto_free(char *first, bool free1, char *second, bool free2);
-
-// main
-char		*rl_gets(char **line_read, char *header);
+/* main.c */
+char	*rl_gets(t_mshctx *msh);
 
 /*
 Deletes /tmp/mytempfileXXXXXX which was created for heredoc

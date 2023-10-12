@@ -6,7 +6,7 @@
 /*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 13:52:47 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/10 17:53:47 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/12 16:53:58 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,6 @@ void	ast_memman(t_ast **ast, t_asttype type, bool destroy)
 			ast_memman(&(*ast)->link.second, E_ASTCMD, true);
 		}
 		free(*ast);
+		*ast = NULL;
 	}
 }

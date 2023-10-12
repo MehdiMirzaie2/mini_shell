@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:02 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/10 22:21:33 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/12 16:33:37 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,9 @@ int	ft_export(t_env **our_env, t_arglst *args)
 		return (0);
 	name_and_args = ft_split(args->str, '=');
 	if (!valid_identifier(name_and_args, args->str))
-		return (256);
+		return (free_strarr(name_and_args) + 256);
 	if (!ft_strchr(args->str, '='))
-		return (0);
+		return (free_strarr(name_and_args) + 0);
 	name_len = ft_strlen(name_and_args[0]);
 	while (ref && ft_strncmp(ref->name, name_and_args[0], name_len) != 0)
 		ref = ref->next;
@@ -94,8 +94,7 @@ int	ft_export(t_env **our_env, t_arglst *args)
 	}
 	else
 		add_node_to_env(our_env, name_and_args[0], name_and_args[1]);
-	free(name_and_args[0]);
-	free(name_and_args[1]);
+	free_strarr(name_and_args);
 	return (0);
 }
 

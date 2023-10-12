@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:48:49 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/12 15:41:22 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/12 18:03:44 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,32 @@
 #include <stdio.h>
 #include <sys/wait.h>
 
-char	*get_command_name(t_cmd *cmd, bool movearg)
+void	get_command_name(char **dst, t_cmd *cmd, bool movearg)
 {
 	t_arglst *old;
 	char *name;
+
 	if (cmd == NULL)
-		return (NULL);
+		return ;
 	name = NULL;
 	if ((cmd->cmd == NULL || *cmd->cmd == '\0') && cmd->args != NULL)
 	{
-		if (cmd || cmd->cmd || *cmd->cmd == '\0')
-			free(cmd->cmd);
 		name = cmd->args->str;
 		if (movearg)
 		{	
+			if (cmd->cmd || *cmd->cmd == '\0')
+				free(cmd->cmd);
 			old = cmd->args;
 			cmd->args = cmd->args->next;
+			old->next = NULL;
+			old->dup = false;
 			arglst_memman(&old, true);
 		}
 	}
 	else
 		name = cmd->cmd;
-	return (name);
+	if (dst && *dst != name)
+		*dst = name;
 }
 
 

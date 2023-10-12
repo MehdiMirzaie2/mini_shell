@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:22:01 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/10 21:27:38 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/12 16:24:29 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,10 @@ void	cmd_memman(t_cmd **cmd, bool destroy)
 	{
 		if (*cmd == NULL)
 			return ;
+		free(ptr->cmd);
 		arglst_memman(&ptr->args, true);
-		iolst_memman(&ptr->heredoc, true);
-		iolst_memman(&ptr->strapp, true);
-		iolst_memman(&ptr->strin, true);
-		iolst_memman(&ptr->strout, true);
+		iolst_memman(&ptr->redirects, true);
+		free(*cmd);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 11:03:38 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/12 15:46:25 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/12 17:02:08 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,47 +16,44 @@
 #include "lexer.h"
 #include "ast.h"
 
-char	*rl_gets(char **line_read, char *header)
+char	*rl_gets(t_mshctx *msh)
 {
-	/*if (*line_read)*/
-	/*{*/
-	/*    free(*line_read);*/
-	/*    *line_read = NULL;*/
-	/*}*/
-	*line_read = readline(header);
-	if (!(*line_read))
+	char		buff[PATH_MAX + 1];
+
+	if (msh->prompt)
+		free(msh->prompt);
+	msh->prompt = ft_strfmt("%s> ", getcwd(buff, PATH_MAX + 1));
+	if (msh->line)
+		free(msh->line);
+	msh->line = readline(msh->prompt);
+	if (msh->line == NULL)
 	{
+		free_mshctx(*msh);
 		delete_tempfile();
 		exit(EXIT_SUCCESS);
 	}
-	if (*line_read && **line_read)
-		add_history(*line_read);
-	return (*line_read);
+	if (msh->line && *msh->line)
+		add_history(msh->line);
+	return (msh->line);
 }
 
 void	init_rl(t_env *our_env, int	*exit_status)
 {
-	static char	*line_read = NULL;
-	char		buff[PATH_MAX + 1];
 	t_mshctx	msh;
+	char *const question = ft_strdup("?");
    
 	msh = (t_mshctx){0};
 	msh.env = our_env;
 	while (1)
 	{
-		env_set(msh.env, "?", ft_itoa(WEXITSTATUS(*exit_status)));
+		env_set(msh.env, question, ft_itoa(WEXITSTATUS(*exit_status)));
 		init_termios();
 		signal(SIGINT, handle_sigint);
-		if (msh.prompt)
-			free(msh.prompt);
-		if (line_read)
-			free(line_read);
-		msh.prompt = ft_strfmt("%s> ", getcwd(buff, PATH_MAX + 1));
-		rl_gets(&line_read, msh.prompt);
-		if (line_read == NULL || *line_read == '\0')
+		rl_gets(&msh);
+		if (msh.line == NULL || *msh.line == '\0')
 			continue ;
 		reset_termios();
-		msh.lst = tlst_create(line_read);
+		msh.lst = tlst_create(msh.line);
 		if (!tlst_syntax_check(msh.lst))
 		{
 			if (env_get(msh.env, "MSHDBG"))
@@ -65,13 +62,23 @@ void	init_rl(t_env *our_env, int	*exit_status)
 			if (msh.ast)
 			{
 				ast_expandall(msh.ast, msh.env);
-				line_read = NULL;
 				process_ast(msh, &msh.env, exit_status);
 				ast_memman(&msh.ast, E_ASTLINK, true);
 			}
 		}
 		tlst_destroy(msh.lst);
+		msh.lst = NULL;
 	}
+}
+
+void	increment_shell_levell(t_env *env)
+{
+	char	*prev;
+	char	*next;
+
+	prev = env_get(env, "SHLVL");
+	next = ft_itoa(ft_atoi(prev) + 1);
+	env_set(env, "SHLVL", next);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -83,6 +90,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	our_env = malloc(sizeof(t_env));
 	create_env(our_env, env);
+	increment_shell_levell(our_env);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	init_rl(our_env, &exit_status);

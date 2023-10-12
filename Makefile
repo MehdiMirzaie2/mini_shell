@@ -34,6 +34,7 @@ SRCS        :=	main.c \
 				utils/termios.c \
 				utils/expand_utils.c \
 				utils/expand_handle.c \
+				utils/free.c \
 				parser/lexer.c \
 				parser/lexer_utils.c \
 				parser/debug_token.c \

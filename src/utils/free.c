@@ -1,15 +1,34 @@
 #include "shell.h"
+#include "lexer.h"
+#include "ast.h"
 
 void free_mshctx(t_mshctx ctx)
 {
 	if (ctx.env)
-		free_envlist(ctx.env);
+		free_env(ctx.env, true);
 	if (ctx.ast)
-		ast_memman(&ast, E_ASTLINK, true);
+		ast_memman(&ctx.ast, E_ASTLINK, true);
 	if (ctx.lst)
-		lst_destroy(lst);
+		tlst_destroy(ctx.lst);
 	if (ctx.line)
-		free(line);
+		free(ctx.line);
 	if (ctx.prompt)
-		free(prompt);
+		free(ctx.prompt);
+}
+
+
+int free_strarr(char **array)
+{
+	char **start;
+
+	if (array == NULL)
+		return (0);
+	start = array;
+	while (*start != NULL)
+	{
+		free(*start);
+		start++;
+	}
+	free(array);
+	return (0);
 }

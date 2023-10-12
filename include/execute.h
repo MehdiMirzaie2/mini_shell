@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:31:46 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/12 15:39:52 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 09:10:43 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ enum e_permissions
 };
 
 void	execute(t_ast *ast, t_env **our_env, int *exit_status, int num_cmds);
-void	open_file(t_ast *ast, int pipe1[2], int num_cmds);
+void	open_file(t_ast *cmd, int pipe1[2], int num_cmds);
 
 t_ast	*get_next_node(t_ast *ast, int num_cmds);
 void	execute_builtin_cmds(t_cmd *cmd_struct, t_env **our_env,

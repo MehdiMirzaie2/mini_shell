@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:02 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/12 16:33:37 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/12 23:59:41 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ bool	valid_identifier(char **name_and_args, char *cmd)
 
 int	unset(t_env **env, t_arglst *args)
 {
-	t_env	*const our_env = *env;
-	t_env	*ref;
-	t_env	*prev;
-	t_env	*to_free;
+	t_env *const	our_env = *env;
+	t_env			*ref;
+	t_env			*prev;
+	t_env			*to_free;
 
 	ref = our_env;
 	prev = ref;

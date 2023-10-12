@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 23:03:48 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/10 11:00:47 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/12 23:57:51 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 # include "libft.h"
 # include <stdbool.h>
 
-typedef enum e_sd_stat	t_sd_stat;
-
 enum	e_sd_stat
 {
 	E_SD_SKIP = 0,
@@ -25,12 +23,12 @@ enum	e_sd_stat
 	E_SD_STOP = 4,
 	E_SD_STOP_IM = 8,
 };
-
+typedef enum e_sd_stat	t_sd_stat;
 /* String Duplicate Until
  * Creates a duplicated string from that start of 'src'
  * Until a character from 'until' is found.
  */
-typedef t_sd_stat	(*t_strdupctxfn)(char*, int, bool, void*);
+typedef t_sd_stat		(*t_strdupctxfn) (char*, int, bool, void*);
 
 char	*ft_strdupu(char *src, char *until);
 char	*ft_strdupct(char *src, int (*check)(int c));

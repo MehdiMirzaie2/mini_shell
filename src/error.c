@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 00:33:50 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/10 11:04:14 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/13 00:00:12 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 char	*errormsg(t_error error)
 {
-	char	*const	message[] = { 
+	char *const	message[] = { 
 	[E_ERR_BADPARAM] = "Supplied parameter not valid",
 	[E_ERR_STRDUP] = "String duplication failed, out of memory.",
 	[E_ERR_MALLOCFAIL] = "Ran out of available heap memory.",

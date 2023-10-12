@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 23:34:10 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/11 15:45:09 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/12 23:46:46 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ t_sd_stat	sd_until_arg_end(char *str, int i, bool check, void *pctx);
  */
 t_ttoken	get_ttoken(char *str);
 
-/* Frees a token list */ 
+/* Frees a token list */
 void		*tlst_destroy(t_token *token);
 
 /* Creates a new token of `type` 
@@ -189,5 +189,5 @@ t_token		*tlst_token_new(char *str, t_ttoken type, t_token *parent);
  *  This function returns 1 if there is a syntax error in the token list,
  *  and returns 0 if there is no issues.
  */
-int		tlst_syntax_check(t_token *lst);
+int			tlst_syntax_check(t_token *lst);
 #endif

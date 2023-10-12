@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:22:01 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/12 16:24:29 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 01:56:23 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,14 @@ static int	cmd_redir(t_cmd *cmd, t_token **adv)
 {
 	const t_token	tok = (**adv);
 
-	cmd->has_redirect = true;
 	if ((tok.type & E_TTLR) == 0)
 		return (0);
 	if (tok.next != NULL && (tok.next->type & E_TTWG) != 0)
 	{
 		iolst_add(tok.type, tok.next->str, 1, &cmd->redirects);
 		*adv = (*adv)->next->next;
+		cmd->has_redirect = true;
+		cmd->has_heredoc = (tok.type & E_TTLLA) != 0;
 		return (0) ;
 	}
 	// TODO: Handle memory leaks

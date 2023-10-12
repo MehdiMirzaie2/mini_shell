@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:20:01 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/12 17:19:47 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 01:56:49 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ struct s_cmd
 
 	bool		has_pipe;
 	bool		has_redirect;
+	bool		has_heredoc;
 	t_iolst		*redirects;
 };
 

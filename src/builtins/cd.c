@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 21:54:18 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/13 15:34:22 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 16:10:10 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ int	ft_cd(t_cmd *cmd, t_env **our_env)
 {
 	if (cmd->args == NULL || !ft_strcmp(cmd->args->str, "~"))
 		chdir(getenv("HOME"));
-	else if (cmd->args->next != NULL)
-		return (0);
 	else if (chdir(cmd->args->str) == -1)
 	{
 		write(2, "cd: ", 4);

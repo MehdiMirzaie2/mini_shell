@@ -16,8 +16,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/Users/mehdimirzaie/Desktop/shell2/src/execute",
-      "program": "/Users/mehdimirzaie/Desktop/shell2/src/execute/build/Debug/outDebug",
+      "cwd": "/Users/mehdimirzaie/Desktop/shell3/src/builtins",
+      "program": "/Users/mehdimirzaie/Desktop/shell3/src/builtins/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

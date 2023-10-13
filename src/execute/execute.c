@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:07:14 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/13 10:57:46 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 11:15:41 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	execute(t_ast *ast, t_env **our_env, int *exit_status, int num_cmds)
 			perror("error making pipe\n");
 		get_command_name(&node->cmd->cmd, node->cmd, true);
 		child = fork();
-		if (child == 0)
+		// if (child == 0)
 		{
 			signal(SIGINT, SIG_IGN);
 			signal(SIGQUIT, SIG_IGN);

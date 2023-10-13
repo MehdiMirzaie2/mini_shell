@@ -2,9 +2,9 @@
 NAME        := minishell
 
 LIBS        := ft
-LIBS_TARGET := lib/libft.a
+LIBFT_TARGET := lib/libft.a
 
-INCS        := include	\
+INCS        = include	\
 			   lib/include
 
 OS := $(shell uname)
@@ -12,10 +12,10 @@ ARCH := $(shell uname -m)
 
 ifeq ($(OS), Darwin) # MacOS specific commands
 ifeq ($(ARCH), arm64)
-LIBS_TARGET += /opt/homebrew/opt/readline/lib/libreadline.a
+RL_LIB += /opt/homebrew/opt/readline/lib
 INCS += /opt/homebrew/opt/readline/include
 else
-LIBS_TARGET += /usr/local/Cellar/readline/8.1.2/lib/libreadline.a
+RL_LIB += /usr/local/Cellar/readline/8.1.2/lib
 INCS += /usr/local/Cellar/readline/8.1.2/include
 endif
 endif
@@ -67,7 +67,7 @@ DEPS        := $(OBJS:.o=.d)
 CC          := cc
 CFLAGS      := -Wall -Wextra -Werror -g3 $(DFLAGS) -fsanitize=address
 CPPFLAGS    := $(addprefix -I,$(INCS)) -MMD -MP
-LDFLAGS     := $(addprefix -L,$(dir $(LIBS_TARGET))) -fsanitize=address
+LDFLAGS     := $(addprefix -L,$(dir $(LIBFT_TARGET))) -L$(RL_LIB) -fsanitize=address
 LDLIBS      := $(addprefix -l,$(LIBS))
 RLFLAGS		:= -lreadline
 
@@ -77,11 +77,11 @@ DIR_DUP     = mkdir -p $(@D)
 
 all: $(NAME)
 
-$(NAME): $(LIBS_TARGET) $(OBJS)
+$(NAME): $(LIBFT_TARGET) $(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $(NAME) $(RLFLAGS) $(DFLAGS)
 	$(call print_linking, $(NAME))
 
-$(LIBS_TARGET):
+$(LIBFT_TARGET):
 	$(MAKE) -C $(@D)
 
 $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
@@ -96,11 +96,11 @@ clean:
 
 #  lib clean, clean all library objects.
 lclean:
-	for f in $(dir $(LIBS_TARGET)); do echo "${GREEN}Cleaning: ${CYAN} $$f ${NC} $$"; $(MAKE) -C $$f clean; done
+	for f in $(dir $(LIBFT_TARGET)); do echo "${GREEN}Cleaning: ${CYAN} $$f ${NC} $$"; $(MAKE) -C $$f clean; done
 
 # full clean, clean all objects and libraries and binaries
 fclean: clean
-	# for f in $(dir $(LIBS_TARGET)); do $(MAKE) -C $$f fclean; done
+	# for f in $(dir $(LIBFT_TARGET)); do $(MAKE) -C $$f fclean; done
 	$(RM) $(NAME)
 	$(call print_fclean,$(NAME))
 

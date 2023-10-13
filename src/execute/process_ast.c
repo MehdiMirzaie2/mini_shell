@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:48:49 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/13 18:00:48 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 21:10:26 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	process_ast(t_mshctx msh, t_env **our_env, int *exit_status)
 	const int		in = dup(STDIN_FILENO);
 	const int		out = dup(STDOUT_FILENO);
 	int				num_cmds;
-	pid_t			*pids;
+	pid_t			pid;
 
 	if (ast->type == E_ASTCMD && is_envbuiltin(ast->cmd))
 	{
@@ -60,10 +60,9 @@ void	process_ast(t_mshctx msh, t_env **our_env, int *exit_status)
 	{
 		signal(SIGINT, SIG_IGN);
 		num_cmds = get_num_cmd(ast);
-		execute(ast, our_env, num_cmds);
-		(void)pids;
-		while (num_cmds-- > 0)
-			wait(exit_status);
+		execute(ast, our_env, &pid, num_cmds);
+		while (waitpid(pid, exit_status, 0) != -1)
+			num_cmds--;
 	}
 	dup2(out, STDOUT_FILENO);
 	dup2(in, STDIN_FILENO);

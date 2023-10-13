@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:33:30 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/13 18:14:14 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 19:10:43 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,19 @@ static void	execute_sys_cmd(t_cmd *cmd, char *cmd_path, char **argv, t_env *env)
 	}
 }
 
-void	execute_system_cmds(t_cmd *cmd, t_env *env)
+struct s_exec_info
 {
-	char		**cmd_args_joined;
-	char		*cmd_plus_path;
-	char		**paths_splitted;
+	char *abs_cmd;
+	char **argv;
+};
 
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, handle_sigintexecute);
+struct s_exec_info	get_executable(t_cmd *cmd, char **paths)
+{
+	struct s_exec_info	exec;
+
 	if (ft_strchr(cmd->cmd, '/'))
 	{
-		cmd_plus_path = cmd->cmd;
+		exec.abs_cmd = cmd->cmd;
 		if (cmd->cmd[0] == '.')
 			cmd->cmd = ft_substr(cmd->cmd, 2, ft_strlen(cmd->cmd));
 		else
@@ -76,15 +78,25 @@ void	execute_system_cmds(t_cmd *cmd, t_env *env)
 			cmd->cmd = ft_substr(cmd->cmd, ft_strchr(cmd->cmd, '/') + 1
 				   	- cmd->cmd, ft_strlen(cmd->cmd));
 		}
-		cmd_args_joined = join_cmd(cmd);
 	}
-	else if (env_get(env, "PATH"))
-	{
-		paths_splitted = ft_split(env_get(env, "PATH"), ':');
-		cmd_plus_path = cmd_path(paths_splitted, cmd->cmd);
-	}
+	else if (paths)
+		exec.abs_cmd = cmd_path(paths, cmd->cmd);
 	else
-		cmd_plus_path = cmd->cmd;
-	cmd_args_joined = join_cmd(cmd);
-	execute_sys_cmd(cmd, cmd_plus_path, cmd_args_joined, env);
+		exec.abs_cmd = cmd->cmd;
+	exec.argv = join_cmd(cmd);
+	return (exec);
+}
+
+void	execute_system_cmds(t_cmd *cmd, t_env *env)
+{
+	struct s_exec_info	exec;
+	char				**paths;
+
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, handle_sigintexecute);
+	paths = NULL;
+	if (env_get(env, "PATH"))
+		paths = ft_split(env_get(env, "PATH"), ':');
+	exec = get_executable(cmd, paths);
+	execute_sys_cmd(cmd, exec.abs_cmd, exec.argv, env);
 }

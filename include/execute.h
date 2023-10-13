@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:31:46 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/13 17:12:11 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 20:35:28 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ enum e_permissions
 	E_APPEND = O_WRONLY | O_CREAT | O_APPEND,
 };
 
-void	execute(t_ast *ast, t_env **our_env, int num_cmds);
+void	execute(t_ast *ast, t_env **our_env, pid_t *pid, int num_cmds);
 void	open_file(t_ast *cmd, int pipe1[2], int num_cmds);
 
 t_ast	*get_next_node(t_ast *ast, int num_cmds);

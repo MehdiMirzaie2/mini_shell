@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:07:14 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/13 18:22:18 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 21:11:40 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,21 @@ void	execute_child(t_ast *node, int pipe1[2], t_env **our_env, int num_cmds)
 		execute_system_cmds(node->cmd, *our_env);
 	exit(EXIT_SUCCESS);
 }
-void	execute(t_ast *ast, t_env **our_env, int num_cmds)
+
+// echo something | cat
+
+// pipe
+// fork
+// 		close(OUT)
+// 		dup(pipe[0])
+// 		exec(echo)
+// fork
+// 		close(IN)
+// 		dup(pipe[1])
+// 		exec(cat)
+
+
+void	execute(t_ast *ast, t_env **our_env, int *latest_pid, int num_cmds)
 {
 	const int	in = dup(STDIN_FILENO);
 	int			pipe1[2];
@@ -129,7 +143,9 @@ void	execute(t_ast *ast, t_env **our_env, int num_cmds)
 		loop_redirects(0, node->cmd->redirects, in);
 		if (pipe(pipe1) < 0)
 			perror("error making pipe\n");
+		get_command_name(&node->cmd->cmd, node->cmd, true);
 		child = fork();
+		*latest_pid = child;
 		if (child == 0)
 			execute_child(node, pipe1, our_env, num_cmds);
 		redirect(pipe1[0], STDIN_FILENO);

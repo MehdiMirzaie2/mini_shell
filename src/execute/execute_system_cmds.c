@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:33:30 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/13 17:27:04 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 18:14:14 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,6 @@ char	*get_lastredirect(t_iolst	*redirects)
 	while (ref_redirects->next)
 		ref_redirects = ref_redirects->next;
 	return (ref_redirects->str);
-}
-
-int	is_directory_exists(const char *path)
-{
-	struct stat	stats;
-
-	stat(path, &stats);
-	if (S_ISDIR(stats.st_mode))
-		return (1);
-	return (0);
 }
 
 void	error_execve(char *cmd)

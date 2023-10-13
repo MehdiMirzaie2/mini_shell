@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:07:14 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/13 18:03:53 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 18:22:18 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,6 @@
 #include "shell.h"
 #include <stdio.h>
 #include <sys/wait.h>
-
-static bool	is_last_cmd(int num_cmds)
-{
-	if (num_cmds == 1)
-		return (true);
-	return (false);
-}
 
 static void	open_and_redirect(char *name, int rw, int permission)
 {
@@ -70,7 +63,7 @@ void	handle_cmdredirect(t_ast *ast, t_iolst *redirects,
 			open_and_redirect(redirects->str, E_OUT, 0644);
 		else if (redirects->type == E_TTRRA)
 			open_and_redirect(redirects->str, E_APPEND, 0644);
-		else if (!is_last_cmd(num_cmds))
+		else if (num_cmds != 1)
 			redirect(pipe1[1], STDOUT_FILENO);
 		else if (pipe1)
 			close(pipe1[1]);
@@ -85,7 +78,7 @@ void	open_file(t_ast *ast, int pipe1[2], int num_cmds)
 	redirects = ast->cmd->redirects;
 	if (redirects == NULL)
 	{
-		if (is_last_cmd(num_cmds))
+		if (num_cmds == 1)
 			return ;
 		if (pipe1)
 			redirect(pipe1[1], STDOUT_FILENO);

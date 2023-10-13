@@ -92,11 +92,13 @@ void	execute_system_cmds(t_cmd *cmd, t_env *env)
 		cmd_plus_path = cmd->cmd;
 		cmd->cmd = ft_substr(cmd->cmd, 2, ft_strlen(cmd->cmd));
 	}
-	else
+	else if (env_get(env, "PATH"))
 	{
 		paths_splitted = ft_split(env_get(env, "PATH"), ':');
 		cmd_plus_path = cmd_path(paths_splitted, cmd->cmd);
 	}
+	else
+		cmd_plus_path = cmd->cmd;
 	cmd_args_joined = join_cmd(cmd);
 	envp = env_to_array(env);
 	if (execve(cmd_plus_path, cmd_args_joined, envp) < 0)

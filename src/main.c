@@ -74,11 +74,21 @@ void	init_rl(t_env *our_env, int	*exit_status)
 void	increment_shell_levell(t_env *env)
 {
 	char	*prev;
-	char	*next;
-
+	int		next;
+	
 	prev = env_get(env, "SHLVL");
-	next = ft_itoa(ft_atoi(prev) + 1);
-	env_set(env, "SHLVL", next);
+	next = 1;
+	if (prev && ft_isdigit(*prev))
+		next = ft_atoi(prev) + 1;
+	if (next < 0)
+		next = 0;
+	if (next >= 1000)
+	{
+		ft_printf_fd(2, "msh: warning: shell level (%S)" 
+				" too high, resetting to 1\n", ft_itoa(next));
+		next = 1;
+	}
+	env_set(env, "SHLVL", ft_itoa(next));
 }
 
 int	main(int argc, char **argv, char **env)

@@ -64,13 +64,11 @@ void	handle_cmdredirect(t_ast *ast, t_iolst *redirects,
 	(void)ast;
 	while (redirects)
 	{
-		if (!redirects)
-			break ;
-		if (redirects && redirects->type == E_TTLA)
+		if (redirects->type == E_TTLA)
 			open_and_redirect(redirects->str, O_RDONLY, 0);
-		if (redirects && redirects->type == E_TTRA)
+		if (redirects->type == E_TTRA)
 			open_and_redirect(redirects->str, E_OUT, 0644);
-		else if (redirects && redirects->type == E_TTRRA)
+		else if (redirects->type == E_TTRRA)
 			open_and_redirect(redirects->str, E_APPEND, 0644);
 		else if (!is_last_cmd(num_cmds))
 			redirect(pipe1[1], STDOUT_FILENO);

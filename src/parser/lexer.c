@@ -30,7 +30,7 @@ t_token	*tlst_create(char *str)
 	tmp = start;
 	while (*str)
 	{
-		while (isspace(*str))
+		while (ft_isspace(*str))
 			str++;
 		if (*str == '\0')
 			break ;
@@ -83,6 +83,8 @@ t_sd_stat	sd_until_arg_end(char *s, int i, bool check, void *pctx)
 		return (E_SD_STOP | E_SD_COPY);
 	else if (arrow && ((get_ttoken(&s[i + 1]) & E_TTLR) == 0))
 		return (E_SD_STOP | E_SD_COPY);
+	else if (!arrow && arrow_next)
+		return (E_SD_COPY | E_SD_STOP);
 	else if (s[i] == '|')
 		return (E_SD_STOP | ((i == 0) * E_SD_COPY));
 	return (E_SD_COPY);

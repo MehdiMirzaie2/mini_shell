@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 12:49:13 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/13 10:47:16 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 15:47:02 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	env_set(t_env *our_env, char *key, char *value)
 		next = next->next;
 	next->next = malloc(sizeof(t_env));
 	next = next->next;
-	next->name = key;
+	next->name = ft_strdup(key);
 	next->args = value;
 	next->next = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:33:30 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/13 11:02:54 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 15:41:13 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,16 @@ void	execute_system_cmds(t_cmd *cmd, t_env *env)
 	signal(SIGQUIT, handle_sigintexecute);
 	if (ft_strchr(cmd->cmd, '/'))
 	{
-		error_execve(cmd->cmd);
 		cmd_plus_path = cmd->cmd;
-		cmd->cmd = ft_substr(cmd->cmd, 2, ft_strlen(cmd->cmd));
+		if (cmd->cmd[0] == '.')
+			cmd->cmd = ft_substr(cmd->cmd, 2, ft_strlen(cmd->cmd));
+		else
+		{
+			cmd->cmd = ft_substr(cmd->cmd, ft_strchr(cmd->cmd, '/') + 1
+				   	- cmd->cmd, ft_strlen(cmd->cmd));
+
+		}
+		cmd_args_joined = join_cmd(cmd);
 	}
 	else if (env_get(env, "PATH"))
 	{

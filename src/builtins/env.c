@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:02 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/12 23:59:41 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 15:37:28 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,10 @@ void	add_node_to_env(t_env **our_env, char *name, char *args)
 	if (ref == NULL)
 		return ;
 	ref->name = ft_strdup(name);
-	ref->args = ft_strdup(args);
+	if (args)
+		ref->args = ft_strdup(args);
+	else
+		ref->args = ft_strdup("");
 	ref->next = *our_env;
 	*our_env = ref;
 }

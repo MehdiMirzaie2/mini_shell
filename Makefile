@@ -100,7 +100,7 @@ lclean:
 
 # full clean, clean all objects and libraries and binaries
 fclean: clean
-	# for f in $(dir $(LIBFT_TARGET)); do $(MAKE) -C $$f fclean; done
+	for f in $(dir $(LIBFT_TARGET)); do $(MAKE) -C $$f fclean; done
 	$(RM) $(NAME)
 	$(call print_fclean,$(NAME))
 

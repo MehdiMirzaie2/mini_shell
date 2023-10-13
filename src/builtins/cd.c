@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 21:54:18 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/10 12:12:28 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/13 15:34:22 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ void	update_pwd(t_env **our_env)
 	free(ref2->args);
 	ref2->args = ref->args;
 	ref->args = NULL;
-	ref->args = ft_strdup(getcwd(buff, PATH_MAX + 1));
+	if (getcwd(buff, PATH_MAX + 1))
+		ref->args = ft_strdup(buff);
+	else
+		ref->args = ft_strdup("");
 }
 
 int	ft_cd(t_cmd *cmd, t_env **our_env)

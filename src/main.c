@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 11:03:38 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/13 10:50:24 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 15:56:18 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,16 @@
 char	*rl_gets(t_mshctx *msh)
 {
 	char		buff[PATH_MAX + 1];
+	static	char*	prev_path;
+	char			*path;
 
 	if (msh->prompt)
 		free(msh->prompt);
-	msh->prompt = ft_strfmt("%s> ", getcwd(buff, PATH_MAX + 1));
+	path = buff;
+	if (!getcwd(buff, PATH_MAX + 1))
+		path = prev_path;
+	prev_path = path;
+	msh->prompt = ft_strfmt("%s> ", path);
 	if (msh->line)
 		free(msh->line);
 	msh->line = readline(msh->prompt);
@@ -78,8 +84,10 @@ void	increment_shell_levell(t_env *env)
 	
 	prev = env_get(env, "SHLVL");
 	next = 1;
-	if (prev && ft_isdigit(*prev))
+	if (prev && ((*prev == '-' && ft_isdigit(prev[1])) || ft_isdigit(*prev)))
 		next = ft_atoi(prev) + 1;
+	else if (prev && !*prev)
+		next = 0;
 	if (next < 0)
 		next = 0;
 	if (next >= 1000)

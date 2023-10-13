@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 11:03:38 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/12 17:02:08 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 10:50:24 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ char	*rl_gets(t_mshctx *msh)
 
 void	init_rl(t_env *our_env, int	*exit_status)
 {
+	char *const	question = ft_strdup("?");
 	t_mshctx	msh;
-	char *const question = ft_strdup("?");
-   
+
 	msh = (t_mshctx){0};
 	msh.env = our_env;
 	while (1)

@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:48:49 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/13 09:11:03 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 10:53:56 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 
 void	get_command_name(char **dst, t_cmd *cmd, bool movearg)
 {
-	t_arglst *old;
-	char *name;
+	t_arglst	*old;
+	char		*name;
 
 	if (cmd == NULL)
 		return ;
@@ -27,7 +27,7 @@ void	get_command_name(char **dst, t_cmd *cmd, bool movearg)
 	{
 		name = cmd->args->str;
 		if (movearg)
-		{	
+		{
 			if (cmd->cmd || *cmd->cmd == '\0')
 				free(cmd->cmd);
 			old = cmd->args;
@@ -43,14 +43,13 @@ void	get_command_name(char **dst, t_cmd *cmd, bool movearg)
 		*dst = name;
 }
 
-
 void	process_ast(t_mshctx msh, t_env **our_env, int *exit_status)
 {
-	t_ast	*const	ast = msh.ast;
-	const int	in = dup(STDIN_FILENO);
-	const int	out = dup(STDOUT_FILENO);
-	int			num_cmds;
-	pid_t		*pids;
+	t_ast *const	ast = msh.ast;
+	const int		in = dup(STDIN_FILENO);
+	const int		out = dup(STDOUT_FILENO);
+	int				num_cmds;
+	pid_t			*pids;
 
 	if (ast->type == E_ASTCMD && is_envbuiltin(ast->cmd))
 	{

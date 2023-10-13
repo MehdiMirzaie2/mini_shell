@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:07:14 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/12 17:34:20 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 10:57:46 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ static void	open_and_redirect(char *name, int rw, int permission)
 void	handle_cmdredirect(t_ast *ast, t_iolst *redirects,
 	int pipe1[2], int num_cmds)
 {
-	int in = dup(STDIN_FILENO);
-	t_iolst *start;
-	start = redirects;
+	const int	in = dup(STDIN_FILENO);
+	t_iolst		*start;
 
+	start = redirects;
 	while (start)
 	{
 		if (start && start->type == E_TTLLA)
@@ -97,12 +97,12 @@ void	open_file(t_ast *ast, int pipe1[2], int num_cmds)
 
 void	execute(t_ast *ast, t_env **our_env, int *exit_status, int num_cmds)
 {
-	t_ast		*node;
-	int			pipe1[2];
-	t_iolst		*start;
-	pid_t 		child;
 	const int	in = dup(STDIN_FILENO);
-	
+	int			pipe1[2];
+	pid_t		child;
+	t_ast		*node;
+	t_iolst		*start;
+
 	while (num_cmds > 0)
 	{
 		node = get_next_node(ast, num_cmds);
@@ -114,13 +114,13 @@ void	execute(t_ast *ast, t_env **our_env, int *exit_status, int num_cmds)
 				dup2(in, STDIN_FILENO);
 				break ;
 			}
-			start = start->next;		
+			start = start->next;
 		}
 		if (pipe(pipe1) < 0)
 			perror("error making pipe\n");
 		get_command_name(&node->cmd->cmd, node->cmd, true);
-		(void)child;
-		if ((child = fork()) == 0)
+		child = fork();
+		if (child == 0)
 		{
 			signal(SIGINT, SIG_IGN);
 			signal(SIGQUIT, SIG_IGN);
@@ -145,7 +145,7 @@ void	execute(t_ast *ast, t_env **our_env, int *exit_status, int num_cmds)
 				waitpid(child, NULL, 0);
 				break ;
 			}
-			start = start->next;		
+			start = start->next;
 		}
 	}
 }

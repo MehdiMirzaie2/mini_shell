@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rules.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/13 10:37:33 by clovell           #+#    #+#             */
+/*   Updated: 2023/10/13 10:38:58 by clovell          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "shell.h"
 #include "lexer.h"
+
 typedef enum e_syn_err_no	t_synerrno;
 typedef struct s_synerror	t_synerror;
 
@@ -18,12 +31,12 @@ struct s_synerror
 
 static int	print_synerr(t_ttoken token, t_token *lst, t_synerrno error)
 {
-	char *fmt;
-	char *str;
+	char	*fmt;
+	char	*str;
 
 	if (error == E_SEALLOWED)
 		return (0);
-	str = get_token_desc(token, 2); 
+	str = get_token_desc(token, 2);
 	if (lst && lst->str)
 		str = lst->str;
 	fmt = "Unknown error";
@@ -33,12 +46,12 @@ static int	print_synerr(t_ttoken token, t_token *lst, t_synerrno error)
 	return (1);
 }
 
-int tlst_syntax_check(t_token *lst)
+int	tlst_syntax_check(t_token *lst)
 {
-	t_token *tcurr;
-	t_ttoken curr;
-	t_ttoken prev;
-	t_ttoken next;
+	t_token		*tcurr;
+	t_ttoken	curr;
+	t_ttoken	prev;
+	t_ttoken	next;
 
 	prev = E_TTNA;
 	tcurr = lst;

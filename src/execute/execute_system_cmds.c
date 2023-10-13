@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:33:30 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/12 23:35:59 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 11:02:54 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,21 +61,16 @@ int	is_directory_exists(const char *path)
 
 void	error_execve(char *cmd)
 {
-	char *err;
-
 	if (is_directory_exists(cmd))
 	{
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": is a directory\n", 2);
+		ft_printf_fd(2, "%s: is a directory\n", cmd);
 		exit(126);
 	}
 	else if (cmd[0] == '.')
 		return ;
 	else
 	{
-		err = ft_strfmt("%s: %s\n", cmd, strerror(errno));
-		ft_putstr_fd(err, 2);
-		free(err);
+		ft_printf_fd(2, "%s: %s\n", cmd, strerror(errno));
 		if (errno == EACCES)
 			exit(126);
 		exit(127);

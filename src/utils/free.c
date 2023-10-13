@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/13 10:47:27 by clovell           #+#    #+#             */
+/*   Updated: 2023/10/13 10:47:50 by clovell          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shell.h"
 #include "lexer.h"
 #include "ast.h"
 
-void free_mshctx(t_mshctx ctx)
+void	free_mshctx(t_mshctx ctx)
 {
 	if (ctx.env)
 		free_env(ctx.env, true);
@@ -16,10 +28,9 @@ void free_mshctx(t_mshctx ctx)
 		free(ctx.prompt);
 }
 
-
-int free_strarr(char **array)
+int	free_strarr(char **array)
 {
-	char **start;
+	char	**start;
 
 	if (array == NULL)
 		return (0);

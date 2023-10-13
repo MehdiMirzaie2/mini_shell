@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 19:22:01 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/13 01:56:23 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 10:44:52 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ static int	cmd_redir(t_cmd *cmd, t_token **adv)
 		*adv = (*adv)->next->next;
 		cmd->has_redirect = true;
 		cmd->has_heredoc = (tok.type & E_TTLLA) != 0;
-		return (0) ;
+		return (0);
 	}
-	// TODO: Handle memory leaks
 	if (tok.next == NULL)
 		ft_putstr_fd("msh: syntax error near `newline`\n", 2);
 	else
-		ft_printf_fd(STDERR_FILENO, "msh: syntax error near `%s`\n", tok.next->str);
+		ft_printf_fd(STDERR_FILENO,
+			"msh: syntax error near `%s`\n", tok.next->str);
 	return (1);
 }
 
@@ -87,7 +87,7 @@ static int	cmd_start(t_cmd *cmd, t_token **adv)
 	const t_token	tk = (**adv);
 
 	if ((tk.type & E_TTWG) == 0)
-	{	
+	{
 		if (cmd_redir(cmd, adv))
 			return (1);
 	}
@@ -110,7 +110,7 @@ int	cmd_build(t_cmd *cmd, t_token **tokenadv)
 	while ((token & E_TTNC) == 0)
 	{
 		if (cmd_start(cmd, tokenadv))
-			return  (1);
+			return (1);
 		if (*tokenadv == NULL)
 			break ;
 		token = (*tokenadv)->type;

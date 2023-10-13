@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 23:10:17 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/10 19:10:05 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 10:42:16 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,30 +60,30 @@ char	*tokstr_advance(char *str, char c, bool quoted)
 	return (&str[i]);
 }
 
-t_sd_stat	sd_until_arg_end(char *str, int i, bool check, void *pctx)
+t_sd_stat	sd_until_arg_end(char *s, int i, bool check, void *pctx)
 {
 	char *const	depth = pctx;
-	const bool	arrow = str && (str[i] == '>' || str[i] == '<');
-	const bool	arrow_next = str && *str && (str[i+1] == '>' || str[i+1] == '<');
+	const bool	arrow = s && (s[i] == '>' || s[i] == '<');
+	const bool	arrow_next = s && *s && (s[i + 1] == '>' || s[i + 1] == '<');
 
-	if (str[i] == '\0')
+	if (s[i] == '\0')
 		return (E_SD_STOP);
-	if (str[i] == '\"' || str[i] == '\'')
+	if (s[i] == '\"' || s[i] == '\'')
 	{
 		if (depth[check] == '\0')
-			depth[check] = str[i];
-		else if (depth[check] == str[i])
+			depth[check] = s[i];
+		else if (depth[check] == s[i])
 			depth[check] = '\0';
 	}
 	else if (depth[check] != '\0')
 		return (E_SD_COPY);
-	if (ft_isspace(str[i]))
+	if (ft_isspace(s[i]))
 		return (E_SD_STOP);
-	else if (arrow && arrow_next && str[i] != str[i + 1])
+	else if (arrow && arrow_next && s[i] != s[i + 1])
 		return (E_SD_STOP | E_SD_COPY);
-	else if (arrow && ((get_ttoken(&str[i + 1]) & E_TTLR) == 0))
+	else if (arrow && ((get_ttoken(&s[i + 1]) & E_TTLR) == 0))
 		return (E_SD_STOP | E_SD_COPY);
-	else if (str[i] == '|')
+	else if (s[i] == '|')
 		return (E_SD_STOP | ((i == 0) * E_SD_COPY));
 	return (E_SD_COPY);
 }

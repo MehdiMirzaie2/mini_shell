@@ -6,15 +6,13 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 16:13:12 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/10 17:51:24 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 10:45:18 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
 #include "ast.h"
 #include "lexer.h"
-
-
 
 static int	astb_addcmd(t_astbuilder *builder)
 {
@@ -48,6 +46,7 @@ int	astb_start(t_astbuilder *builder)
 			return (1);
 	return (0);
 }
+
 /* Branches the current ast into two seperate sub trees
  * type: (E_TTP or E_TTAND or E_TTOR)
  *

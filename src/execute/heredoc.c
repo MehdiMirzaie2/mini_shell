@@ -6,13 +6,12 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 17:54:48 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/10 16:05:58 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/13 10:54:17 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 #include "execute.h"
-
 
 void	error_exit(char *error, int val)
 {

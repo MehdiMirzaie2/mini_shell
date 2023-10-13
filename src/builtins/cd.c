@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 21:54:18 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/13 16:10:10 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/13 16:11:29 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,23 @@ void	update_pwd(t_env **our_env)
 
 int	ft_cd(t_cmd *cmd, t_env **our_env)
 {
-	if (cmd->args == NULL || !ft_strcmp(cmd->args->str, "~"))
+	char	*destination;
+
+	if (cmd->args == NULL || !ft_strncmp(cmd->args->str, "~", 2))
 		chdir(getenv("HOME"));
+	else if (!ft_strncmp(cmd->args->str, "-", 2))
+	{
+		destination = env_get(*our_env, "OLDPWD");
+		if (!destination)
+		{
+			ft_putstr_fd("bash: cd: OLDPWD not set\n", 2);
+			return (256);
+		}
+		chdir(destination);
+	}
 	else if (chdir(cmd->args->str) == -1)
 	{
-		write(2, "cd: ", 4);
-		ft_putstr_fd(cmd->args->str, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
+		ft_printf_fd(2, "cd: %s: No such file or directory\n", cmd->args->str);
 		return (256);
 	}
 	update_pwd(our_env);

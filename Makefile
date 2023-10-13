@@ -69,7 +69,7 @@ DEPS        := $(OBJS:.o=.d)
 CC          := cc
 CFLAGS      := -Wall -Wextra -Werror -g3 $(DFLAGS) 
 CPPFLAGS    := $(addprefix -I,$(INCS)) -MMD -MP
-LDFLAGS     := $(addprefix -L,$(dir $(LIBFT_TARGET))) -L$(RL_LIB) 
+LDFLAGS     := $(addprefix -L,$(dir $(LIBFT_TARGET))) $(addprefix -L,$(RL_LIB))
 LDLIBS      := $(addprefix -l,$(LIBS))
 RLFLAGS		:= -lreadline
 

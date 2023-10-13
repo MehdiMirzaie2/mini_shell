@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 23:10:17 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/13 14:30:21 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 16:35:48 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ char	*tokstr_advance(char *str, char c, bool quoted)
 
 t_sd_stat	sd_until_arg_end(char *s, int i, bool check, void *pctx)
 {
-	char *const	depth = pctx;
 	const bool	arrow = s && (s[i] == '>' || s[i] == '<');
 	const bool	arrow_next = s && *s && (s[i + 1] == '>' || s[i + 1] == '<');
 
@@ -70,12 +69,12 @@ t_sd_stat	sd_until_arg_end(char *s, int i, bool check, void *pctx)
 		return (E_SD_STOP);
 	if (s[i] == '\"' || s[i] == '\'')
 	{
-		if (depth[check] == '\0')
-			depth[check] = s[i];
-		else if (depth[check] == s[i])
-			depth[check] = '\0';
+		if (((char *)pctx)[check] == '\0')
+			((char *)pctx)[check] = s[i];
+		else if (((char *)pctx)[check] == s[i])
+			((char *)pctx)[check] = '\0';
 	}
-	if (depth[check] != '\0')
+	if (((char *)pctx)[check] != '\0')
 		return (E_SD_COPY);
 	if (ft_isspace(s[i]))
 		return (E_SD_STOP);

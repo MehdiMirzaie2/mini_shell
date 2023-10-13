@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:33:30 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/13 15:41:13 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 17:27:04 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,30 +23,6 @@ char	*get_lastredirect(t_iolst	*redirects)
 	while (ref_redirects->next)
 		ref_redirects = ref_redirects->next;
 	return (ref_redirects->str);
-}
-
-char	**env_to_array(t_env *env)
-{
-	char	**array;
-	t_env	*next;
-	int		size;
-
-	next = env;
-	size = 0;
-	while (next != NULL)
-	{
-		next = next->next;
-		size++;
-	}
-	array = malloc(sizeof(char *) * (size + 1));
-	next = env;
-	array[size] = NULL;
-	while (--size >= 0)
-	{
-		array[size] = ft_strfmt("%s=%s", next->name, next->args);
-		next = next->next;
-	}
-	return (array);
 }
 
 int	is_directory_exists(const char *path)
@@ -77,12 +53,25 @@ void	error_execve(char *cmd)
 	}
 }
 
+static void	execute_sys_cmd(t_cmd *cmd, char *cmd_path, char **argv, t_env *env)
+{
+	char	**envp;
+
+	envp = env_to_array(env);
+	if (execve(cmd_path, argv, envp) < 0)
+	{
+		free_strarr(envp);
+		error_execve(cmd->cmd);
+		free_strarr(argv);
+		exit(126);
+	}
+}
+
 void	execute_system_cmds(t_cmd *cmd, t_env *env)
 {
 	char		**cmd_args_joined;
 	char		*cmd_plus_path;
 	char		**paths_splitted;
-	char		**envp;
 
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, handle_sigintexecute);
@@ -93,9 +82,9 @@ void	execute_system_cmds(t_cmd *cmd, t_env *env)
 			cmd->cmd = ft_substr(cmd->cmd, 2, ft_strlen(cmd->cmd));
 		else
 		{
+			error_execve(cmd->cmd);
 			cmd->cmd = ft_substr(cmd->cmd, ft_strchr(cmd->cmd, '/') + 1
 				   	- cmd->cmd, ft_strlen(cmd->cmd));
-
 		}
 		cmd_args_joined = join_cmd(cmd);
 	}
@@ -107,12 +96,5 @@ void	execute_system_cmds(t_cmd *cmd, t_env *env)
 	else
 		cmd_plus_path = cmd->cmd;
 	cmd_args_joined = join_cmd(cmd);
-	envp = env_to_array(env);
-	if (execve(cmd_plus_path, cmd_args_joined, envp) < 0)
-	{
-		free_strarr(envp);
-		error_execve(cmd->cmd);
-		free_strarr(cmd_args_joined);
-		exit(126);
-	}
+	execute_sys_cmd(cmd, cmd_plus_path, cmd_args_joined, env);
 }

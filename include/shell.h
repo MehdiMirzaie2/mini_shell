@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:26:51 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/12 23:45:47 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 16:44:42 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,12 @@ struct s_mshctx
 	char	*line;
 	char	*prompt;
 };
+/* env_to_array.c */
+
+/* Given a t_env list.
+ * it will generate a new array of strings.
+ */
+char	**env_to_array(t_env *env);
 
 /* free.c */
 void		free_mshctx(t_mshctx ctx);

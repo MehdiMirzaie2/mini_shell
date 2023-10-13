@@ -35,6 +35,7 @@ SRCS        :=	main.c \
 				utils/expand_utils.c \
 				utils/expand_handle.c \
 				utils/free.c \
+				utils/env_to_array.c \
 				parser/lexer.c \
 				parser/lexer_utils.c \
 				parser/debug_token.c \
@@ -65,9 +66,9 @@ OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEPS        := $(OBJS:.o=.d)
 
 CC          := cc
-CFLAGS      := -Wall -Wextra -Werror -g3 $(DFLAGS) -fsanitize=address
+CFLAGS      := -Wall -Wextra -Werror -g3 $(DFLAGS) 
 CPPFLAGS    := $(addprefix -I,$(INCS)) -MMD -MP
-LDFLAGS     := $(addprefix -L,$(dir $(LIBFT_TARGET))) -L$(RL_LIB) -fsanitize=address
+LDFLAGS     := $(addprefix -L,$(dir $(LIBFT_TARGET))) -L$(RL_LIB) 
 LDLIBS      := $(addprefix -l,$(LIBS))
 RLFLAGS		:= -lreadline
 

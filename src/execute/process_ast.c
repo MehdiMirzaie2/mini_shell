@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:48:49 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/13 10:53:56 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 18:00:48 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,13 @@ void	process_ast(t_mshctx msh, t_env **our_env, int *exit_status)
 	if (ast->type == E_ASTCMD && is_envbuiltin(ast->cmd))
 	{
 		open_file(ast, NULL, 1);
-		execute_builtin_cmds(ast->cmd, our_env, exit_status);
+		*exit_status = execute_builtin_cmds(ast->cmd, our_env);
 	}
 	else
 	{
 		signal(SIGINT, SIG_IGN);
 		num_cmds = get_num_cmd(ast);
-		execute(ast, our_env, exit_status, num_cmds);
+		execute(ast, our_env, num_cmds);
 		(void)pids;
 		while (num_cmds-- > 0)
 			wait(exit_status);

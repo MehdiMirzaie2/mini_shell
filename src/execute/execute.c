@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:07:14 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/13 11:21:45 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/13 18:03:53 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,57 +93,55 @@ void	open_file(t_ast *ast, int pipe1[2], int num_cmds)
 	handle_cmdredirect(ast, redirects, pipe1, num_cmds);
 }
 
-void	execute(t_ast *ast, t_env **our_env, int *exit_status, int num_cmds)
+void loop_redirects(int child, t_iolst *start, int in)
+{
+	while (start)
+	{
+		if (start->type == E_TTLLA)
+		{
+			if (child != 0)
+				waitpid(child, NULL, 0);
+			else
+				dup2(in, STDIN_FILENO);
+			break ;
+		}
+		start = start->next;
+	}
+}
+
+void	execute_child(t_ast *node, int pipe1[2], t_env **our_env, int num_cmds)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	close(pipe1[0]);
+	open_file(node, pipe1, num_cmds);
+	if (!*node->cmd->cmd)
+		exit(EXIT_SUCCESS);
+	if (is_builtin(node->cmd) || is_envbuiltin(node->cmd))
+		execute_builtin_cmds(node->cmd, our_env);
+	else
+		execute_system_cmds(node->cmd, *our_env);
+	exit(EXIT_SUCCESS);
+}
+void	execute(t_ast *ast, t_env **our_env, int num_cmds)
 {
 	const int	in = dup(STDIN_FILENO);
 	int			pipe1[2];
 	pid_t		child;
 	t_ast		*node;
-	t_iolst		*start;
 
 	while (num_cmds > 0)
 	{
 		node = get_next_node(ast, num_cmds);
-		start = node->cmd->redirects;
-		while (start)
-		{
-			if (start->type == E_TTLLA)
-			{
-				dup2(in, STDIN_FILENO);
-				break ;
-			}
-			start = start->next;
-		}
+		loop_redirects(0, node->cmd->redirects, in);
 		if (pipe(pipe1) < 0)
 			perror("error making pipe\n");
-		get_command_name(&node->cmd->cmd, node->cmd, true);
 		child = fork();
 		if (child == 0)
-		{
-			signal(SIGINT, SIG_IGN);
-			signal(SIGQUIT, SIG_IGN);
-			close(pipe1[0]);
-			open_file(node, pipe1, num_cmds);
-			if (!*node->cmd->cmd)
-				exit(EXIT_SUCCESS);
-			if (is_builtin(node->cmd) || is_envbuiltin(node->cmd))
-				execute_builtin_cmds(node->cmd, our_env, exit_status);
-			else
-				execute_system_cmds(node->cmd, *our_env);
-			exit(EXIT_SUCCESS);
-		}
+			execute_child(node, pipe1, our_env, num_cmds);
 		redirect(pipe1[0], STDIN_FILENO);
 		close(pipe1[1]);
 		num_cmds--;
-		start = node->cmd->redirects;
-		while (start)
-		{
-			if (start->type == E_TTLLA)
-			{
-				waitpid(child, NULL, 0);
-				break ;
-			}
-			start = start->next;
-		}
+		loop_redirects(child, node->cmd->redirects, 0);
 	}
 }

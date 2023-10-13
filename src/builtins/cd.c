@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 21:54:18 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/13 16:11:29 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/13 16:16:16 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,15 @@ void	update_pwd(t_env **our_env)
 	while (ref && ft_strncmp(ref->name, "PWD", 3) != 0)
 		ref = ref->next;
 	if (ref == NULL)
-	{
 		add_node_to_env(our_env, "PWD", getcwd(buff, PATH_MAX + 1));
+	if (ref == NULL)
 		ref = *our_env;
-	}
 	while (ref2 && ft_strncmp(ref2->name, "OLDPWD", 6) != 0)
 		ref2 = ref2->next;
 	if (ref2 == NULL)
-	{
 		add_node_to_env(our_env, "OLDPWD", "NULL");
+	if (ref2 == NULL)
 		ref2 = *our_env;
-	}
 	free(ref2->args);
 	ref2->args = ref->args;
 	ref->args = NULL;

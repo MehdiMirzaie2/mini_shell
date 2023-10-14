@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:07:14 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/14 14:58:46 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/14 17:57:13 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	open_and_redirect(char *name, int rw, int permission)
 }
 
 void	handle_cmdredirect(t_iolst *redirects,
-	int pipe1[2], int num_cmds)
+	int pipe1[2], int num_cmds, t_env *env)
 {
 	const int	in = dup(STDIN_FILENO);
 	t_iolst		*start;
@@ -47,7 +47,7 @@ void	handle_cmdredirect(t_iolst *redirects,
 		if (start && start->type == E_TTLLA)
 		{
 			dup2(in, STDIN_FILENO);
-			handle_heredoc(start);
+			handle_heredoc(start, env);
 		}
 		start = start->next;
 	}
@@ -67,7 +67,7 @@ void	handle_cmdredirect(t_iolst *redirects,
 	}
 }
 
-void	open_file(t_ast *ast, int pipe1[2], int num_cmds)
+void	open_file(t_ast *ast, int pipe1[2], int num_cmds, t_env *env)
 {
 	t_iolst	*redirects;
 
@@ -79,10 +79,10 @@ void	open_file(t_ast *ast, int pipe1[2], int num_cmds)
 		if (pipe1)
 			redirect(pipe1[1], STDOUT_FILENO);
 	}
-	handle_cmdredirect(ast, redirects, pipe1, num_cmds);
+	handle_cmdredirect(redirects, pipe1, num_cmds, env);
 }
 
-void loop_redirects(int child, t_iolst *start, int in)
+void	loop_redirects(int child, t_iolst *start, int in)
 {
 	while (start)
 	{
@@ -103,7 +103,7 @@ void	execute_child(t_ast *node, int pipe1[2], t_env **our_env, int num_cmds)
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	close(pipe1[0]);
-	open_file(node, pipe1, num_cmds);
+	open_file(node, pipe1, num_cmds, *our_env);
 	if (!*node->cmd->cmd)
 		exit(EXIT_SUCCESS);
 	if (is_builtin(node->cmd) || is_envbuiltin(node->cmd))
@@ -112,19 +112,6 @@ void	execute_child(t_ast *node, int pipe1[2], t_env **our_env, int num_cmds)
 		execute_system_cmds(node->cmd, *our_env);
 	exit(EXIT_SUCCESS);
 }
-
-// echo something | cat
-
-// pipe
-// fork
-// 		close(OUT)
-// 		dup(pipe[0])
-// 		exec(echo)
-// fork
-// 		close(IN)
-// 		dup(pipe[1])
-// 		exec(cat)
-
 
 void	execute(t_ast *ast, t_env **our_env, int *latest_pid, int num_cmds)
 {

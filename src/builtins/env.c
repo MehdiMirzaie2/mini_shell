@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:02 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/16 15:04:21 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/16 15:05:37 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,27 @@
 
 bool	valid_identifier(char **name_and_args, char *cmd)
 {
-	if (*name_and_args == NULL || ft_isdigit(*name_and_args[0])
-		|| ft_strrchr(name_and_args[0], '-') != NULL
-		|| ft_strrchr(name_and_args[0], '+') != NULL
-		|| ft_strrchr(name_and_args[0], '=') != NULL
-		|| ft_strrchr(name_and_args[0], ' ') != NULL)
+	char	*name;
+
+	name = *name_and_args;
+	if ((!name || (!ft_isalpha(**name_and_args) && **name_and_args != '_')
+			|| !ft_strncmp(*name_and_args, "for", 4)
+			|| !ft_strncmp(*name_and_args, "if", 3))
+		|| !ft_strncmp(*name_and_args, "while", 6))
 	{
 		ft_printf_fd(2, "export: '%s': not a valid identifier\n", cmd);
 		return (false);
+	}
+	while (*name)
+	{
+		++name;
+		if (!*name)
+			return (true);
+		if (!ft_isalnum(*name) && *name != '_')
+		{
+			ft_printf_fd(2, "export: '%s': not a valid identifier\n", cmd);
+			return (false);
+		}
 	}
 	return (true);
 }
@@ -38,7 +51,7 @@ int	unset(t_env **env, t_arglst *args)
 	if (args == NULL)
 		return (0);
 	if (!valid_identifier(&args->str, args->str))
-		exit(256);
+		return (256);
 	while (ref && ft_strcmp(ref->name, args->str) != 0)
 	{
 		prev = ref;

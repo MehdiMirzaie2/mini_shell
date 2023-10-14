@@ -6,13 +6,13 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 21:54:18 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/14 14:59:41 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/14 15:01:40 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	set_pwd(t_env *ref, t_env *ref2)
+static void	set_pwd(t_env *ref, t_env *ref2)
 {
 	char	buff[PATH_MAX + 1];
 
@@ -48,7 +48,6 @@ void	update_pwd(t_env **our_env)
 		add_node_to_env(our_env, "OLDPWD", "NULL");
 	if (ref2 == NULL)
 		ref2 = *our_env;
-	}
 	set_pwd(ref, ref2);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 17:54:48 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/13 10:54:17 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/14 17:27:12 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	error_exit(char *error, int val)
 	exit(val);
 }
 
-void	readheredoc(t_iolst *redirects, int fd, const char *filename)
+void	readheredoc(t_iolst *redirects, int fd, const char *filename,
+	t_env *env)
 {
 	char	*lines;
 
@@ -34,6 +35,7 @@ void	readheredoc(t_iolst *redirects, int fd, const char *filename)
 	}
 	while (ft_strcmp(lines, redirects->str) != 0)
 	{
+		lines = expand_str(lines, env);
 		ft_putstr_fd_nl(lines, fd, true);
 		free(lines);
 		lines = readline("heredoc> ");
@@ -47,7 +49,7 @@ void	readheredoc(t_iolst *redirects, int fd, const char *filename)
 	}
 }
 
-void	handle_heredoc(t_iolst *redirects)
+void	handle_heredoc(t_iolst *redirects, t_env *env)
 {
 	const char	*filename = "/tmp/mytempfileXXXXXX";
 	int			fd;
@@ -56,7 +58,7 @@ void	handle_heredoc(t_iolst *redirects)
 	if (fd == -1)
 		error_exit("error making temp file for heredoc", 127);
 	init_termios();
-	readheredoc(redirects, fd, filename);
+	readheredoc(redirects, fd, filename, env);
 	reset_termios();
 	close(fd);
 	fd = open(filename, O_RDONLY);

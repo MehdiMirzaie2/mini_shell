@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 11:03:38 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/13 16:14:01 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/14 18:03:09 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 char	*rl_gets(t_mshctx *msh)
 {
 	char		buff[PATH_MAX + 1];
-	static	char*	prev_path;
-	char			*path;
+	static char	*prev_path;
+	char		*path;
 
 	if (msh->prompt)
 		free(msh->prompt);
@@ -70,7 +70,6 @@ void	init_rl(t_env *our_env, int	*exit_status)
 			if (msh.ast)
 			{
 				ast_expandall(msh.ast, msh.env);
-				// tast_print(msh.ast);
 				process_ast(msh, &msh.env, exit_status);
 				ast_memman(&msh.ast, E_ASTLINK, true);
 			}
@@ -84,7 +83,7 @@ void	increment_shell_levell(t_env *env)
 {
 	char	*prev;
 	int		next;
-	
+
 	prev = env_get(env, "SHLVL");
 	next = 1;
 	if (prev && ((*prev == '-' && ft_isdigit(prev[1])) || ft_isdigit(*prev)))
@@ -95,8 +94,8 @@ void	increment_shell_levell(t_env *env)
 		next = 0;
 	if (next >= 1000)
 	{
-		ft_printf_fd(2, "msh: warning: shell level (%S)" 
-				" too high, resetting to 1\n", ft_itoa(next));
+		ft_printf_fd(2, "msh: warning: shell level (%S)"
+			" too high, resetting to 1\n", ft_itoa(next));
 		next = 1;
 	}
 	env_set(env, "SHLVL", ft_itoa(next));

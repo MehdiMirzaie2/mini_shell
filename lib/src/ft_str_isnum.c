@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 20:45:37 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/13 20:57:35 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/14 18:06:24 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ bool	ft_str_isnum(char *str)
 {
 	if (*str == '-' || *str == '+' || *str == ' ')
 		++str;
-	if(!(*str))
+	if (!(*str))
 		return (false);
 	while (*str)
 	{

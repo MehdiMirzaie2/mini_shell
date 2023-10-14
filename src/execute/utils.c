@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 13:41:38 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/13 12:41:14 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/14 15:13:36 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ bool	is_builtin(t_cmd *cmd)
 	if (!command)
 		return (false);
 	if (!ft_strncmp(command, "echo", 5) || !ft_strncmp(command, "exit", 5))
-	{
-		// printf("%s\n", command);
 		return (true);
-	}
 	return (false);
 }
 

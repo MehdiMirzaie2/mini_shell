@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:26:51 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/13 18:15:17 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/14 18:08:14 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ struct s_mshctx
 };
 
 /* file_util.c */
-int	is_directory_exists(const char *path);
-
+int			is_directory_exists(const char *path);
 
 /* env_to_array.c */
 

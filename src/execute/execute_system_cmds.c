@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:33:30 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/14 14:59:06 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/14 21:28:59 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ char	*get_lastredirect(t_iolst	*redirects)
 
 void	error_execve(char *cmd)
 {
-	// printf("\ncmd = %s\n", cmd);
 	if (is_directory_exists(cmd))
 	{
 		ft_printf_fd(2, "%s: is a directory\n", cmd);
@@ -60,9 +59,34 @@ static void	execute_sys_cmd(t_cmd *cmd, char *cmd_path, char **argv, t_env *env)
 
 struct s_exec_info
 {
-	char *abs_cmd;
-	char **argv;
+	char	*abs_cmd;
+	char	**argv;
 };
+
+
+// struct s_exec_info	get_executable(t_cmd *cmd, char **paths)
+// {
+// 	struct s_exec_info	exec;
+
+// 	if (ft_strchr(cmd->cmd, '/'))
+// 	{
+// 		exec.abs_cmd = cmd->cmd;
+// 		if (exec.abs_cmd[0] == '.')
+// 			exec.abs_cmd = ft_substr(cmd->cmd, 2, ft_strlen(cmd->cmd));
+// 		else
+// 		{
+// 			// error_execve(exec.abs_cmd);
+// 			exec.abs_cmd = ft_substr(cmd->cmd, ft_strchr(cmd->cmd, '/') + 1
+// 					- cmd->cmd, ft_strlen(cmd->cmd));
+// 		}
+// 	}
+// 	else if (paths)
+// 		exec.abs_cmd = cmd_path(paths, cmd->cmd);
+// 	else
+// 		exec.abs_cmd = cmd->cmd;
+// 	exec.argv = join_cmd(cmd);
+// 	return (exec);
+// }
 
 struct s_exec_info	get_executable(t_cmd *cmd, char **paths)
 {
@@ -75,9 +99,9 @@ struct s_exec_info	get_executable(t_cmd *cmd, char **paths)
 			cmd->cmd = ft_substr(cmd->cmd, 2, ft_strlen(cmd->cmd));
 		else
 		{
-			error_execve(cmd->cmd);
+			// error_execve(cmd->cmd);
 			cmd->cmd = ft_substr(cmd->cmd, ft_strchr(cmd->cmd, '/') + 1
-				   	- cmd->cmd, ft_strlen(cmd->cmd));
+					- cmd->cmd, ft_strlen(cmd->cmd));
 		}
 	}
 	else if (paths)

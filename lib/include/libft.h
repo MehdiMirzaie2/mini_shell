@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 13:55:32 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/13 10:48:52 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/14 13:36:44 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ char		*ft_strnstr(const char *big, const char *little, size_t len);
 int			ft_atoi(const char *nptr);
 void		*ft_calloc(size_t nmemb, size_t size);
 char		*ft_strdup(const char *s);
-long int	ft_atol(const char *str);
+long long int	ft_atol(const char *str);
+double	ft_atod(const char *str);
+bool	ft_str_isnum(char *str);
 // second part
 char		*ft_strjoin(char const *s1, char const *s2);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
@@ -59,7 +61,7 @@ void		ft_putnbr_fd(int n, int fd);
 
 // christopher
 char		*ft_strfmt(char *fmt, ...);
-void		ft_printf_fd(int fd, char *fmt, ...);
+int		ft_printf_fd(int fd, char *fmt, ...);
 
 // mehdi
 /*

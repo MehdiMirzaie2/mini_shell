@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:33:30 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/13 19:10:43 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/14 14:59:06 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ char	*get_lastredirect(t_iolst	*redirects)
 
 void	error_execve(char *cmd)
 {
+	// printf("\ncmd = %s\n", cmd);
 	if (is_directory_exists(cmd))
 	{
 		ft_printf_fd(2, "%s: is a directory\n", cmd);

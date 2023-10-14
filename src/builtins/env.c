@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:02 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/16 14:51:36 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/16 15:04:21 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 bool	valid_identifier(char **name_and_args, char *cmd)
 {
 	if (*name_and_args == NULL || ft_isdigit(*name_and_args[0])
-		|| strrchr(name_and_args[0], '-') != NULL
-		|| strrchr(name_and_args[0], '+') != NULL
-		|| strrchr(name_and_args[0], '=') != NULL)
+		|| ft_strrchr(name_and_args[0], '-') != NULL
+		|| ft_strrchr(name_and_args[0], '+') != NULL
+		|| ft_strrchr(name_and_args[0], '=') != NULL
+		|| ft_strrchr(name_and_args[0], ' ') != NULL)
 	{
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": not a valid identifier\n", 2);
+		ft_printf_fd(2, "export: '%s': not a valid identifier\n", cmd);
 		return (false);
 	}
 	return (true);
@@ -93,7 +93,7 @@ int	ft_export(t_env **our_env, t_arglst *args)
 	if (!valid_identifier(name_and_args, args->str))
 		return (free_strarr(name_and_args) + 256);
 	if (!ft_strchr(args->str, '='))
-		return (free_strarr(name_and_args) + 0);
+		return (free_strarr(name_and_args));
 	name_len = ft_strlen(name_and_args[0]);
 	while (ref && ft_strncmp(ref->name, name_and_args[0], name_len) != 0)
 		ref = ref->next;

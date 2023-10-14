@@ -10,7 +10,7 @@ SRCS        :=  ft_isalnum.c ft_isprint.c ft_memcmp.c  ft_putchar_fd.c ft_split.
 		ft_putstr_fd.c  ft_strjoin.c ft_strmapi.c ft_strtrim.c ft_striteri.c \
 		ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c \
 		ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c \
-		ft_strfmt.c ft_printf_fd.c
+		ft_strfmt.c ft_printf_fd.c ft_str_isnum.c
 
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 
@@ -19,7 +19,7 @@ OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEPS        := $(OBJS:.o=.d)
 
 CC          := cc
-CFLAGS      := -Wall -Wextra -Werror $(DFLAGS)
+CFLAGS      := -Wall -Wextra -Werror -g $(DFLAGS)
 CPPFLAGS    := -MMD -MP -I include
 AR          := ar
 ARFLAGS     := -r -c -s

@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 11:03:38 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/13 15:56:18 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/13 16:14:01 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ char	*rl_gets(t_mshctx *msh)
 	msh->line = readline(msh->prompt);
 	if (msh->line == NULL)
 	{
+		if (isatty(STDIN_FILENO))
+			write(2, "exit\n", 6);
 		free_mshctx(*msh);
 		delete_tempfile();
 		exit(EXIT_SUCCESS);
@@ -68,6 +70,7 @@ void	init_rl(t_env *our_env, int	*exit_status)
 			if (msh.ast)
 			{
 				ast_expandall(msh.ast, msh.env);
+				// tast_print(msh.ast);
 				process_ast(msh, &msh.env, exit_status);
 				ast_memman(&msh.ast, E_ASTLINK, true);
 			}

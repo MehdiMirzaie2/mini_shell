@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 21:13:56 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/13 12:18:11 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/14 13:36:38 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdarg.h>
+
 #include "libft.h"
+#include <stdarg.h>
 
 static void	handle_case(char *fmt, int fd, va_list *lst)
 {
@@ -40,7 +41,7 @@ static void	handle_case(char *fmt, int fd, va_list *lst)
 		write(fd, "%", 1);
 }
 
-void	ft_printf_fd(int fd, char *fmt, ...)
+int	ft_printf_fd(int fd, char *fmt, ...)
 {
 	va_list	lst;
 
@@ -57,4 +58,5 @@ void	ft_printf_fd(int fd, char *fmt, ...)
 		fmt++;
 	}
 	va_end(lst);
+	return (0);
 }

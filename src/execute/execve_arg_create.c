@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:56:37 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/09 14:57:27 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/13 14:08:21 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*cmd_path(char **splitted_paths, char *cmd)
 	char	*file_path;
 	int		val;
 
-	if (strncmp(cmd, "./", 2) == 0)
+	if (ft_strncmp(cmd, "./", 2) == 0)
 		return (cmd);
 	while (*splitted_paths)
 	{
@@ -75,7 +75,6 @@ char	*cmd_path(char **splitted_paths, char *cmd)
 		free(file_path);
 		++splitted_paths;
 	}
-	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd(" : command not found\n", 2);
+	ft_printf_fd(2, "%s: command not found\n", cmd);
 	exit(127);
 }

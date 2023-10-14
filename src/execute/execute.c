@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:07:14 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/13 21:11:40 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/14 14:58:46 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@ static void	open_and_redirect(char *name, int rw, int permission)
 	int	file_fd;
 
 	file_fd = 0;
-	if (!permission)
-		file_fd = open(name, rw, 0644);
-	else
-		file_fd = open(name, rw, permission);
+	file_fd = open(name, rw, 0644);
 	if (file_fd < 0)
 		error_exit(ft_strfmt("%s: %s", name, strerror(errno)), EXIT_FAILURE);
 	if (!permission)
@@ -38,7 +35,7 @@ static void	open_and_redirect(char *name, int rw, int permission)
 					strerror(errno)), EXIT_FAILURE);
 }
 
-void	handle_cmdredirect(t_ast *ast, t_iolst *redirects,
+void	handle_cmdredirect(t_iolst *redirects,
 	int pipe1[2], int num_cmds)
 {
 	const int	in = dup(STDIN_FILENO);
@@ -54,7 +51,6 @@ void	handle_cmdredirect(t_ast *ast, t_iolst *redirects,
 		}
 		start = start->next;
 	}
-	(void)ast;
 	while (redirects)
 	{
 		if (redirects->type == E_TTLA)

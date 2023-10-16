@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 18:25:09 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/07 16:19:40 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/16 16:09:34 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ t_sd_stat	until_var_or_quote(char *str, int i, bool mode, void *ctx)
 	(void)mode;
 	if (str[i] == '\0' || str[i] == *quote)
 		return (E_SD_STOP);
+	if (*quote != '\0' && str[i + 1] == '~')
+		return (E_SD_STOP);
+	if (*quote != '\0' && str[i] == '~')
+		return (E_SD_STOP | E_SD_COPY);
 	if (*quote != '\'' && str[i] == '$')
 		return (E_SD_STOP);
 	if (*quote != '\0' && (str[i] == '\'' || str[i] == '\"'))

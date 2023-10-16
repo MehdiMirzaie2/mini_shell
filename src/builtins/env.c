@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:02 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/13 15:37:28 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/16 14:51:36 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,14 @@ int	ft_export(t_env **our_env, t_arglst *args)
 
 	ref = *our_env;
 	if (args == NULL)
+	{
+		while (ref != NULL)
+		{
+			printf("declare -x %s=\"%s\"\n", ref->name, ref->args);
+			ref = ref->next;
+		}
 		return (0);
+	}
 	name_and_args = ft_split(args->str, '=');
 	if (!valid_identifier(name_and_args, args->str))
 		return (free_strarr(name_and_args) + 256);

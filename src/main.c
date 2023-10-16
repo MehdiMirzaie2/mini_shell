@@ -15,7 +15,23 @@
 #include "libft.h"
 #include "lexer.h"
 #include "ast.h"
+void    init_termioswords(void)
+{
+    struct termios    t;
 
+    tcgetattr(0, &t);
+    t.c_lflag = t.c_lflag & ~ECHO;
+    tcsetattr(0, TCSANOW, &t);
+}
+
+void    reset_termioswords(void)
+{
+    struct termios    t;
+
+    tcgetattr(0, &t);
+    t.c_lflag = t.c_lflag | ECHO;
+    tcsetattr(0, TCSANOW, &t);
+}
 char	*rl_gets(t_mshctx *msh)
 {
 	char		buff[PATH_MAX + 1];
@@ -31,7 +47,15 @@ char	*rl_gets(t_mshctx *msh)
 	msh->prompt = ft_strfmt("%s> ", path);
 	if (msh->line)
 		free(msh->line);
-	msh->line = readline(msh->prompt);
+	if (!isatty(0))
+	{	
+		init_termioswords();
+		msh->line = readline(NULL);
+		//reset_termios();
+		reset_termioswords();
+	}
+	else
+		msh->line = readline(msh->prompt);
 	if (msh->line == NULL)
 	{
 		int e_value = EXIT_SUCCESS;
@@ -123,10 +147,3 @@ int	main(int argc, char **argv, char **env)
 	free_env(our_env, true);
 	return (0);
 }
-
-// const char* __asan_default_options()
-// {
-// 	// REMOVE BEFORE EVAL
-// 	//return "detect_leaks=0";
-// 	return "";
-// }

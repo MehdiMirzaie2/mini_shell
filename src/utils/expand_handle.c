@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 23:51:38 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/16 16:19:36 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/17 11:09:47 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*handle_word(char *str, char quote, char **expand, t_env *env)
 	{
 		free(any);
 		str++;
-		any = ft_strdup(env_get(env, "HOME"));
+		any = ft_strdup(get_home(env));
 	}
 	else
 		str += ft_strlen(any);

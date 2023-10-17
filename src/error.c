@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 00:33:50 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/13 00:00:12 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/17 12:00:28 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ char	*errormsg(t_error error)
 	[E_ERR_STRDUP] = "String duplication failed, out of memory.",
 	[E_ERR_MALLOCFAIL] = "Ran out of available heap memory.",
 	[E_ERR_NULLPARAM] = "Supplied parameter cannot be null.",
+	[E_ERR_NOFILE] = "Fatal error occured, no file or directory.",
 	};
 
 	return (message[error]);

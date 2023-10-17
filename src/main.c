@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 11:03:38 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/17 11:58:18 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/17 12:01:14 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,44 +15,20 @@
 #include "libft.h"
 #include "lexer.h"
 #include "ast.h"
-void    init_termioswords(void)
+
+char *rl_gets_specific(t_mshctx *msh)
 {
-    struct termios    t;
+	int			nfd;
 
-    tcgetattr(0, &t);
-    t.c_lflag = t.c_lflag & ~ECHO;
-    tcsetattr(0, TCSANOW, &t);
-}
-
-void    reset_termioswords(void)
-{
-    struct termios    t;
-
-    tcgetattr(0, &t);
-    t.c_lflag = t.c_lflag | ECHO;
-    tcsetattr(0, TCSANOW, &t);
-}
-char	*rl_gets(t_mshctx *msh)
-{
-	char		buff[PATH_MAX + 1];
-	static char	*prev_path;
-	char		*path;
-
-	if (msh->prompt)
-		free(msh->prompt);
-	path = buff;
-	if (!getcwd(buff, PATH_MAX + 1))
-		path = prev_path;
-	prev_path = path;
-	msh->prompt = ft_strfmt("%s> ", path);
-	if (msh->line)
-		free(msh->line);
 	if (!isatty(0))
 	{	
-		init_termioswords();
+		nfd = open("/dev/null", O_WRONLY);
+		ft_assert(nfd < 0, E_ERR_NOFILE, __FILE__, __LINE__);
+		close(STDERR_FILENO);
+		dup(nfd);
+		rl_outstream = stderr;
 		msh->line = readline(NULL);
-		//reset_termios();
-		reset_termioswords();
+		close(nfd);
 	}
 	else
 		msh->line = readline(msh->prompt);
@@ -67,6 +43,25 @@ char	*rl_gets(t_mshctx *msh)
 		delete_tempfile();
 		exit(e_value);
 	}
+	return (msh->line);
+}
+
+char	*rl_gets(t_mshctx *msh)
+{
+	char		buff[PATH_MAX];
+	static char	*prev_path;
+	char		*path;
+
+	if (msh->prompt)
+		free(msh->prompt);
+	path = buff;
+	if (!getcwd(buff, sizeof(buff)))
+		path = prev_path;
+	prev_path = path;
+	msh->prompt = ft_strfmt("%s> ", path);
+	if (msh->line)
+		free(msh->line);
+	msh->line = rl_gets_specific(msh);
 	if (msh->line && *msh->line)
 		add_history(msh->line);
 	return (msh->line);

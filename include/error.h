@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 15:14:16 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/05 14:47:58 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/17 12:00:50 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ enum e_error
 	E_ERR_BADPARAM,
 	E_ERR_NULLPARAM,
 	E_ERR_STRDUP,
+	E_ERR_NOFILE,
 };
 
 char	*errormsg(t_error error);

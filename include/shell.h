@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:26:51 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/16 15:43:45 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/17 11:18:48 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,18 @@ struct s_mshctx
 	char	*line;
 	char	*prompt;
 };
+
+/* get_home.c */
+
+/* Returns the path to the home directory.
+ * The Home directory is a environment variable.
+ * By default we use the one the program owns.
+ * Then back up to the passed in one.
+ * Then back up to the current working directory
+ * TODO: Is this okay?
+ *
+ */
+char	*get_home(t_env *env);
 
 /* file_util.c */
 int			is_directory_exists(const char *path);

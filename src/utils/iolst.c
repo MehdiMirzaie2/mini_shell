@@ -6,7 +6,7 @@
 /*   By: mmirzaie <mmirzaie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:47:11 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/06 16:24:57 by mmirzaie         ###   ########.fr       */
+/*   Updated: 2023/10/17 13:12:30 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,23 @@
 #include "libft.h"
 #include "iolst.h"
 #include "error.h"
+#include <sys/wait.h>
+
+void	loop_redirects(int child, t_iolst *start, int in)
+{
+	while (start)
+	{
+		if (start->type == E_TTLLA)
+		{
+			if (child != 0)
+				waitpid(child, NULL, 0);
+			else
+				dup2(in, STDIN_FILENO);
+			break ;
+		}
+		start = start->next;
+	}
+}
 
 t_iolst	*iolst_add(t_ttoken tok, char *str, int dup, t_iolst **head)
 {

@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 11:07:14 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/14 17:57:13 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/17 13:09:43 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,15 @@ static void	open_and_redirect(char *name, int rw, int permission)
 void	handle_cmdredirect(t_iolst *redirects,
 	int pipe1[2], int num_cmds, t_env *env)
 {
-	const int	in = dup(STDIN_FILENO);
-	t_iolst		*start;
+	const int		in = dup(STDIN_FILENO);
+	const t_iolst	*start = redirects;
 
-	start = redirects;
 	while (start)
 	{
 		if (start && start->type == E_TTLLA)
-		{
 			dup2(in, STDIN_FILENO);
-			handle_heredoc(start, env);
-		}
+		if (start && start->type == E_TTLLA)
+			handle_heredoc((t_iolst *)start, env);
 		start = start->next;
 	}
 	while (redirects)
@@ -80,22 +78,6 @@ void	open_file(t_ast *ast, int pipe1[2], int num_cmds, t_env *env)
 			redirect(pipe1[1], STDOUT_FILENO);
 	}
 	handle_cmdredirect(redirects, pipe1, num_cmds, env);
-}
-
-void	loop_redirects(int child, t_iolst *start, int in)
-{
-	while (start)
-	{
-		if (start->type == E_TTLLA)
-		{
-			if (child != 0)
-				waitpid(child, NULL, 0);
-			else
-				dup2(in, STDIN_FILENO);
-			break ;
-		}
-		start = start->next;
-	}
 }
 
 void	execute_child(t_ast *node, int pipe1[2], t_env **our_env, int num_cmds)

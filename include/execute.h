@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:31:46 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/17 12:10:24 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/17 13:10:37 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ void	error_exit(char *error, int val);
 
 // utils
 int		get_num_cmd(t_ast *ast);
+
+/* iolst.c */
+void	loop_redirects(int child, t_iolst *start, int in);
 
 bool	valid_identifier(char **name_and_args, char *cmd);
 

@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:33:30 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/14 21:28:59 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/17 13:12:08 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,31 +63,6 @@ struct s_exec_info
 	char	**argv;
 };
 
-
-// struct s_exec_info	get_executable(t_cmd *cmd, char **paths)
-// {
-// 	struct s_exec_info	exec;
-
-// 	if (ft_strchr(cmd->cmd, '/'))
-// 	{
-// 		exec.abs_cmd = cmd->cmd;
-// 		if (exec.abs_cmd[0] == '.')
-// 			exec.abs_cmd = ft_substr(cmd->cmd, 2, ft_strlen(cmd->cmd));
-// 		else
-// 		{
-// 			// error_execve(exec.abs_cmd);
-// 			exec.abs_cmd = ft_substr(cmd->cmd, ft_strchr(cmd->cmd, '/') + 1
-// 					- cmd->cmd, ft_strlen(cmd->cmd));
-// 		}
-// 	}
-// 	else if (paths)
-// 		exec.abs_cmd = cmd_path(paths, cmd->cmd);
-// 	else
-// 		exec.abs_cmd = cmd->cmd;
-// 	exec.argv = join_cmd(cmd);
-// 	return (exec);
-// }
-
 struct s_exec_info	get_executable(t_cmd *cmd, char **paths)
 {
 	struct s_exec_info	exec;
@@ -99,7 +74,7 @@ struct s_exec_info	get_executable(t_cmd *cmd, char **paths)
 			cmd->cmd = ft_substr(cmd->cmd, 2, ft_strlen(cmd->cmd));
 		else
 		{
-			// error_execve(cmd->cmd);
+			error_execve(cmd->cmd);
 			cmd->cmd = ft_substr(cmd->cmd, ft_strchr(cmd->cmd, '/') + 1
 					- cmd->cmd, ft_strlen(cmd->cmd));
 		}

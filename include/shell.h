@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:26:51 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/17 11:18:48 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/17 13:02:31 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ struct s_mshctx
 	int		exit_code;
 	char	*line;
 	char	*prompt;
+	char	*exitvar;
 };
 
 /* get_home.c */
@@ -59,7 +60,7 @@ struct s_mshctx
  * TODO: Is this okay?
  *
  */
-char	*get_home(t_env *env);
+char		*get_home(t_env *env);
 
 /* file_util.c */
 int			is_directory_exists(const char *path);

@@ -38,6 +38,7 @@ SRCS        :=	main.c \
 				utils/env_to_array.c \
 				utils/file_util.c \
 				utils/get_home.c \
+				utils/rl_util.c \
 				parser/lexer.c \
 				parser/lexer_utils.c \
 				parser/debug_token.c \

@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 23:51:38 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/17 11:09:47 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/17 15:55:06 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*handle_word(char *str, char quote, char **expand, t_env *env)
 		return (handle_var(str, expand, env));
 	else
 		any = ft_strdupctx(str, &quote, until_var_or_quote);
-	if (*str == '~')
+	if (*any == '~')
 	{
 		free(any);
 		str++;

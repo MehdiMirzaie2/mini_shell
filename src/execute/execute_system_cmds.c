@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:33:30 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/17 15:09:40 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/17 16:20:47 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	error_execve(char *cmd)
 	}
 }
 
-static void	execute_sys_cmd(t_cmd *cmd, char *cmd_path, char **argv, t_env *env)
+static void	execute_sys_cmd(char *cmd_path, char **argv, t_env *env)
 {
 	char	**envp;
 
@@ -51,7 +51,7 @@ static void	execute_sys_cmd(t_cmd *cmd, char *cmd_path, char **argv, t_env *env)
 	if (execve(cmd_path, argv, envp) < 0)
 	{
 		free_strarr(envp);
-		error_execve(cmd->cmd);
+		error_execve(cmd_path);
 		free_strarr(argv);
 		exit(126);
 	}
@@ -97,5 +97,5 @@ void	execute_system_cmds(t_cmd *cmd, t_env *env)
 	if (env_get(env, "PATH"))
 		paths = ft_split(env_get(env, "PATH"), ':');
 	exec = get_executable(cmd, paths);
-	execute_sys_cmd(cmd, exec.abs_cmd, exec.argv, env);
+	execute_sys_cmd(exec.abs_cmd, exec.argv, env);
 }

@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 20:33:30 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/17 13:12:08 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/17 15:09:40 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,8 @@ struct s_exec_info	get_executable(t_cmd *cmd, char **paths)
 			cmd->cmd = ft_substr(cmd->cmd, 2, ft_strlen(cmd->cmd));
 		else
 		{
-			error_execve(cmd->cmd);
-			cmd->cmd = ft_substr(cmd->cmd, ft_strchr(cmd->cmd, '/') + 1
-					- cmd->cmd, ft_strlen(cmd->cmd));
+			cmd->cmd = ft_substr(ft_strrchr(cmd->cmd, '/'), 0,
+					ft_strlen(ft_strrchr(cmd->cmd, '/')));
 		}
 	}
 	else if (paths)

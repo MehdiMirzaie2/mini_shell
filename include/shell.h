@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:26:51 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/14 18:08:14 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/16 15:43:45 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ struct s_mshctx
 	t_env	*env;
 	t_ast	*ast;
 	t_token	*lst;
+	int		exit_code;
 	char	*line;
 	char	*prompt;
 };

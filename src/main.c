@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 11:03:38 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/14 18:03:09 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/17 11:58:18 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,14 @@ char	*rl_gets(t_mshctx *msh)
 	msh->line = readline(msh->prompt);
 	if (msh->line == NULL)
 	{
+		int e_value = EXIT_SUCCESS;
+		if (env_get(msh->env, "?") != NULL)
+			e_value = ft_atoi(env_get(msh->env, "?"));
 		if (isatty(STDIN_FILENO))
 			write(2, "exit\n", 6);
 		free_mshctx(*msh);
 		delete_tempfile();
-		exit(EXIT_SUCCESS);
+		exit(e_value);
 	}
 	if (msh->line && *msh->line)
 		add_history(msh->line);
@@ -54,7 +57,6 @@ void	init_rl(t_env *our_env, int	*exit_status)
 	msh.env = our_env;
 	while (1)
 	{
-		env_set(msh.env, question, ft_itoa(WEXITSTATUS(*exit_status)));
 		init_termios();
 		signal(SIGINT, handle_sigint);
 		rl_gets(&msh);
@@ -62,7 +64,8 @@ void	init_rl(t_env *our_env, int	*exit_status)
 			continue ;
 		reset_termios();
 		msh.lst = tlst_create(msh.line);
-		if (!tlst_syntax_check(msh.lst))
+		msh.exit_code = tlst_syntax_check(msh.lst);
+		if (!msh.exit_code)
 		{
 			if (env_get(msh.env, "MSHDBG"))
 				tlst_print(msh.lst);
@@ -73,7 +76,10 @@ void	init_rl(t_env *our_env, int	*exit_status)
 				process_ast(msh, &msh.env, exit_status);
 				ast_memman(&msh.ast, E_ASTLINK, true);
 			}
+			env_set(msh.env, question, ft_itoa(WEXITSTATUS(*exit_status)));
 		}
+		else
+			env_set(msh.env, "?", ft_itoa(msh.exit_code));
 		tlst_destroy(msh.lst);
 		msh.lst = NULL;
 	}

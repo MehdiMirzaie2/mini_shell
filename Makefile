@@ -48,6 +48,7 @@ SRCS        :=	main.c \
 				parser/rules.c \
 				builtins/cd.c \
 				builtins/env.c \
+				builtins/export.c \
 				builtins/echo.c \
 				builtins/pwd.c \
 				builtins/exit.c \

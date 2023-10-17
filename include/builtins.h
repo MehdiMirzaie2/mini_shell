@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:31:36 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/14 14:59:58 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/17 12:12:51 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ struct s_env
 
 int		ft_cd(t_cmd *cmd, t_env **our_env);
 void	ft_env(t_env *our_env);
-int		ft_export(t_env **our_env, t_arglst *args);
+void	ft_export(t_env **our_env, t_arglst *args, int *e_status);
 int		unset(t_env **our_env, t_arglst *args);
 void	ft_echo(t_cmd *cmd);
 void	ft_pwd(void);
-void	exiting(t_cmd *cmd);
+int		exiting(t_cmd *cmd);
 
 #endif

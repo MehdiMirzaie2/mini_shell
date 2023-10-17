@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 23:03:48 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/12 23:57:51 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/17 12:14:25 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,10 @@ int		iter_strdupctx(char *src, char *dst, void *ctx, t_strdupctxfn func);
 char	*ft_strdupctx(char *src, void *ctx, t_strdupctxfn check);
 int		ft_isspace(int c);
 int		ft_isalnum(int c);
+
+/*
+iterates overspace.
+*/
+int		ft_iterspace(const char *str);
 
 #endif

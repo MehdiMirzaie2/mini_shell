@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 14:19:50 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/10 10:55:20 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/17 10:37:09 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,20 @@ int	ft_isspace(int c)
 	is = c == ' ' || c == '\t' || c == '\v';
 	is = is || c == '\r' || c == '\f';
 	return (is);
+}
+
+int	ft_iterspace(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isspace(str[i]))
+			return (i);
+		i++;
+	}
+	return (i);
 }
 
 int	ft_isalnum(int c)

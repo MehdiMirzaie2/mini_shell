@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 13:21:02 by mmirzaie          #+#    #+#             */
-/*   Updated: 2023/10/16 15:05:37 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/17 12:10:57 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ bool	valid_identifier(char **name_and_args, char *cmd)
 			|| !ft_strncmp(*name_and_args, "if", 3))
 		|| !ft_strncmp(*name_and_args, "while", 6))
 	{
-		ft_printf_fd(2, "export: '%s': not a valid identifier\n", cmd);
+		ft_printf_fd(2, "export: `%s': not a valid identifier\n", cmd);
 		return (false);
 	}
 	while (*name)
@@ -32,7 +32,7 @@ bool	valid_identifier(char **name_and_args, char *cmd)
 			return (true);
 		if (!ft_isalnum(*name) && *name != '_')
 		{
-			ft_printf_fd(2, "export: '%s': not a valid identifier\n", cmd);
+			ft_printf_fd(2, "export: `%s': not a valid identifier\n", cmd);
 			return (false);
 		}
 	}
@@ -86,41 +86,6 @@ void	add_node_to_env(t_env **our_env, char *name, char *args)
 
 // the following should append the path to existing paths
 // export PATH=$PATH:/place/with/the/file
-int	ft_export(t_env **our_env, t_arglst *args)
-{
-	t_env	*ref;
-	char	**name_and_args;
-	int		name_len;
-
-	ref = *our_env;
-	if (args == NULL)
-	{
-		while (ref != NULL)
-		{
-			printf("declare -x %s=\"%s\"\n", ref->name, ref->args);
-			ref = ref->next;
-		}
-		return (0);
-	}
-	name_and_args = ft_split(args->str, '=');
-	if (!valid_identifier(name_and_args, args->str))
-		return (free_strarr(name_and_args) + 256);
-	if (!ft_strchr(args->str, '='))
-		return (free_strarr(name_and_args));
-	name_len = ft_strlen(name_and_args[0]);
-	while (ref && ft_strncmp(ref->name, name_and_args[0], name_len) != 0)
-		ref = ref->next;
-	if (ref != NULL)
-	{
-		free(ref->args);
-		ref->args = ft_strdup(name_and_args[1]);
-	}
-	else
-		add_node_to_env(our_env, name_and_args[0], name_and_args[1]);
-	free_strarr(name_and_args);
-	return (0);
-}
-
 void	ft_env(t_env *our_env)
 {
 	t_env	*ref;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rules.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clovell <clovell@student.42adel.org.au>    +#+  +:+       +#+        */
+/*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 10:37:33 by clovell           #+#    #+#             */
-/*   Updated: 2023/10/13 10:38:58 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/16 15:49:37 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	print_synerr(t_ttoken token, t_token *lst, t_synerrno error)
 	if (error == E_SEUNEXPECTED)
 		fmt = "msh: syntax error near unexpected token `%s'\n";
 	ft_printf_fd(STDERR_FILENO, fmt, str);
-	return (1);
+	return (258);
 }
 
 int	tlst_syntax_check(t_token *lst)
@@ -61,6 +61,8 @@ int	tlst_syntax_check(t_token *lst)
 		next = E_TTNA;
 		if (tcurr->next)
 			next = tcurr->next->type;
+		if (curr == E_TTNCP && curr == next)
+			return (print_synerr(curr, tcurr, E_SEUNEXPECTED));
 		if (prev == E_TTNA && (curr & E_TTNCP))
 			return (print_synerr(curr, tcurr, E_SEUNEXPECTED));
 		if (curr & E_TTLR && next != E_TTWD)

@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:56:37 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/13 14:08:21 by mehdimirzai      ###   ########.fr       */
+/*   Updated: 2023/10/17 11:35:16 by mehdimirzai      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,5 @@ char	*cmd_path(char **splitted_paths, char *cmd)
 		free(file_path);
 		++splitted_paths;
 	}
-	ft_printf_fd(2, "%s: command not found\n", cmd);
-	exit(127);
+	exit(ft_printf_fd(2, "%s: command not found\n", cmd) + 127);
 }

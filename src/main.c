@@ -6,7 +6,7 @@
 /*   By: mehdimirzaie <mehdimirzaie@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 11:03:38 by mehdimirzai       #+#    #+#             */
-/*   Updated: 2023/10/17 12:01:14 by clovell          ###   ########.fr       */
+/*   Updated: 2023/10/17 12:34:54 by clovell          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char *rl_gets_specific(t_mshctx *msh)
 {
 	int			nfd;
 
-	if (!isatty(0))
+	if (env_get(msh->env, "MSH_NOECHO") && !isatty(0))
 	{	
 		nfd = open("/dev/null", O_WRONLY);
 		ft_assert(nfd < 0, E_ERR_NOFILE, __FILE__, __LINE__);
